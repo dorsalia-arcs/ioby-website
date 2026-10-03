@@ -1,0 +1,86 @@
+---
+import { company, paths } from '../data/site';
+
+interface Props {
+  title?: string;
+  description: string;
+  lang?: string;
+}
+
+const { title, description, lang = 'ja' } = Astro.props;
+const fullTitle = title ? `${title} | iObY` : 'iObY';
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content={description} />
+    <title>{fullTitle}</title>
+    <style is:global>
+      :root {
+        color-scheme: light dark;
+        --fg: #1f2328;
+        --muted: #59636e;
+        --bg: #ffffff;
+        --line: #d1d9e0;
+        --link: #0969da;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --fg: #e6edf3;
+          --muted: #9198a1;
+          --bg: #0d1117;
+          --line: #3d444d;
+          --link: #4493f8;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, 'Segoe UI', 'Hiragino Sans', 'Yu Gothic UI', Meiryo, sans-serif;
+        line-height: 1.8;
+        color: var(--fg);
+        background: var(--bg);
+      }
+      .wrap { max-width: 44rem; margin: 0 auto; padding: 0 1.25rem; }
+      header { border-bottom: 1px solid var(--line); padding: 1rem 0; }
+      header a { font-weight: 700; font-size: 1.25rem; color: var(--fg); text-decoration: none; }
+      main { padding: 2rem 0 3rem; }
+      a { color: var(--link); }
+      h1 { font-size: 1.6rem; line-height: 1.4; }
+      h2 { font-size: 1.25rem; margin-top: 2.5rem; }
+      h3 { font-size: 1.05rem; margin-top: 1.75rem; }
+      table { border-collapse: collapse; width: 100%; }
+      th, td { border: 1px solid var(--line); padding: 0.6rem 0.75rem; text-align: left; vertical-align: top; }
+      th { width: 30%; font-weight: 600; }
+      .muted { color: var(--muted); }
+      footer { border-top: 1px solid var(--line); padding: 1.5rem 0; font-size: 0.875rem; color: var(--muted); }
+      footer ul { list-style: none; padding: 0; margin: 0 0 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
+      @media (max-width: 30rem) {
+        th, td { display: block; width: 100%; }
+        td { border-top: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap"><a href={paths.home}>iObY</a></div>
+    </header>
+    <main>
+      <div class="wrap">
+        <slot />
+      </div>
+    </main>
+    <footer>
+      <div class="wrap">
+        <ul>
+          <li><a href={paths.tokushoho}>特定商取引法に基づく表記</a></li>
+          <li><a href={paths.tkclockPrivacy}>プライバシーポリシー（TKclock）</a></li>
+        </ul>
+        <p>&copy; {company.nameEn}</p>
+      </div>
+    </footer>
+  </body>
+</html>

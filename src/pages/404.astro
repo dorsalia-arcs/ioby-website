@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { paths } from '../data/site';
+---
+<BaseLayout title="ページが見つかりません" description="お探しのページは見つかりませんでした。">
+  <h1>404 ページが見つかりません</h1>
+  <p>お探しのページは見つかりませんでした。URLが変更されたか、削除された可能性があります。</p>
+  <p><a href={paths.home}>トップページに戻る</a></p>
+</BaseLayout>

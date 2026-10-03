@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { brand, company, paths } from '../data/site';
+---
+<BaseLayout description="iObY は資料作成、AI活用のサポート、業務ツール「TKシリーズ」の開発を行う、合同会社Dorsalia Arcs の一部門です。">
+  <h1>iObY</h1>
+  <p>{brand.summary}</p>
+  <ul>
+    {brand.points.map((point) => <li>{point}</li>)}
+  </ul>
+  <p>iObY は <a href={company.url}>{company.nameJa}</a> の一部門です。</p>
+
+  <h2>製品</h2>
+  <ul>
+    <li><a href={paths.tkclock}>TKclock</a> — デスクトップ時計（準備中）</li>
+  </ul>
+
+  <h2>各種表記</h2>
+  <ul>
+    <li><a href={paths.tokushoho}>特定商取引法に基づく表記</a></li>
+    <li><a href={paths.tkclockPrivacy}>プライバシーポリシー（TKclock）</a></li>
+  </ul>
+</BaseLayout>

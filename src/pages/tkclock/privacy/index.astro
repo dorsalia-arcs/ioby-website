@@ -1,0 +1,69 @@
+---
+// This URL (https://ioby.net/tkclock/privacy/) is embedded in the TKclock exe and
+// registered with Microsoft Store. Never move or rename this page.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { company, contact } from '../../../data/site';
+
+const enactedJa = '2026年10月3日';
+const enactedEn = 'October 3, 2026';
+---
+<BaseLayout title="TKclock プライバシーポリシー / Privacy Policy" description="TKclock のプライバシーポリシーです。TKclock は個人情報を収集・送信しません。 / Privacy policy for TKclock. TKclock does not collect or transmit personal information.">
+  <h1>TKclock プライバシーポリシー</h1>
+
+  <section>
+    <p>{company.nameJa}（以下「当社」）は、Windows 用アプリケーション「TKclock」（以下「本アプリ」）における利用者の情報の取り扱いについて、次のとおり定めます。</p>
+
+    <h2>1. 情報の収集・送信について</h2>
+    <p>本アプリ自体は通信を行いません。本アプリが利用者の個人情報を収集することや、外部へ送信することはありません。</p>
+
+    <h2>2. 設定の保存について</h2>
+    <p>本アプリの設定は、利用者のPC内にローカルのファイルとして保存されます。この情報が当社や第三者に送信されることはありません。</p>
+
+    <h2>3. 購入とライセンス確認について</h2>
+    <p>本アプリおよびアドオンの購入とライセンスの確認は、Microsoft Store が行います。これらに関する情報は、<a href="https://privacy.microsoft.com/ja-jp/privacystatement">Microsoft のプライバシーに関する声明</a>に従って取り扱われます。</p>
+
+    <h2>4. Microsoft Edge WebView2 ランタイムについて</h2>
+    <p>本アプリは画面の表示に Microsoft Edge WebView2 ランタイムを使用します。WebView2 ランタイムは、Microsoft の方針に従って動作します（ランタイムの更新や、Windows の診断データの設定など）。</p>
+
+    <h2>5. 本ポリシーの改定</h2>
+    <p>本ポリシーを改定する場合は、このページでお知らせします。</p>
+
+    <h2>6. 運営者・お問い合わせ</h2>
+    <p>
+      運営者: {company.nameJa}<br />
+      お問い合わせ: <a href={`mailto:${contact.supportEmail}`}>{contact.supportEmail}</a>
+    </p>
+
+    <p>制定日: {enactedJa}</p>
+  </section>
+
+  <hr />
+
+  <section lang="en">
+    <h1>TKclock Privacy Policy</h1>
+    <p>{company.nameEn} ("we", "us") describes below how the Windows application "TKclock" (the "App") handles user information.</p>
+
+    <h2>1. Collection and Transmission of Information</h2>
+    <p>The App itself does not communicate over the network. The App does not collect any personal information from users, nor does it transmit any information externally.</p>
+
+    <h2>2. Storage of Settings</h2>
+    <p>The App's settings are stored as local files on the user's PC. This information is never sent to us or to any third party.</p>
+
+    <h2>3. Purchases and License Verification</h2>
+    <p>Purchases of the App and its add-ons, and license verification, are handled by Microsoft Store. Related information is handled in accordance with the <a href="https://privacy.microsoft.com/en-us/privacystatement">Microsoft Privacy Statement</a>.</p>
+
+    <h2>4. Microsoft Edge WebView2 Runtime</h2>
+    <p>The App uses the Microsoft Edge WebView2 Runtime to render its display. The WebView2 Runtime operates in accordance with Microsoft's policies (for example, runtime updates and Windows diagnostic data settings).</p>
+
+    <h2>5. Changes to This Policy</h2>
+    <p>If we revise this policy, we will announce the changes on this page.</p>
+
+    <h2>6. Operator and Contact</h2>
+    <p>
+      Operator: {company.nameEn}<br />
+      Contact: <a href={`mailto:${contact.supportEmail}`}>{contact.supportEmail}</a>
+    </p>
+
+    <p>Effective date: {enactedEn}</p>
+  </section>
+</BaseLayout>
