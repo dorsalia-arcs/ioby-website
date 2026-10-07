@@ -9,8 +9,8 @@
 ## いま有効なルール
 
 - Astro + GitHub Pages（`.github/workflows/deploy.yml`、main への push で公開）。リポジトリ `dorsalia-arcs/ioby-website`（public）。push はワークスペース CLAUDE.md の GitHub 節の手順で `takahiro-iwabuchi` に切り替えて行う
-- 見た目は大山滉大さんの TKclock LP（`_design/tkclock-lp/`。非公開・git 管理外）に合わせたダーク固定のデザイン。共通の見た目は `src/layouts/BaseLayout.astro`、TKclock LP 固有の見た目と演出は `src/styles/tkclock-lp.css`・`src/scripts/tkclock-lp.js`、会社情報・連絡先は `src/data/site.ts` に集約する
-- TKclock の Microsoft Store URL は `src/data/site.ts` の `tkclock.storeUrl` に入れる（null の間はボタンが「近日公開」になる）。価格はサイトに確定扱いで書かない（当面はストアの掲載ページに任せる）
+- `/tkclock/` は大山さんの LP を完全再現（文言・リンクも原文のまま。変更は大山さんの新しい版で行う）。`_design/tkclock-lp/`（非公開・git 管理外）に届いた HTML を `python tools/import-tkclock-lp.py` で取り込むと、埋め込みの素材が `public/tkclock/` に、base64 をファイル参照に置き換えただけの HTML が `src/tkclock-lp/index.html` に出る。この HTML は手で直さない
+- それ以外のページ（トップ・ポリシー・特商法・404）の共通の見た目は `src/layouts/BaseLayout.astro`、会社情報・連絡先は `src/data/site.ts` に集約する
 - LP の書体 `public/tkclock/fonts/tk-*.woff2` は TKclock 同梱 OFL 書体のサブセット。ライセンス全文は同じフォルダの `LICENSE.txt`
 - **`/tkclock/privacy/` と `/tokushoho/` の URL は変えない**（exe と Microsoft Store に登録するため）
 - 問い合わせ先は `support@ioby.net`。電話番号は 050 番号を取るまで「請求があった場合は遅滞なく開示」
