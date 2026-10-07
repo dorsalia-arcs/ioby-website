@@ -26,3 +26,6 @@ pnpm-debug.log*
 
 # design materials received from the designer (not published; repo is public)
 _design/
+
+# python bytecode (tools/)
+__pycache__/

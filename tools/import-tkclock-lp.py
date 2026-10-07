@@ -7,12 +7,15 @@ The only other changes are the owner's edits below (TITLE, REMOVE, REPLACE, INSE
 blocks live in src/tkclock-lp/additions.css and sections.html). Every edit must find its anchor in
 the designer's HTML, otherwise the script stops. Asset names follow the order of appearance in the HTML.
 %%NAME%% markers and <!--soon--> blocks are resolved from src/data/site.ts by src/pages/tkclock/index.astro.
+Finally every comment (HTML, CSS, JS) is removed, since the page is public (tools/strip_comments.py).
 
     python tools/import-tkclock-lp.py
 """
 import base64
 import re
 from pathlib import Path
+
+from strip_comments import check_removed, strip_html
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "_design" / "tkclock-lp" / "index-vi.html"
@@ -107,6 +110,8 @@ def main() -> None:
             raise SystemExit(f"{pattern}: matched {n}, expected {expected}")
     if count != {"image/webp": len(WEBP), "font/woff2": len(WOFF2), "video/mp4": len(MP4)}:
         raise SystemExit(f"unexpected asset count {count}; update the name lists")
+    out, removed = strip_html(out)
+    check_removed(removed)
     OUT_HTML.parent.mkdir(parents=True, exist_ok=True)
     OUT_HTML.write_bytes(out.encode("utf-8"))
     print(f"{OUT_HTML.relative_to(ROOT)}: {len(out)} bytes, assets {count}")

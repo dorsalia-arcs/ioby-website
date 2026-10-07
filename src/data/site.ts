@@ -26,11 +26,8 @@ export const paths = {
   tkclockFontLicense: '/tkclock/fonts/LICENSE.txt',
 };
 
-// storeUrl stays null until the Microsoft Store listing is public. Every store button on the
-// site reads it, including the TKclock LP buttons: null shows "近日公開", a URL turns them into links.
+// storeUrl stays null until the Microsoft Store listing is public. The TKclock LP buttons read it:
+// null shows "近日公開", a URL turns them into links.
 export const tkclock = {
   storeUrl: null as string | null,
-  // From the MSIX manifest: MinVersion 10.0.19041.0 (= Windows 10 2004), x64 package
-  os: 'Windows 11 / 10（64 ビット）',
-  osDetail: 'Windows 11、Windows 10（バージョン 2004 以降）。64 ビット（x64）版',
 };

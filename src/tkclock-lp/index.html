@@ -6,15 +6,9 @@
 <meta name="description" content="TKclock — Windows用のデスクトップ時計。無償版は4テーマ4書体、有償版は9テーマ9書体の81通り。オフラインで動きます。">
 <title>TKclock</title>
 <style>
-/* =========================================================
-   Design Tokens
-   参照: https://www.rockstargames.com/VI/ の computed style 実測値
-   （projects/tkclock/reference/rockstar-vi/rs_tokens.json）
-========================================================= */
 :root{
   color-scheme: dark;
 
-  /* 面。真っ黒ではなく、わずかに青い黒 */
   --void:  #08070f;
   --ink:   #111117;
   --panel: #16152a;
@@ -22,12 +16,10 @@
   --line:  rgba(255,255,255,.14);
   --line2: rgba(255,255,255,.28);
 
-  /* 文字 */
   --fg:    #ffffff;
   --dim:   #ccccd6;
   --faint: #8a8aa0;
 
-  /* 差し色。夕焼けの色相をそのまま持ってくる */
   --lav:    #ccc2f5;
   --lav-lt: #e5ddff;
   --peri:   #adb5ff;
@@ -41,7 +33,6 @@
 
   --gothic: "Hiragino Kaku Gothic ProN","Yu Gothic UI","Yu Gothic",YuGothic,Meiryo,sans-serif;
 
-  /* 級数。参照元は 57.6px / ls 8.64px ＝ .15em */
   --fs-cover: clamp(2.6rem, 1.2rem + 6.2vw, 6rem);
   --fs-scene: clamp(1.9rem, 1.1rem + 3.3vw, 3.6rem);
   --fs-h3:    clamp(1.0625rem, 1rem + .35vw, 1.3rem);
@@ -57,9 +48,6 @@
   --ease: cubic-bezier(.2,.7,.3,1);
 }
 
-/* =========================================================
-   Reset / Global
-========================================================= */
 *,*::before,*::after{ box-sizing:border-box; }
 html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
 body{
@@ -81,19 +69,13 @@ ul{ padding:0; list-style:none; }
 
 .wrap{ width:100%; max-width:var(--wrap); margin:0 auto; padding-inline:var(--gut); }
 
-/* ヘッダーは position:fixed なので、ページ内リンクの着地点をその下にずらす */
 section[id], footer[id]{ scroll-margin-top:76px; }
 
-/* 粒子。平坦なグラデーションに見せないための下地 */
 .grain{
   position:fixed; inset:0; z-index:300; pointer-events:none; opacity:.16; mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
 }
 
-/* =========================================================
-   夕焼けの空 — 全画面シーンの下地
-   多段グラデ ＋ 低い位置の太陽 ＋ 薄い走査線
-========================================================= */
 .sky{ position:absolute; inset:0; overflow:hidden; }
 .sky::before{
   content:""; position:absolute; inset:0;
@@ -106,21 +88,16 @@ section[id], footer[id]{ scroll-margin-top:76px; }
       var(--sky4,#e0748a) 82%,
       var(--sky5,#ffb47a) 100%);
 }
-/* 走査線。CRT というより、空気の層のつもりで薄く */
 .sky::after{
   content:""; position:absolute; inset:0; opacity:.22;
   background:repeating-linear-gradient(180deg, rgba(255,255,255,.055) 0 1px, transparent 1px 4px);
 }
-/* 地平線のシルエット（ヤシとビル）。1色で抜く */
 .skyline{
   position:absolute; left:0; right:0; bottom:0; height:clamp(90px,15vw,190px);
   color:var(--void); pointer-events:none;
 }
 .skyline svg{ width:100%; height:100%; display:block; }
 
-/* =========================================================
-   共通パーツ — アイブロウ・大見出し・ピンクのピル
-========================================================= */
 .eyebrow{
   font-size:var(--fs-xs); font-weight:500; letter-spacing:.35em;
   color:var(--lav); text-transform:uppercase; line-height:1.4;
@@ -128,38 +105,30 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 @supports (width:1cqw){
   .eyebrow{ white-space:nowrap; font-size:min(var(--fs-xs), calc(100cqw / var(--em, 16))); }
 }
-/* 参照元の要：字間だけで格を出す。装飾罫は引かない */
-/* 表題（英語・日本語とも）は折り返さない。器の幅 ÷ --em で1行に収まる級数を出す。
-   --em は「その文言1行ぶんの幅（em）＝ 字幅＋字間＋text-indent」で、実測値に 4% の余裕を足したもの。
-   文言を変えたら測り直すこと（projects/tkclock/docs/LP-B-photo-update-spec.md §18-2）。
-   nowrap と級数の計算は必ず @supports (width:1cqw) の中に置くこと。外に出すと、
-   cqw が読めない環境で級数だけ既定に戻り、折り返しもしないまま文字が切れる */
 .display{
   font-size:var(--fs-scene); font-weight:500;
   letter-spacing:var(--track); line-height:1.28;
-  text-indent:var(--track);            /* 字間ぶんの右寄りを打ち消して中央に見せる */
+  text-indent:var(--track);
 }
 @supports (width:1cqw){
   .display{ white-space:nowrap; font-size:min(var(--fs-scene), calc(100cqw / var(--em, 21))); }
 }
-/* 器（1行に収める幅の基準）。--em はこの器の内幅に対する比 */
 .flat__head, .scene__head, .cover__in, .reel__ui, .buy > div, .desk > div{ container-type:inline-size; }
 .lead{ color:var(--dim); }
 
-/* 表題1行ぶんの幅（em）。左が英語の表題（.eyebrow）、右が日本語の表題（.display・.desk__t） */
-#reel-combo .eyebrow{ --em:18.00; }   /* All 81 Combinations */
-#scene-wall .eyebrow{ --em:14.66; }    /* Your Own World */
-#desk .eyebrow{ --em:14.80; }          /* On Your Desktop */
-#compare .eyebrow{ --em:9.88; }        /* Free & Paid */
-#compare .cmp__price .eyebrow{ --em:4.56; }  /* Price（比較表の下） */
-#cover .cover__eyebrow{ --em:21.05; } /* Windows Desktop Clock */
-#cover .reel__label{ --em:15.49; }      /* A Day With TKclock */
+#reel-combo .eyebrow{ --em:18.00; }
+#scene-wall .eyebrow{ --em:14.66; }
+#desk .eyebrow{ --em:14.80; }
+#compare .eyebrow{ --em:9.88; }
+#compare .cmp__price .eyebrow{ --em:4.56; }
+#cover .cover__eyebrow{ --em:21.05; }
+#cover .reel__label{ --em:15.49; }
 
-#reel-combo .display{ --em:11.02; }    /* 9つの色と、9つの文字 */
-#scene-wall .display{ --em:10.96; }     /* 背景は、あなたの世界 */
-#desk .display{ --em:16.64; }           /* いつもの画面に、スッと馴染みます */
-#desk .desk__t{ --em:15.49; }          /* 置きっぱなしでも、じゃまになりません */
-#compare .display{ --em:6.57; }         /* まずは無料で */
+#reel-combo .display{ --em:11.02; }
+#scene-wall .display{ --em:10.96; }
+#desk .display{ --em:16.64; }
+#desk .desk__t{ --em:15.49; }
+#compare .display{ --em:6.57; }
 
 .pill{
   display:inline-flex; align-items:center; gap:.6rem;
@@ -177,9 +146,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 .pill--ghost:hover{ background:rgba(173,181,255,.12); border-color:var(--peri); }
 .pill--lg{ padding:1.05rem 2.6rem; font-size:1.0625rem; }
 
-/* =========================================================
-   追従ヘッダー（時刻・価格もここに入る。常に画面の一番上）
-========================================================= */
 
 .mast{
   position:fixed; top:0; left:0; right:0; z-index:120;
@@ -190,7 +156,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   transition:background .35s var(--ease);
 }
 .mast.is-stuck{ background:rgba(8,7,15,.92); }
-/* 上の帯にあった時刻と価格をここへ入れた */
 .mast__now{
   font-size:var(--fs-sm); letter-spacing:.1em; color:var(--lav);
   font-variant-numeric:tabular-nums;
@@ -199,23 +164,17 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 .mast__price{ font-size:var(--fs-sm); letter-spacing:.08em; color:rgba(255,255,255,.8); transition:color .2s var(--ease); }
 .mast__price b{ color:#fff; font-weight:700; }
 .mast__price:hover{ color:#fff; }
-/* ピルの文字が「手に入れる」から「無償版をダウンロード」に伸びたぶん、価格を隠すしきい値を広げてある */
 @media(max-width:820px){ .mast__price{ display:none; } }
 @media(max-width:420px){ .mast__now{ display:none; } }
 @media(max-width:420px){
   .mast .pill--sm{ padding:.5rem .9rem; font-size:var(--fs-xs); }
 }
-/* モノグラム。参照元の "VI" にあたる位置 */
 .mono{
   font-size:1.5rem; font-weight:700; letter-spacing:.06em; line-height:1;
   font-style:italic; color:#fff;
 }
 .mast__sp{ margin-left:auto; }
 
-/* =========================================================
-   01 カバー（コマ送りの舞台に重ねる）
-   ヒーローと時刻表示は同じ枠に重ね、スクロールで入れ替える
-========================================================= */
 .cover__in{ text-align:center; }
 .cover__eyebrow{
   font-size:var(--fs-sm); font-weight:500; letter-spacing:.35em;
@@ -225,7 +184,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 @supports (width:1cqw){
   .cover__eyebrow{ white-space:nowrap; font-size:min(var(--fs-sm), calc(100cqw / var(--em, 18))); }
 }
-/* ロゴタイプ。GTA風の太フチ＋グラデはやめ、ページの字づかいに揃えた素直な組み */
 .cover__word{
   margin-top:1.1rem;
   font-size:min(clamp(3rem,1.4rem + 7.4vw,7rem), 12vh);
@@ -258,8 +216,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   margin-top:1.6rem; font-size:var(--fs-sm); letter-spacing:.12em;
   color:rgba(255,255,255,.82); text-shadow:0 1px 12px rgba(8,7,15,.8);
 }
-/* 画面が低いとき（ブックマークバーのあるブラウザなど）は全体を詰める。
-   これをしないとヒーローがヘッダーに潜るか、下のキャラクターと重なる。 */
 @media(max-height:880px){
   .cover__word{ margin-top:.7rem; }
   .cover__tag{ margin-top:1rem; line-height:1.8; }
@@ -283,9 +239,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 }
 @keyframes bob{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
 
-/* =========================================================
-   全画面シーン
-========================================================= */
 .scene{
   position:relative; min-height:100svh;
   display:flex; flex-direction:column; justify-content:center;
@@ -296,17 +249,11 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 .scene__head .display{ margin-top:1.1rem; }
 .scene__head .lead{ margin-top:1.5rem; }
 
-/* シーンごとの空。参照元の「夜 → 夕暮れ → 昼」の流れをなぞる */
 .scene--wall{  --sky1:#0d0a24; --sky2:#2f1f5c; --sky3:#7c3f86; --sky4:#d96b8c; --sky5:#ffb26b; --sun:#ff9a4d; }
 
 
-/* =========================================================
-   時計の共通部品 .ck — exe（N版 clock_template.html）の .dq-window を写したもの
-   配色と書体は --ck-* で受け取る。比率（0.8/0.55/1.0vmin・0.40em・0.62em・0.30em）は
-   exe の値そのままなので変えないこと。文字の大きさは JS の fitClock() が器に合わせる。
-========================================================= */
 .ck{
-  --ck-vmin:3px;                 /* exe の vmin（窓の短辺÷100）。JS が入れ直す */
+  --ck-vmin:3px;
   --ck-jp:var(--gothic); --ck-num:var(--gothic);
   --ck-win:#000000; --ck-bd:#ffffff; --ck-fg:#ffffff; --ck-acc:#1b1b3a;
   position:relative; display:flex; flex-direction:column; overflow:hidden;
@@ -317,7 +264,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
              inset 0 0 0 calc(1.0 * var(--ck-vmin)) var(--ck-bd);
 }
 .ck__area{ flex:1 1 auto; display:flex; align-items:center; justify-content:center; overflow:hidden; width:100%; }
-/* この要素の font-size が中身すべての基準。fitClock() が px で入れる */
 .ck__content{
   display:inline-flex; flex-direction:column; align-items:center; justify-content:center;
   text-align:center; line-height:1.04; white-space:nowrap;
@@ -328,7 +274,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   font-family:var(--ck-num); font-size:1em; letter-spacing:.01em; white-space:nowrap;
   text-shadow:.045em .045em 0 var(--ck-acc);
 }
-/* 0.06em の字間はドット絵書体ぶんの調整。ほかの書体では枠の余白と二重になって間延びする */
 .ck[data-font="dot"] .ck__time{ letter-spacing:.06em; }
 .ck__time .dg{ display:inline-block; width:var(--dw,.6em); text-align:center; }
 .ck__time .colon{ animation:ckBlink 1s steps(1) infinite; }
@@ -336,8 +281,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 .ck__cur{ font-size:.30em; margin-top:.2em; animation:ckBounce .9s steps(2) infinite; }
 @keyframes ckBlink{ 0%,50%{opacity:1} 50.01%,100%{opacity:.25} }
 @keyframes ckBounce{ 0%,100%{transform:translateY(0);opacity:1} 50%{transform:translateY(.06em);opacity:.4} }
-/* メモは見本の飾り（入力はできない）。exe のメモ欄と同じ配分で窓の下辺に付く。
-   color-mix() が読めない環境では1行目の var(--ck-win) が残る（地の色と同じになるだけ） */
 .ck__memo{
   display:none; flex:0 0 32%; min-height:54px; width:100%; text-align:left;
   border-top:calc(.5 * var(--ck-vmin)) solid var(--ck-bd);
@@ -348,14 +291,12 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 }
 .ck.is-memo .ck__memo{ display:block; }
 
-/* 暗い面に浮かせるためのガラス板 */
 .slab{
   background:rgba(8,7,15,.52); backdrop-filter:blur(3px);
   border:1px solid var(--line); border-radius:6px;
   padding:clamp(1.25rem,2.6vw,2rem);
 }
 
-/* --- 壁紙。参照元の全画面カットにあたる見せ場 --- */
 .wall__stage{
   position:relative; aspect-ratio:16/9; border-radius:4px; overflow:hidden;
   border:1px solid var(--line2); display:grid; place-items:center;
@@ -365,7 +306,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   position:absolute; inset:0; opacity:0; transition:opacity .55s var(--ease);
   background-position:center; background-size:cover;
 }
-/* 写真素材。差し込みは各1回だけにするため、#desk の画面の壁紙もこのクラスを使い回す */
 .ph-sea{   background-image:url(/tkclock/media/ph-sea.webp); }
 .ph-night{ background-image:url(/tkclock/media/ph-night.webp); }
 .ph-mount{ background-image:url(/tkclock/media/ph-mount.webp); }
@@ -381,10 +321,7 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 .wall__layer.on ~ .wall__badge{ display:none; }
 .wall__layer.on.is-motion ~ .wall__badge{ display:inline-flex; }
 .wall__layer.on{ opacity:1; }
-/* 実写は絵より明暗の差が大きいので、暗幕と時計の地を少し濃くしてある */
 .wall__scrim{ position:absolute; inset:0; background:rgba(8,7,15,.30); }
-/* 写真の上に置く時計。exe の「壁紙あり」と同じく地と内側の輪を半透明にする
-   （ドット調テーマの窓の色 #000 の 50%。color-mix を使わずに済むので古い環境でも同じに出る） */
 .wall__clock{
   position:relative; z-index:1; width:46%; aspect-ratio:16/10;
   --ck-win:rgba(0,0,0,.5); --ck-bd:#ffffff; --ck-fg:#ffffff; --ck-acc:#1b1b3a;
@@ -393,14 +330,8 @@ section[id], footer[id]{ scroll-margin-top:76px; }
              inset 0 0 0 calc(1.0 * var(--ck-vmin)) var(--ck-bd);
 }
 @media(max-width:599px){ .wall__clock{ width:74%; } }
-/* =========================================================
-   スクロールで送るコマ（参照元の image sequence にあたる仕組み）
-   縦に長いトラックの中に舞台を貼り付け、スクロール量をコマ番号に量子化する。
-   参照元は写真を数十枚めくっているが、こちらは素材が無いので
-   「コマの中身をその場で描く」ことで同じ体験にしている。
-========================================================= */
 .reel{ position:relative; background:var(--void); }
-.reel__track{ position:relative; height:270vh; }          /* カバー＋一日（19コマ）。1コマ 約89px */
+.reel__track{ position:relative; height:270vh; }
 @media(max-width:720px){
   .reel__track{ height:220vh; }
 }
@@ -409,20 +340,17 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   display:grid; align-content:start; justify-items:center;
   padding-top:clamp(5rem,24vh,13rem);
 }
-/* カバー兼用の舞台は、ヘッダーぶん空を上へ伸ばして中身を真ん中に置く */
 .reel--cover .reel__stage{
   align-content:center;
-  padding-top:4.5rem;                      /* 固定ヘッダーに文字が潜らないように */
-  padding-bottom:clamp(6rem,28vh,15rem);   /* 下に立つキャラクターと重ねない */
+  padding-top:4.5rem;
+  padding-bottom:clamp(6rem,28vh,15rem);
 }
-/* カバー側はキャラクターを少し小さくして、文章の逃げをつくる */
 .reel--cover .reel__char{ height:clamp(190px,38vh,420px); }
 @media(max-width:420px){
   .reel--cover .reel__stage{ padding-bottom:clamp(6rem,40vh,16rem); }
   .reel--cover .reel__char{ height:clamp(150px,30vh,280px); }
 }
 
-/* ヒーローと時刻表示を同じマスに重ね、スクロールで入れ替える */
 .reel__copy{
   position:relative; z-index:3; width:100%;
   display:grid; align-items:center; justify-items:center;
@@ -431,7 +359,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 .reel__copy > *{ grid-area:1/1; width:100%; }
 .reel__copy > *[data-off]{ pointer-events:none; }
 .reel__sky{ position:absolute; inset:0; }
-/* 走査線。シーンと同じ質感をここでも */
 .reel__sky::after{
   content:""; position:absolute; inset:0; opacity:.2;
   background:repeating-linear-gradient(180deg, rgba(255,255,255,.055) 0 1px, transparent 1px 4px);
@@ -445,16 +372,13 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   color:var(--void); pointer-events:none;
 }
 .reel__city svg{ width:100%; height:100%; display:block; }
-/* 窓あかり。夜だけ灯る */
 .reel__lights{ position:absolute; left:0; right:0; bottom:0; height:clamp(80px,13vw,170px); pointer-events:none; }
 .reel__lights svg{ width:100%; height:100%; display:block; }
-/* 背景に立っているキャラクター（時計くん）。スクロールでこちらを向く */
 .reel__char{
   position:absolute; left:50%; bottom:0; transform:translateX(-50%);
   height:clamp(240px,46vh,520px); width:auto; color:var(--void); pointer-events:none;
 }
 .reel__ui{ position:relative; z-index:3; text-align:center; padding-inline:var(--gut); }
-/* 入れ替わりはスクロール進捗で直接動かすので、transition は付けない（追従が鈍る）*/
 .reel__copy > *{ will-change:opacity, transform; }
 .reel__label{ font-size:var(--fs-xs); letter-spacing:.35em; color:#fff; text-shadow:0 1px 12px rgba(8,7,15,.8); }
 @supports (width:1cqw){
@@ -469,7 +393,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   margin-top:1.1rem; font-size:clamp(.9375rem,.85rem + .4vw,1.15rem);
   color:#fff; text-shadow:0 2px 14px rgba(8,7,15,.8); min-height:2em;
 }
-/* フィルムの目盛り。いまが何コマ目かを示す */
 .reel__strip{
   position:absolute; left:0; right:0; bottom:1.4rem; z-index:4;
   display:flex; gap:2px; justify-content:center; padding-inline:var(--gut);
@@ -489,10 +412,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 }
 
 
-/* =========================================================
-   81通り（ランダムボタンで切り替える）
-========================================================= */
-/* 幅は撤去前の左カラム（プレビュー＋矢印）と同じくらい。広げるとページが縦に伸びる */
 .combo{ max-width:35rem; margin:0 auto; text-align:center; }
 .combo__preview{ min-width:0; }
 .combo__shuffle{
@@ -500,15 +419,12 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   gap:.7rem .9rem; align-items:center; justify-content:center;
 }
 .combo__shuffle .pill{ padding-inline:1.6rem; }
-/* メモ欄の出し入れ。入っている状態を枠と地の色、チェックの有無で見せる */
 .combo__memo[aria-pressed="false"] .combo__memo-ck{ opacity:0; }
 .combo__memo[aria-pressed="true"]{
   background:rgba(173,181,255,.18); border-color:var(--peri); color:var(--lav-lt);
 }
-/* 引き当てた瞬間がわかるよう、ひと呼吸だけ光らせる */
 @keyframes comboPop{ 0%{transform:scale(.97);opacity:.45} 100%{transform:scale(1);opacity:1} }
 .combo__win.pop{ animation:comboPop .3s var(--ease); }
-/* 窓は exe の既定ウインドウ（480×300）と同じ 16:10 */
 .combo__stage{ display:flex; align-items:center; justify-content:center; aspect-ratio:16/10; }
 .combo__win{ width:100%; height:100%; }
 .combo__meta{
@@ -517,41 +433,26 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 }
 .combo__meta b{ color:var(--fg); font-weight:700; }
 
-/* 動きを減らす設定のときは、貼り付けをやめて素直に流す */
 @media(prefers-reduced-motion:reduce){
   .reel__track{ height:auto; }
   .reel__stage{ position:static; height:auto; min-height:70svh; padding-block:var(--sec-pad); }
 }
 
-/* スプライト置き場（ヤシ・街並みの共有定義） */
 .sprites{ position:absolute; width:0; height:0; overflow:hidden; }
 
-/* =========================================================
-   平面のセクション（空や写真を敷かない節の共通の下地）
-   明（--ink）と暗（--void）を交互に並べる。順番を変えたら交互が崩れないか確かめること
-========================================================= */
 .flat{ background:var(--ink); position:relative; padding-block:var(--sec-pad); }
 .flat--dark{ background:var(--void); }
 .flat__head{ text-align:center; max-width:53rem; margin:0 auto clamp(2.5rem,5vw,4rem); }
 .flat__head .display{ margin-top:1.1rem; }
 .flat__head .lead{ margin-top:1.5rem; }
 
-/* =========================================================
-   デスクトップに置いたときの見え方
-   実写の机の写真に、画面の中身をはめ込んでいる。4隅は data-quad（写真の画素座標）。
-   中身は 1280×720 の仮想画面に px で組み、JS（fitScreen）が写真の画面の4隅に合わせて
-   matrix3d で射影変換する。写真と一緒に縮むので、文字の大きさも px で固定してよい。
-   Windows のロゴ・スタートボタン・Microsoft 製品を思わせる色分けアイコンは描かない。
-========================================================= */
 .desk{ display:grid; gap:clamp(2rem,4vw,3.5rem); grid-template-columns:1fr; align-items:center; }
 @media(min-width:960px){ .desk{ grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); } }
 
-/* 変換前の 1280px の箱が横スクロールを起こさないよう、外枠で切る */
 .deskshot{
   position:relative; overflow:hidden; border-radius:4px;
   box-shadow:0 30px 70px rgba(8,7,15,.7);
 }
-/* object-fit で切ると4隅の位置がずれるので、写真は縦横比のまま出す */
 .deskshot__img{ display:block; width:100%; height:auto; }
 
 .screen{
@@ -560,15 +461,12 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   visibility:hidden;
 }
 .screen.is-fit{ visibility:visible; }
-/* 写真の中の画面らしく見せる照り */
 .screen::after{
   content:""; position:absolute; inset:0; z-index:9; pointer-events:none;
   background:linear-gradient(135deg, rgba(255,255,255,.06) 0%, rgba(255,255,255,.02) 38%, rgba(255,255,255,0) 60%);
 }
-/* デスクトップの壁紙（背景の見本の「夕暮れの海」を使い回す） */
 .screen__wall{ position:absolute; inset:0; background-position:center; background-size:cover; }
 
-/* デスクトップのアイコン */
 .screen__icons{
   position:absolute; top:20px; left:22px; display:grid; gap:20px;
   width:92px; z-index:2;
@@ -587,13 +485,11 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   text-shadow:0 1px 2px rgba(0,0,0,.85);
 }
 
-/* 後ろに開いている別のウインドウ。時計が最前面にいることが伝わる */
 .screen__bgwin{
   position:absolute; z-index:3; left:190px; top:96px; width:640px; height:470px;
   border-radius:8px; overflow:hidden; background:#f4f6fb;
   box-shadow:0 10px 26px rgba(0,0,0,.4); border:1px solid rgba(255,255,255,.35);
 }
-/* 一般的なウインドウ。左にタブ、右に ─ □ × */
 .screen__bgbar{
   height:36px; display:flex; align-items:center; gap:14px; padding-left:14px;
   background:#eceff6; border-bottom:1px solid #d7dce8;
@@ -616,10 +512,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 .screen__bgbody i:nth-child(3){ width:84%; } .screen__bgbody i:nth-child(4){ width:71%; }
 .screen__bgbody i:nth-child(5){ width:90%; } .screen__bgbody i:nth-child(6){ width:45%; }
 
-/* 置かれている TKclock 本体。ここだけ最前面。
-   仮想画面（1280×720）の左下に置く。タスクバー（高さ40px）との間を 22px 空け、
-   左上のアイコン列（x 22〜114 / y 20〜267）にはかからない。
-   後ろの別ウインドウと重なるのは意図どおり（最前面であることを見せるため） */
 .screen__app{
   position:absolute; z-index:5; left:48px; bottom:62px; width:34%;
   border-radius:6px; overflow:hidden;
@@ -630,9 +522,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   border:3px solid; border-radius:6px; padding:26px 24px 22px;
   text-align:center;
 }
-/* 窓の中の背景。机の壁紙（夕暮れの海）とは別の写真を入れて、時計ごとに背景を選べることを見せる。
-   opacity:.5 は exe の「壁紙を敷くと窓の地が50%になる」と同じ見え方（地の色＋写真が半々）。
-   .screen__date / .screen__time / .screen__memo に position を持たせて、この層より手前に出している */
 .screen__appWall{
   position:absolute; inset:0; border-radius:3px; opacity:.5;
   background-position:center; background-size:cover;
@@ -652,7 +541,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   font-size:14px; line-height:1.6; text-align:left; opacity:.9;
 }
 
-/* タスクバー。中央にピン留め、右にトレイ。スタートボタンと色分けアイコンは描かない */
 .screen__bar{
   position:absolute; left:0; right:0; bottom:0; z-index:6; height:40px;
   display:flex; align-items:center; padding-left:18px;
@@ -669,12 +557,10 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   box-shadow:inset 0 0 0 1px rgba(212,175,98,.8);
   position:relative;
 }
-/* 起動中を示す下線 */
 .screen__pins i.tk::after{
   content:""; position:absolute; left:26%; right:26%; bottom:-7px;
   height:2px; border-radius:99px; background:#7fb2ff;
 }
-/* 右端は写真の手前の物（data-cut）で隠れることがあるので、JS がその幅ぶん空ける（--tray-gap） */
 .screen__tray{ display:flex; align-items:center; gap:14px; margin-left:auto; padding-right:var(--tray-gap,14px); }
 .screen__tray svg{ width:16px; height:auto; color:rgba(255,255,255,.85); }
 .screen__clock{
@@ -682,7 +568,6 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   font-size:13px; font-variant-numeric:tabular-nums;
 }
 
-/* 狭い画面では画面ごと小さくなるので、時計を大きくし、潰れるだけの部品は消す */
 @media(max-width:599px){
   .screen__app{ width:62%; left:8%; bottom:70px; }
   .screen__time{ font-size:120px; }
@@ -701,14 +586,8 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 .desk__note{ margin-top:1.8rem; font-size:var(--fs-sm); color:var(--faint); }
 
 
-/* =========================================================
-   08 無償版と有償版のちがい — 罫線だけの比較表
-   720px 以上は3列の表、720px 未満は「1項目 = 1カード」に積む。
-   狭い画面で表のまま出すと横スクロールが出るため。
-========================================================= */
 .cmp{ max-width:58rem; margin:0 auto; }
 .cmp__table{ width:100%; border-collapse:collapse; table-layout:fixed; }
-/* 見出しは読み上げ用に残し、目には見せない */
 .cmp__cap{ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 
 .cmp__h{
@@ -741,11 +620,8 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 
 .cmp__foot{ margin-top:clamp(2rem,4vw,3rem); text-align:center; }
 .cmp__foot .pill{ margin:.4rem; }
-/* 無償版（塗りつぶし）が主、有償版（枠だけ）が副。横幅が足りなければ折り返す */
 .cmp__ctas{ display:flex; flex-wrap:wrap; align-items:center; justify-content:center; }
 .cmp__fine{ margin-top:1.5rem; font-size:var(--fs-sm); color:var(--faint); }
-/* 有償版の価格。独立した価格セクションを畳んだぶん、ダウンロードボタンの上に小さく置く。
-   器を自前で持たせているのは、中の .eyebrow を表題と同じ仕組みで1行に収めるため */
 .cmp__price{ container-type:inline-size; margin-bottom:1.8rem; }
 .cmp__pv{
   margin-top:.5rem; font-size:clamp(2.6rem,1.6rem + 4.2vw,4.4rem); font-weight:700;
@@ -753,10 +629,8 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   background:linear-gradient(180deg,#fff9cb 0%,#ffb2c6 55%,#c86ea8 100%);
   -webkit-background-clip:text; background-clip:text; color:transparent;
 }
-/* 差し替えの目印用に <b> で包んでいるだけなので、見た目は親のまま（既定の bolder を打ち消す） */
 .cmp__pv b{ font:inherit; color:inherit; -webkit-text-fill-color:inherit; background:inherit; }
 
-/* 狭い画面：表をやめてカードに積む */
 @media(max-width:719px){
   .cmp__table, .cmp__table tbody, .cmp__table tr, .cmp__k, .cmp__v{ display:block; width:auto; }
   .cmp__table thead{ display:none; }
@@ -777,27 +651,17 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 }
 
 
-/* =========================================================
-   フッター
-========================================================= */
 .foot{ background:var(--void); padding-block:clamp(2rem,3.5vw,3rem); }
-/* 2行だけの帯。上に何も無いので区切り線と余白は持たせない */
 .foot__base{
   margin-top:0; padding-top:0; border-top:none; text-align:center;
   font-size:var(--fs-xs); color:var(--faint); line-height:1.9;
 }
 
 
-/* 動きを減らす設定のときは、コロンの点滅と ▼ の揺れを止める。
-   .screen__time .colon は机の節（上）で定義しているので、打ち消しはここに置く
-   （同じ強さのセレクタなので、後ろに書かないと効かない） */
 @media(prefers-reduced-motion:reduce){
   .ck__time .colon, .ck__cur, .screen__time .colon{ animation:none; }
 }
 
-/* =========================================================
-   同梱書体（LPで使う文字だけに絞って埋め込み）
-========================================================= */
 @font-face{font-family:"tk-dot";src:url(/tkclock/fonts/tk-dot.woff2) format("woff2");font-display:swap;}
 @font-face{font-family:"tk-bizg";src:url(/tkclock/fonts/tk-bizg.woff2) format("woff2");font-display:swap;}
 @font-face{font-family:"tk-maru";src:url(/tkclock/fonts/tk-maru.woff2) format("woff2");font-display:swap;}
@@ -807,30 +671,21 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 @font-face{font-family:"tk-impact";src:url(/tkclock/fonts/tk-impact.woff2) format("woff2");font-display:swap;}
 @font-face{font-family:"tk-retro";src:url(/tkclock/fonts/tk-retro.woff2) format("woff2");font-display:swap;}
 @font-face{font-family:"tk-brush";src:url(/tkclock/fonts/tk-brush.woff2) format("woff2");font-display:swap;}
-/* =========================================================
-   追加分（岩渕さんの指示。tools/import-tkclock-lp.py がスタイルシートの末尾に差し込む）
-   LP の既存の値・クラスだけで組む
-========================================================= */
 
-/* ストアの掲載前は href の無い <a>。押せないので、ホバーで色を変えない */
 .pill:not([href]){ cursor:default; }
 .pill:not([href]):hover{ background:var(--pink); border-color:var(--pink); }
 .pill--ghost:not([href]):hover{ background:transparent; border-color:var(--line2); }
-/* 掲載前の注記。ヒーローでは対応 OS の行（.cover__os）の上に載る */
 .soon{ display:block; }
 
-/* 本文中のリンク。.cover__sub と同じ下線の付け方 */
 .lnk{ color:var(--fg); border-bottom:1px solid var(--line2); transition:color .2s var(--ease), border-color .2s var(--ease); }
 a.lnk[href]:hover{ color:var(--pink); border-color:var(--pink); }
 a.lnk:not([href]){ border-bottom:0; }
 
-/* 表題1行ぶんの幅（em） */
-#spec .eyebrow{ --em:5.20; }          /* Specs */
-#spec .display{ --em:4.90; }          /* 動作環境 */
-#faq .eyebrow{ --em:3.40; }           /* FAQ */
-#faq .display{ --em:7.00; }           /* よくある質問 */
+#spec .eyebrow{ --em:5.20; }
+#spec .display{ --em:4.90; }
+#faq .eyebrow{ --em:3.40; }
+#faq .display{ --em:7.00; }
 
-/* 動作環境。比較表（.cmp）と同じ罫線の表で、列は2つ */
 .spec__k{ width:38%; }
 .spec tr:first-child .cmp__k, .spec tr:first-child .cmp__v{ border-top:1px solid var(--line2); }
 @media(max-width:719px){
@@ -838,7 +693,6 @@ a.lnk:not([href]){ border-bottom:0; }
   .spec tr:first-child .cmp__k, .spec tr:first-child .cmp__v{ border-top:0; }
 }
 
-/* よくある質問。罫線だけで区切る（比較表と同じ線） */
 .faq{ max-width:58rem; margin:0 auto; border-top:1px solid var(--line2); }
 .faq__q{ border-bottom:1px solid var(--line); }
 .faq__q summary{
@@ -858,26 +712,16 @@ a.lnk:not([href]){ border-bottom:0; }
   .faq__q summary::after{ transition:none; }
 }
 
-/* フッターの法務リンクと書体ライセンス。.foot__base の書式のまま */
 .foot__links{ margin-bottom:.9rem; }
 .foot__links a{ margin-inline:.6em; }
 .foot__base a{ text-decoration:underline; text-underline-offset:.2em; transition:color .2s var(--ease); }
 .foot__base a:hover{ color:var(--pink); }
 
 </style>
-<!-- =====================================================
-     配布方法が決まったら差し替える箇所には data-todo を付けてある。
-       data-todo="free-dl"  … 無償版のダウンロードURL（href を差し替える）
-       data-todo="buy"      … 有償版の販売ページURL（href を差し替える）
-     2026-10-04 に価格セクションを畳んだので、利用規約・お問い合わせの差し込み口は無い。
-     差し替えたら data-todo 属性そのものを消すこと。
-     残り件数は build-lp.py がビルドのたびに表示する。
-     ===================================================== -->
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
 
-<!-- ヤシと街並みの共有定義。カバーとコマ送りの両方から <use> で呼ぶ -->
 <svg class="sprites" aria-hidden="true">
   <defs>
     <g id="palm">
@@ -900,7 +744,6 @@ a.lnk:not([href]){ border-bottom:0; }
   </defs>
 </svg>
 
-<!-- ===== 追従ヘッダー（時刻・価格もここへ統合。常に画面の一番上に出る） ===== -->
 <header class="mast" id="mast">
   <a class="mono" href="#cover">TK</a>
   <span class="mast__now" id="stripNow">--:--:--</span>
@@ -911,17 +754,12 @@ a.lnk:not([href]){ border-bottom:0; }
 
 <main>
 
-<!-- ===== 01 カバー ＋ コマ送り：一日 =====
-     ヒーロー（ロゴ・売り文句・CTA）とコマ送りは同じ舞台を共有する。
-     スクロールしはじめるとヒーローが引き、入れ替わりに時刻とひとことが出る。
-     コマごとに空・太陽・街あかり・時刻・キャラクターの向きを描き直している。 -->
 <section class="reel reel--cover" id="cover">
   <div class="reel__track" id="dayTrack">
     <div class="reel__stage">
       <div class="reel__sky" id="daySky" aria-hidden="true"></div>
       <div class="reel__orb" id="dayOrb" aria-hidden="true"></div>
 
-      <!-- 街の窓あかり。夜だけ灯る -->
       <div class="reel__lights" id="dayLights" aria-hidden="true">
         <svg viewBox="0 0 1440 190" preserveAspectRatio="xMidYMax slice">
           <g fill="#ffd98a" id="dayLightCells"></g>
@@ -933,7 +771,6 @@ a.lnk:not([href]){ border-bottom:0; }
         </svg>
       </div>
 
-      <!-- 背景に立っている時計くん。スクロールにつれてこちらを向く -->
       <svg class="reel__char" viewBox="0 0 200 300" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
         <g fill="currentColor">
           <path d="M84 300 V214 h13 v86 z"/>
@@ -944,7 +781,6 @@ a.lnk:not([href]){ border-bottom:0; }
           <path d="M94 132 h12 v14 h-12 z"/>
           <circle cx="100" cy="100" r="34"/>
         </g>
-        <!-- 文字盤。振り向くほど横に開き、こちらを向くと時刻が読める -->
         <g id="dayDial" transform="translate(100 100) scale(0 1)">
           <circle r="26" fill="#fff9cb"/>
           <circle r="26" fill="none" stroke="#0c0d1b" stroke-width="3"/>
@@ -958,7 +794,6 @@ a.lnk:not([href]){ border-bottom:0; }
         </g>
       </svg>
 
-      <!-- ヒーローと時刻表示は同じ場所に重ね、スクロールで入れ替える -->
       <div class="reel__copy">
         <div class="cover__in" id="heroCopy">
           <p class="cover__eyebrow">Windows Desktop Clock</p>
@@ -987,9 +822,6 @@ a.lnk:not([href]){ border-bottom:0; }
   </div>
 </section>
 
-<!-- ===== 05 81通り =====
-     ランダムボタンだけで切り替える（2026-09-15 に矢印・81マスを撤去）。
-     開いた時点でランダムな1つを出し、押すたびにテーマも書体も違う組み合わせへ変える。 -->
 <section class="flat flat--dark" id="reel-combo">
   <div class="wrap">
     <div class="flat__head">
@@ -1008,10 +840,8 @@ a.lnk:not([href]){ border-bottom:0; }
     </div>
 
     <div class="combo">
-      <!-- 実物のプレビュー。時刻はいまの時間で、秒まで動く -->
       <div class="combo__preview">
         <div class="combo__stage">
-          <!-- exe の .dq-window を写した共通部品（§17-4）。▼ とメモは静止した飾りなので HTML に直接置く -->
           <div class="ck combo__win" id="comboWin" data-font="dot">
             <div class="ck__area">
               <div class="ck__content">
@@ -1033,7 +863,6 @@ a.lnk:not([href]){ border-bottom:0; }
 </section>
 
 
-<!-- ===== 07 背景 ===== -->
 <section class="scene scene--wall" id="scene-wall">
   <div class="sky" aria-hidden="true"></div>
   <div class="scene__in wrap">
@@ -1044,14 +873,6 @@ a.lnk:not([href]){ border-bottom:0; }
     </div>
   <figure class="wall__stage" id="wallStage" aria-label="背景の見本。写真4枚と動画4本が交互に切り替わります">
 
-    <!-- 写真4枚と動画4本を交互に（Pexels のフリー素材。出どころは assets-credits.md）。
-         .ph-sea は #desk の画面の壁紙でも使い回している。
-         似た題材が隣り合わないように並べてある。
-           水＝夕暮れの海（枠1）・波（枠4）・雨の窓（枠8）を離す
-           街＝夜の街（枠3）・街の交差点（枠6）・雨の窓（枠8）を離す
-         動画は autoplay を付けず、番が来たときに JS が頭から play() する。
-         src は書かず data-src に置いてあるので、開いた直後は動画データを読まない（poster だけ出る）。
-         JS が #wallStage を一度画面に入れてから、1枠前に src を入れて load() する -->
     <div class="wall__layer ph-sea on" aria-hidden="true"></div>
     <div class="wall__layer is-motion" aria-hidden="true">
       <video class="wall__video" muted loop playsinline preload="none"
@@ -1079,7 +900,6 @@ a.lnk:not([href]){ border-bottom:0; }
 
     <div class="wall__scrim"></div>
     <span class="wall__badge">MOVING / 動画</span>
-    <!-- 81通りと同じ共通部品（§17-4）。exe の既定どおりメモは置かない -->
     <div class="ck wall__clock" id="wallClock" data-font="dot">
       <div class="ck__area">
         <div class="ck__content">
@@ -1093,9 +913,6 @@ a.lnk:not([href]){ border-bottom:0; }
   </div>
 </section>
 
-<!-- ===== 09 デスクトップに置いたときの見え方 =====
-     実写の机の写真に、画面の中身をはめ込んでいる。4隅は data-quad。
-     時計は本物で、いまの時刻を秒まで刻む。 -->
 <section class="flat flat--dark" id="desk">
   <div class="wrap">
     <div class="flat__head">
@@ -1104,11 +921,6 @@ a.lnk:not([href]){ border-bottom:0; }
     </div>
 
     <div class="desk">
-      <!-- 実写の机の写真（Pexels のフリー素材）の画面に、中身をはめ込んでいる。
-           data-quad: 写真の画面の4隅（desk.webp の画素座標。左上→右上→右下→左下）。
-             画面の黒い部分の縁から 1.5px 内側。下の太いベゼル（あご）は写真のまま残す。
-           data-cut: 画面の手前にある物（ボトルのキャップ）の輪郭。そこだけはめ込みを切り欠いて写真を見せる。
-           写真を差し替えたら、両方とも出力画像で測り直すこと。 -->
       <figure class="deskshot" id="deskShot"
               data-quad="187.5,201 1047.5,201 1041,677 195,674"
               data-cut="998,618.5 1024,618.5 1027,619.5 1030,620.5 1032.5,621.5 1034.5,622.5 1036.5,623.5 1038.5,625.5 1040,627.5 1041.5,629.5 1042.5,631.5 1049,633 1049,700 980,700 980,630 981,627.5 983,625.5 986,623.5 989,621.5 994,619.5">
@@ -1168,10 +980,6 @@ a.lnk:not([href]){ border-bottom:0; }
   </div>
 </section>
 
-<!-- ===== 10 無償版と有償版のちがい =====
-     表は5行。広い画面では3列、720px 未満では1項目=1カードに積む。
-     価格（Price ／ ￥320）は 2026-10-04 に独立した節を畳んでここへ移した。
-     tk-* 書体はここでは一切使わない（字形が足りないため。UI のゴシックで組む） -->
 <section class="flat" id="compare">
   <div class="wrap">
     <div class="flat__head">
@@ -1254,8 +1062,6 @@ a.lnk:not([href]){ border-bottom:0; }
   </div>
 </section>
 
-<!-- ===== 追加：動作環境（岩渕さんの指示。tools/import-tkclock-lp.py が </main> の前に差し込む） =====
-     置き換えの目印（パーセント記号2つで囲んだ名前）と近日公開の囲みは src/pages/tkclock/index.astro が site.ts の値で処理する -->
 <section class="flat flat--dark" id="spec">
   <div class="wrap">
     <div class="flat__head">
@@ -1307,7 +1113,6 @@ a.lnk:not([href]){ border-bottom:0; }
   </div>
 </section>
 
-<!-- ===== 追加：よくある質問 ===== -->
 <section class="flat" id="faq">
   <div class="wrap">
     <div class="flat__head">
@@ -1346,7 +1151,6 @@ a.lnk:not([href]){ border-bottom:0; }
 
 </main>
 
-<!-- ===== フッター ===== -->
 <footer class="foot">
   <div class="wrap">
     <p class="foot__base foot__links"><a href="%%PRIVACY%%">プライバシーポリシー</a><a href="%%TOKUSHOHO%%">特定商取引法に基づく表記</a><a href="mailto:%%SUPPORT_EMAIL%%">お問い合わせ</a></p>
@@ -1361,7 +1165,6 @@ a.lnk:not([href]){ border-bottom:0; }
 (() => {
   "use strict";
 
-  /* 実機と同じ配色。値はアプリのテーマ定義から持ってきている */
   const THEMES = [
     {key:"dq",      name:"ドット調",           bg:"#0b0b0f", win:"#000000", bd:"#ffffff", fg:"#ffffff", acc:"#1b1b3a"},
     {key:"paper",   name:"ペーパーホワイト",   bg:"#f4f3ef", win:"#ffffff", bd:"#2f3033", fg:"#23242a", acc:"#c8c6bf"},
@@ -1387,20 +1190,13 @@ a.lnk:not([href]){ border-bottom:0; }
   ];
 
   const pad = n => String(n).padStart(2, "0");
-  // HTML属性の中に入れるので、必ずシングルクォートで組み立てる。
-  // ダブルクォートだと style="..." が途中で閉じ、書体も影も効かなくなる。
   const fam = k => `'tk-${k}', 'Hiragino Sans', sans-serif`;
   const hhmm = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
 
-  // 日付。exe（clock_template.html）と同じ書式。かっこは半角、「にち」の後ろに半角空白1つ
   const WEEKja = ["にち","げつ","か","すい","もく","きん","ど"];
   const dateJa = d =>
     `${d.getFullYear()}ねん ${pad(d.getMonth()+1)}がつ ${pad(d.getDate())}にち (${WEEKja[d.getDay()]})`;
 
-  // 桁ごとに固定幅の枠へ入れる（製品と同じ考えかた）。
-  // 枠の幅は書体ごとに実測する。全書体で同じ幅にすると、
-  // 極太インパクトのような幅の広い書体で数字が枠からはみ出し、「：」に重なる。
-  // exe は実測値をそのまま使う（逃げを掛けない）ので、こちらも掛けない。コロンは自然幅。
   const METRICS = {};
   function measureFont(key){
     const SIZE = 100;
@@ -1415,9 +1211,6 @@ a.lnk:not([href]){ border-bottom:0; }
     return METRICS[key] || (METRICS[key] = measureFont(key));
   }
 
-  // 時計を描く。中身の組みは exe の .dq-time と同じ
-  //   dg dg colon dg dg （秒ありなら）colon sec(dg dg)
-  // 2つめのコロンは .sec の外に出す（exe と同じく等倍で点滅させるため）
   function paintTime(el, key, d, withSec){
     if (!el) return;
     el.style.setProperty("--dw", metricsOf(key).d.toFixed(3) + "em");
@@ -1429,11 +1222,6 @@ a.lnk:not([href]){ border-bottom:0; }
     el.innerHTML = out;
   }
 
-  /* --- 文字の大きさを器に合わせる（exe の fit() の移植。§17-5）---
-     日付行が入ると横幅を決めるのは時刻ではなく日付になるため、clamp() の固定値では
-     幅の広い書体で日付がはみ出し、幅の狭い書体では窓がガラ空きになる。
-     「ドットの書体ならこの器で何px になるか」を測り、日付と ▼ の比率を下げて
-     時刻の大きさだけはドットのときと揃える。 */
   function setSubScale(ck, f){
     const r = f / .40;
     const dt = ck.querySelector(".ck__date");
@@ -1447,7 +1235,6 @@ a.lnk:not([href]){ border-bottom:0; }
     const keepJp = content.style.fontFamily, keepNum = t.style.fontFamily,
           keepDw = t.style.getPropertyValue("--dw"), keepLs = t.style.letterSpacing;
     setSubScale(ck, .40);
-    // exe は PixelNum（1em 幅）で測るが LP には入っていないので tk-dot の実測値で測る
     content.style.fontFamily = fam("dot");
     t.style.fontFamily = fam("dot");
     t.style.setProperty("--dw", metricsOf("dot").d.toFixed(3) + "em");
@@ -1466,14 +1253,11 @@ a.lnk:not([href]){ border-bottom:0; }
     if (!area || !content) return;
     const availW = area.clientWidth * .93, availH = area.clientHeight * .92;
     if (availW <= 0 || availH <= 0) return;
-    // exe の vmin（窓の短辺÷100）に当たる値。枠の太さと角の丸みがこれに乗っている。
-    // 枠の太さを変えると clientHeight も動くので、外枠を含む offsetHeight から出す
     ck.style.setProperty("--ck-vmin", (ck.offsetHeight / 100) + "px");
     content.style.fontSize = "100px";
     const ref = fitDotSize(ck, content, availW, availH);
     let f = .40;
     if (ref > 0){
-      // 日付を縮めると時刻が大きくなり、その分また日付比率が下がる関係なので数回で収束させる
       for (let k = 0; k < 4; k++){
         setSubScale(ck, f);
         const cw = content.scrollWidth, chh = content.scrollHeight;
@@ -1489,38 +1273,29 @@ a.lnk:not([href]){ border-bottom:0; }
     if (w <= 0 || h <= 0) return;
     const fs = Math.max(10, 100 * Math.min(availW / w, availH / h));
     content.style.fontSize = fs + "px";
-    ck.style.fontSize = fs + "px";      // .ck__memo も同じ基準に乗せる
+    ck.style.fontSize = fs + "px";
   }
   function fitAllClocks(){ document.querySelectorAll(".ck").forEach(fitClock); }
 
-  /* --- 帯の時計 --- */
   const stripNow = document.getElementById("stripNow");
 
-  /* --- 1秒ごとに動くものをまとめて --- */
   function tick(){
     const d = new Date();
     if (stripNow) stripNow.textContent = `${hhmm(d)}:${pad(d.getSeconds())}`;
   }
   tick(); setInterval(tick, 1000);
 
-  /* --- 背景の入れ替わり（スライドショーの見立て）
-         写真4枚と動画4本の8枠は markup 側に置いてある。ここは .on を回すだけ。
-         動画の番はほぼ1本ぶん流してから次へ（製品の「動画は最後まで再生してから次へ」と同じ見せ方）。
-         見本の中で動画がくり返す場面を見せないので、無償版の「くり返さない」とも食い違わない。
-         動画の src は開いた時点では空にしてあり、1枠前に入れて読み始める
-         （4本ぶんのデコードが最初の表示を重くしないため。preload="auto" に戻さないこと） --- */
   const stage = document.getElementById("wallStage");
   const wallClock = document.getElementById("wallClock");
   if (stage){
-    const WALL_HOLD  = 1800;   // 写真1枚の表示時間
-    const VIDEO_TAIL = 600;    // 動画の長さから引く。フェード（.55s）を動画の終わりまでに済ませ、ループの継ぎ目を見せない
-    const FALLBACK_HOLD = 3400;   // duration が取れないときの動画1枠ぶん
+    const WALL_HOLD  = 1800;
+    const VIDEO_TAIL = 600;
+    const FALLBACK_HOLD = 3400;
     const layers = stage.querySelectorAll(".wall__layer");
-    // REDUCED はこの下で宣言しているので、ここでは直接問い合わせる
     const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
     let si = 0, inView = true, seen = false, pauseTimer = 0;
     const videoAt = i => layers[i].querySelector("video");
-    const prime = i => {                 // 次に来る動画を1枠前から読み始める
+    const prime = i => {
       const v = videoAt(i);
       if (!v || v.src || calm.matches || !seen) return;
       v.src = v.dataset.src;
@@ -1530,7 +1305,7 @@ a.lnk:not([href]){ border-bottom:0; }
       if (!v || calm.matches) return;
       v.muted = true;
       const p = v.play();
-      if (p && p.catch) p.catch(() => {});   // 省電力モードなどで止められたら poster のまま見せる
+      if (p && p.catch) p.catch(() => {});
     };
     const nextWall = () => {
       const leaving = videoAt(si);
@@ -1540,7 +1315,7 @@ a.lnk:not([href]){ border-bottom:0; }
       let hold = WALL_HOLD;
       const now = videoAt(si);
       if (leaving){
-        pauseTimer = setTimeout(() => leaving.pause(), 600);   // フェードが終わってから止める
+        pauseTimer = setTimeout(() => leaving.pause(), 600);
       }
       if (now){
         clearTimeout(pauseTimer);
@@ -1552,13 +1327,12 @@ a.lnk:not([href]){ border-bottom:0; }
       setTimeout(nextWall, hold);
     };
     setTimeout(nextWall, WALL_HOLD);
-    // 画面外では動画だけ止める（切り替えのタイマーは止めない）
     if ("IntersectionObserver" in window){
       new IntersectionObserver(entries => {
         inView = entries[entries.length - 1].isIntersecting;
         if (inView){
           seen = true;
-          prime(si);                          // 動画の枠で画面に入ってきた場合はその場で読む
+          prime(si);
           prime((si + 1) % layers.length);
           playVideo(videoAt(si));
         } else {
@@ -1579,17 +1353,8 @@ a.lnk:not([href]){ border-bottom:0; }
     paintWall(); fitClock(wallClock); setInterval(paintWall, 1000);
   }
 
-  /* =======================================================
-     スクロールで送るコマ
-     参照元は写真を数十枚めくっているが、こちらは素材が無いので
-     コマの中身をその場で描く。仕組み（スクロール量 → コマ番号）は同じ。
-  ======================================================= */
   const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // 縦長トラックの中での進み具合を 0〜1 で返し、コマ数に量子化して paint を呼ぶ。
-  // 番号が変わったときだけ描き直すので、これが「コマ送り」になる。
-  //   opts.map        進捗 → コマ送りに使う 0〜1（前に「溜め」を置きたいときに使う）
-  //   opts.onProgress 進捗そのもの。毎スクロール呼ぶので、軽い処理だけ入れること
   function reel(track, frames, paint, opts){
     if (!track) return;
     opts = opts || {};
@@ -1615,13 +1380,10 @@ a.lnk:not([href]){ border-bottom:0; }
   }
 
   const clamp01 = v => Math.min(1, Math.max(0, v));
-  // カバー兼用のコマ送りは、先頭に「溜め」を置いてからコマを流す
-  // 空と太陽は「スクロールした最初の1pxから」動かす。止めておくと演出が始まらない。
-  // 粘らせるのはヒーローの文字だけにする。
-  const HERO_HOLD  = .14;   // ヒーローをそのまま見せておく区間
-  const HERO_FADE  = .10;   // ヒーローが引く区間
-  const CLOCK_FADE = .09;   // 時刻表示が入る区間（ヒーローが引ききってから）
-  const DAY_EASE   = 1.3;   // 朝のコマほどスクロール量を多く使い、日の出をじっくり見せる
+  const HERO_HOLD  = .14;
+  const HERO_FADE  = .10;
+  const CLOCK_FADE = .09;
+  const DAY_EASE   = 1.3;
   const lerp = (a, b, t) => a + (b - a) * t;
   const hex = h => [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)];
   const mix = (a, b, t) => {
@@ -1629,30 +1391,26 @@ a.lnk:not([href]){ border-bottom:0; }
     return `rgb(${Math.round(lerp(x[0],y[0],t))},${Math.round(lerp(x[1],y[1],t))},${Math.round(lerp(x[2],y[2],t))})`;
   };
 
-  /* --- コマ送り その1：一日 --- */
-  const DAY_FRAMES = 19;                 // 1時間きざみ。06:00 から 00:00 まで
-  const DAY_START  = 6;                  // 朝からはじめる（ヒーローが夜明けの空に乗る）
-  // [時刻, 空の上・中・下]
+  const DAY_FRAMES = 19;
+  const DAY_START  = 6;
   const DAYKEYS = [
-    [0,  ["#060918","#0b1030","#151c42"]],   // 深夜
-    [5,  ["#0f1436","#33265a","#7a4a6a"]],   // 夜明け前
-    [7,  ["#28386c","#8a5a7a","#f0a072"]],   // 朝焼け
-    [10, ["#2a6cb4","#74aede","#d6e9f6"]],   // 昼
-    [15, ["#2a6cb4","#74aede","#d6e9f6"]],   // 昼のまま保つ（すぐ夕方にならないように）
-    [18, ["#1d2a5c","#8c4a7a","#ff9d5c"]],   // 夕焼け
-    [20, ["#0d0a24","#2f1f5c","#6a3a6a"]],   // 宵
-    [24, ["#060918","#0b1030","#151c42"]]    // 深夜へ戻る
+    [0,  ["#060918","#0b1030","#151c42"]],
+    [5,  ["#0f1436","#33265a","#7a4a6a"]],
+    [7,  ["#28386c","#8a5a7a","#f0a072"]],
+    [10, ["#2a6cb4","#74aede","#d6e9f6"]],
+    [15, ["#2a6cb4","#74aede","#d6e9f6"]],
+    [18, ["#1d2a5c","#8c4a7a","#ff9d5c"]],
+    [20, ["#0d0a24","#2f1f5c","#6a3a6a"]],
+    [24, ["#060918","#0b1030","#151c42"]]
   ];
-  // ひとことは「時刻」ではなく「コマ番号」で引く。時刻で引くと 23時→0時でまたいだときに
-  // 若い番号へ戻ってしまい、最後のコマ（00:00）に「また明日、同じ場所で。」を出せない
   const CAPS = [
-    [0,  "一日がはじまる。"],                       // 06:00
-    [5,  "机の上で、いちばん多く目に入るもの。"],   // 11:00
-    [9,  "見た目は、その日の気分で掛け替えられる。"], // 15:00
-    [11, "そろそろ、帰りどき。"],                   // 17:00
-    [13, "おつかれさま。"],                         // 19:00
-    [16, "夜のあいだも、静かに置いてある。"],       // 22:00
-    [18, "また明日、同じ場所で。"]                  // 00:00
+    [0,  "一日がはじまる。"],
+    [5,  "机の上で、いちばん多く目に入るもの。"],
+    [9,  "見た目は、その日の気分で掛け替えられる。"],
+    [11, "そろそろ、帰りどき。"],
+    [13, "おつかれさま。"],
+    [16, "夜のあいだも、静かに置いてある。"],
+    [18, "また明日、同じ場所で。"]
   ];
   const pick = (list, h) => { let v = list[0][1]; for (const [at, val] of list){ if (h >= at) v = val; } return v; };
 
@@ -1671,7 +1429,6 @@ a.lnk:not([href]){ border-bottom:0; }
     const dayCue    = document.getElementById("dayCue");
     const dayMeta   = document.getElementById("dayMeta");
 
-    // フィルムの目盛り
     const strip = document.getElementById("dayStrip");
     const ticks = [];
     if (strip) for (let i = 0; i < DAY_FRAMES; i++){
@@ -1679,13 +1436,12 @@ a.lnk:not([href]){ border-bottom:0; }
       t.className = "reel__tick";
       strip.appendChild(t); ticks.push(t);
     }
-    // 窓あかり。街並みの輪郭に合わせて散らす
     const cells = document.getElementById("dayLightCells");
     if (cells){
       const seed = [62,104,152,192,244,302,362,404,462,522,582,624,702,762,802,862,922,972,1042,1102,1142,1202,1262,1322,1382];
       seed.forEach((x, i) => {
         for (let r = 0; r < 4; r++){
-          if ((i + r) % 3 === 0) continue;      // まばらに
+          if ((i + r) % 3 === 0) continue;
           const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
           rect.setAttribute("x", x - 26 + (r % 2) * 12);
           rect.setAttribute("y", 128 + r * 14);
@@ -1696,37 +1452,32 @@ a.lnk:not([href]){ border-bottom:0; }
     }
 
     reel(document.getElementById("dayTrack"), DAY_FRAMES, f => {
-      const h = (DAY_START + f) % 24;        // 06:00 はじまり
+      const h = (DAY_START + f) % 24;
       const mins = h * 60;
 
-      // 空。前後のキーフレームを混ぜる
       let i = 0; while (i < DAYKEYS.length - 2 && h >= DAYKEYS[i + 1][0]) i++;
       const [h0, c0] = DAYKEYS[i], [h1, c1] = DAYKEYS[i + 1];
       const t = (h - h0) / (h1 - h0);
       daySky.style.background =
         `linear-gradient(180deg, ${mix(c0[0],c1[0],t)} 0%, ${mix(c0[1],c1[1],t)} 52%, ${mix(c0[2],c1[2],t)} 100%)`;
 
-      // 太陽と月。昼は太陽、夜は月が同じ弧を通る
       const day = h >= 5 && h <= 19;
       const u = day ? (h - 5) / 14 : ((h > 19 ? h - 19 : h + 5) / 10);
       dayOrb.style.left = `${8 + u * 84}%`;
-      dayOrb.style.top  = `${64 - Math.sin(u * Math.PI) * 52}%`;   // 頂点12%。中央の文字を避ける
+      dayOrb.style.top  = `${64 - Math.sin(u * Math.PI) * 52}%`;
       dayOrb.style.background = day
         ? "radial-gradient(circle at 50% 50%, #fff8d0 0%, #ffd26a 55%, rgba(255,170,60,0) 72%)"
         : "radial-gradient(circle at 50% 50%, #eef1ff 0%, #c9d2f0 52%, rgba(160,175,220,0) 70%)";
 
-      // 窓あかり
       const night = h < 5.5 ? 1 : h < 7 ? (7 - h) / 1.5 : h < 17.5 ? 0 : h < 19 ? (h - 17.5) / 1.5 : 1;
       dayLights.style.opacity = (night * .85).toFixed(3);
 
-      // 時刻
       dayTime.textContent = `${String(h).padStart(2, "0")}:00`;
 
       dayCap.textContent = pick(CAPS, f);
       dayNo.textContent = String(f + 1).padStart(2, "0");
       ticks.forEach((el, i2) => el.classList.toggle("on", i2 <= f));
 
-      // キャラクターの振り向き。15%〜55% のあいだで背中→正面に変わる
       const turn = Math.min(1, Math.max(0, (f / (DAY_FRAMES - 1) - .12) / .34));
       const ease = turn * turn * (3 - 2 * turn);
       dayDial.setAttribute("transform", `translate(${(100 + (1 - ease) * 7).toFixed(1)} 100) scale(${ease.toFixed(3)} 1)`);
@@ -1734,18 +1485,12 @@ a.lnk:not([href]){ border-bottom:0; }
       dayMM.setAttribute("transform", `rotate(${(mins % 60) * 6})`);
     },
     {
-      // コマは進捗0から動かす。以前は先頭に「溜め」を置いていたが、
-      // そのあいだ太陽も止まってしまい「スクロールしても演出が始まらない」状態だった。
-      // 代わりに軽いイージングをかけ、朝のコマほどスクロール量を多く使う。
       map: p => Math.pow(p, DAY_EASE),
       onProgress: p => {
-        // 持ち替えはコマ単位ではなく進捗そのもので動かす（3段でパチパチ切り替わって見えていた）
-        // 重ねて溶かすと、2つの文章が同じ場所で重なって読めなくなる。
-        // ヒーローが完全に引いてから時計を入れる（前後に分ける）。
         const o = clamp01((p - HERO_HOLD) / HERO_FADE);
-        const out = o * o * (3 - 2 * o);                 // ヒーローが引く量
+        const out = o * o * (3 - 2 * o);
         const i = clamp01((p - HERO_HOLD - HERO_FADE) / CLOCK_FADE);
-        const inn = i * i * (3 - 2 * i);                 // 時計が入る量
+        const inn = i * i * (3 - 2 * i);
         const lift = clamp01(p / (HERO_HOLD + HERO_FADE));
 
         if (heroCopy){
@@ -1766,7 +1511,6 @@ a.lnk:not([href]){ border-bottom:0; }
     });
   }
 
-  /* --- 81通り：ランダムボタンで切り替える --- */
   const comboWin = document.getElementById("comboWin");
   if (comboWin){
     const comboT = document.getElementById("comboT");
@@ -1775,7 +1519,6 @@ a.lnk:not([href]){ border-bottom:0; }
     const comboFont = document.getElementById("comboFont");
     let ci = 0;
 
-    // いまの時刻を秒まで描く。書体が変わっても桁位置は動かない
     const paintComboTime = () => {
       const d = new Date();
       paintTime(comboT, FONTS[ci % 9].key, d, true);
@@ -1785,7 +1528,6 @@ a.lnk:not([href]){ border-bottom:0; }
     const showCombo = i => {
       ci = (i + 81) % 81;
       const t = THEMES[Math.floor(ci / 9)], fo = FONTS[ci % 9];
-      // 配色と書体はカスタムプロパティで渡す（インライン style を文字列で組み立てない）
       comboWin.style.setProperty("--ck-win", t.win);
       comboWin.style.setProperty("--ck-bd", t.bd);
       comboWin.style.setProperty("--ck-fg", t.fg);
@@ -1800,8 +1542,6 @@ a.lnk:not([href]){ border-bottom:0; }
       fitClock(comboWin);
     };
 
-    // ランダム。テーマも書体も今と違うもの（64通り）から引く。
-    // 片方だけ変わると、押しても変化が小さく見えるため
     const rnd = document.getElementById("comboRandom");
     if (rnd) rnd.addEventListener("click", () => {
       let n = ci;
@@ -1810,8 +1550,6 @@ a.lnk:not([href]){ border-bottom:0; }
       comboWin.classList.remove("pop"); void comboWin.offsetWidth; comboWin.classList.add("pop");
     });
 
-    // メモ欄の出し入れ。既定は OFF（exe の初期状態と同じ）。
-    // メモを出すと時刻の器が狭くなるので、切り替えたら文字の大きさを測り直す
     const memoBtn = document.getElementById("comboMemo");
     if (memoBtn) memoBtn.addEventListener("click", () => {
       const on = memoBtn.getAttribute("aria-pressed") !== "true";
@@ -1819,13 +1557,10 @@ a.lnk:not([href]){ border-bottom:0; }
       comboWin.classList.toggle("is-memo", on);
       fitClock(comboWin);
     });
-    // 9書体を先に読ませておく。使うまで読み込まれないと、初回クリックで一瞬ちらついて見える。
-    // 画面外に要素を置く方式だと横方向のはみ出し検査に引っかかるので、フォントAPIで読む。
     if (document.fonts && document.fonts.load){
       Promise.all(FONTS.map(f =>
         document.fonts.load(`1em 'tk-${f.key}'`, "0123456789: ▼()ねがつにちげすもくきどうあわせぎゅか").catch(() => {})
       )).then(() => {
-        // 代替書体の幅を測ってしまっている可能性があるので、読み込み後に測り直す
         FONTS.forEach(f => { METRICS[f.key] = measureFont(f.key); });
         paintComboTime();
         if (typeof tickDesk === "function") tickDesk();
@@ -1837,14 +1572,13 @@ a.lnk:not([href]){ border-bottom:0; }
     setInterval(paintComboTime, 1000);
   }
 
-  /* --- デスクトップのイメージ図。時計は本物で、テーマの配色をあてる --- */
   const deskWin = document.getElementById("deskWin");
   if (deskWin){
     const deskTime = document.getElementById("deskTime");
     const deskDate = document.getElementById("deskDate");
     const deskMemo = document.getElementById("deskMemo");
     const deskBar  = document.getElementById("deskBarTime");
-    const T = THEMES[5], F = FONTS[0];          // ネイビー＆ゴールド ／ ドット
+    const T = THEMES[5], F = FONTS[0];
     deskWin.style.background = T.win;
     deskWin.style.borderColor = T.bd;
     deskWin.style.color = T.fg;
@@ -1861,7 +1595,6 @@ a.lnk:not([href]){ border-bottom:0; }
     tickDesk(); setInterval(tickDesk, 1000);
   }
 
-  /* --- デスクトップ：仮想画面（1280×720）を、写真の画面の4隅に射影変換で合わせる --- */
   const deskShot = document.getElementById("deskShot");
   const deskImg = deskShot && deskShot.querySelector(".deskshot__img");
   const deskScreen = deskShot && deskShot.querySelector(".screen");
@@ -1869,7 +1602,6 @@ a.lnk:not([href]){ border-bottom:0; }
     const SW = 1280, SH = 720, BAR_H = 40;
     const points = s => (s || "").trim().split(/\s+/).filter(Boolean).map(p => p.split(",").map(Number));
     const quad = points(deskShot.dataset.quad);
-    // 単位正方形 → 四辺形（Heckbert の閉形式）。x = (a·u + b·v + c) / (g·u + h·v + 1)、y も同様（d, e, f）
     const squareToQuad = q => {
       const [[x0, y0], [x1, y1], [x2, y2], [x3, y3]] = q;
       const dx1 = x1 - x2, dx2 = x3 - x2, dx3 = x0 - x1 + x2 - x3;
@@ -1883,11 +1615,9 @@ a.lnk:not([href]){ border-bottom:0; }
       return [x1 - x0 + g * x1, x3 - x0 + h * x3, x0, y1 - y0 + g * y1, y3 - y0 + h * y3, y0, g, h];
     };
 
-    // 手前の物（data-cut）の輪郭を仮想画面の座標に直し、そこだけ切り欠く（evenodd で穴にする）
     const cut = points(deskShot.dataset.cut);
     if (quad.length === 4 && cut.length > 2){
       const [a, b, c, d, e, f, g, h] = squareToQuad(quad);
-      // 3×3 行列 [[a,b,c],[d,e,f],[g,h,1]] の余因子行列（逆写像。定数倍は割り算で消える）
       const m = [e - f * h, c * h - b, b * f - c * e,
                  f * g - d, a - c * g, c * d - a * f,
                  d * h - e * g, b * g - a * h, a * e - b * d];
@@ -1898,7 +1628,6 @@ a.lnk:not([href]){ border-bottom:0; }
       const P = ([x, y]) => `${x.toFixed(1)}px ${y.toFixed(1)}px`;
       deskScreen.style.clipPath = `polygon(evenodd, 0px 0px, ${SW}px 0px, ${SW}px ${SH}px, 0px ${SH}px, 0px 0px, `
         + `${hole.map(P).join(", ")}, ${P(hole[0])}, 0px 0px)`;
-      // タスクバーの右端が隠れるなら、トレイと時計をその手前まで寄せる
       const low = hole.filter(p => p[1] >= SH - BAR_H).map(p => p[0]);
       if (low.length) deskScreen.style.setProperty("--tray-gap", `${Math.max(14, Math.round(SW - Math.min(...low) + 14))}px`);
     }
@@ -1918,8 +1647,6 @@ a.lnk:not([href]){ border-bottom:0; }
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitScreen);
   }
 
-  /* --- 時計の文字の大きさを器に追従させる。
-         1秒ごとの描き直しでは呼ばない（桁は固定幅の枠に入っていて幅が変わらない） --- */
   if ("ResizeObserver" in window){
     const ro = new ResizeObserver(() => fitAllClocks());
     document.querySelectorAll(".ck").forEach(el => ro.observe(el));
@@ -1928,7 +1655,6 @@ a.lnk:not([href]){ border-bottom:0; }
   }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAllClocks);
 
-  /* --- スクロールでヘッダーに暗幕を敷く --- */
   const mast = document.getElementById("mast");
   if (mast){
     const onScroll = () => mast.classList.toggle("is-stuck", window.scrollY > 40);
