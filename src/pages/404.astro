@@ -2,8 +2,13 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { paths } from '../data/site';
 ---
-<BaseLayout title="ページが見つかりません" description="お探しのページは見つかりませんでした。">
-  <h1>404 ページが見つかりません</h1>
+<BaseLayout title="ページが見つかりません" description="お探しのページは見つかりませんでした。" eyebrow="404 Not Found">
+  <h1>ページが見つかりません</h1>
   <p>お探しのページは見つかりませんでした。URLが変更されたか、削除された可能性があります。</p>
-  <p><a href={paths.home}>トップページに戻る</a></p>
+  <p class="back"><a class="pill" href={paths.home}>トップページに戻る</a></p>
 </BaseLayout>
+
+<style>
+  .back { margin-top: 2rem; }
+  .back .pill { text-decoration: none; color: var(--onpink); }
+</style>

@@ -1,16 +1,453 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { paths } from '../../data/site';
+import Skyline from '../../components/Skyline.astro';
+import StoreButton from '../../components/StoreButton.astro';
+import { company, contact, paths, tkclock } from '../../data/site';
+import '../../styles/tkclock-lp.css';
 ---
-<BaseLayout title="TKclock" description="TKclock はテーマや書体を選んで楽しめるデスクトップ時計です。Microsoft Store で公開準備中です。">
-  <h1>TKclock</h1>
-  <p class="muted">準備中です。Microsoft Store での公開に向けて準備しています。</p>
-  <p>TKclock は、テーマや書体を選んで楽しめる Windows 用のデスクトップ時計です。</p>
-  <ul>
-    <li>テーマ・書体の切り替え</li>
-    <li>花火・花吹雪などの演出</li>
-    <li>アラーム、タイムゾーン、日本語／英語の表示切り替え</li>
-    <li>フル版では、追加のテーマ・書体、壁紙のスライドショー、動画のくりかえし再生が使えます</li>
-  </ul>
-  <p>TKclock は通信を行わず、個人情報を収集しません。詳しくは<a href={paths.tkclockPrivacy}>プライバシーポリシー</a>をご覧ください。</p>
+<BaseLayout
+  title="TKclock ｜ 机の上の、夕暮れ"
+  description="TKclock は、テーマと書体を選んで楽しめる Windows 用のデスクトップ時計です。無償版は 4 テーマ・4 書体、有償版は 9 テーマ・9 書体の 81 とおり。通信を行わず、個人情報を収集しません。Microsoft Store で公開準備中です。"
+  variant="bare"
+>
+  <link slot="head" rel="preload" href="/tkclock/fonts/tk-dot.woff2" as="font" type="font/woff2" crossorigin />
+  <Fragment slot="mast">
+    <span class="mast__now" id="stripNow">--:--:--</span>
+    <StoreButton size="sm" short />
+  </Fragment>
+
+{/* ===== 01 カバー ＋ コマ送り：一日 =====
+     ヒーロー（ロゴ・売り文句・CTA）とコマ送りは同じ舞台を共有する。
+     スクロールしはじめるとヒーローが引き、入れ替わりに時刻とひとことが出る。
+     コマごとに空・太陽・街あかり・時刻・キャラクターの向きを描き直している。 */}
+<section class="reel reel--cover" id="cover">
+  <div class="reel__track" id="dayTrack">
+    <div class="reel__stage">
+      <div class="reel__sky" id="daySky" aria-hidden="true"></div>
+      <div class="reel__orb" id="dayOrb" aria-hidden="true"></div>
+
+      {/* 街の窓あかり。夜だけ灯る */}
+      <div class="reel__lights" id="dayLights" aria-hidden="true">
+        <svg viewBox="0 0 1440 190" preserveAspectRatio="xMidYMax slice">
+          <g fill="#ffd98a" id="dayLightCells"></g>
+        </svg>
+      </div>
+      <div class="reel__city" aria-hidden="true">
+        <svg viewBox="0 0 1440 190" preserveAspectRatio="xMidYMax slice">
+          <use href="#skyline-full" fill="currentColor"/>
+        </svg>
+      </div>
+
+      {/* 背景に立っている時計くん。スクロールにつれてこちらを向く */}
+      <svg class="reel__char" viewBox="0 0 200 300" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M84 300 V214 h13 v86 z"/>
+          <path d="M103 300 V214 h13 v86 z"/>
+          <path d="M76 220 Q70 168 82 142 h36 q12 26 6 78 z"/>
+          <path d="M80 150 Q62 182 66 214 h12 q-2 -30 10 -58 z"/>
+          <path d="M120 150 q18 32 14 64 h-12 q2 -30 -10 -58 z"/>
+          <path d="M94 132 h12 v14 h-12 z"/>
+          <circle cx="100" cy="100" r="34"/>
+        </g>
+        {/* 文字盤。振り向くほど横に開き、こちらを向くと時刻が読める */}
+        <g id="dayDial" transform="translate(100 100) scale(0 1)">
+          <circle r="26" fill="#fff9cb"/>
+          <circle r="26" fill="none" stroke="#0c0d1b" stroke-width="3"/>
+          <g stroke="#0c0d1b" stroke-width="2.4" stroke-linecap="round">
+            <line x1="0" y1="-20" x2="0" y2="-16"/><line x1="20" y1="0" x2="16" y2="0"/>
+            <line x1="0" y1="20" x2="0" y2="16"/><line x1="-20" y1="0" x2="-16" y2="0"/>
+          </g>
+          <line id="dayHH" y2="-11" stroke="#0c0d1b" stroke-width="3.6" stroke-linecap="round"/>
+          <line id="dayMM" y2="-17" stroke="#0c0d1b" stroke-width="2.4" stroke-linecap="round"/>
+          <circle r="2.6" fill="#0c0d1b"/>
+        </g>
+      </svg>
+
+      {/* ヒーローと時刻表示は同じ場所に重ね、スクロールで入れ替える */}
+      <div class="reel__copy">
+        <div class="cover__in" id="heroCopy">
+          <p class="cover__eyebrow">Windows Desktop Clock</p>
+          <h1 class="cover__word">TKclock</h1>
+          <p class="cover__tag">9つのテーマと9つの書体。<br>81とおりの見た目から、その日の気分で選ぶ。</p>
+          <div class="cover__ctas">
+            <StoreButton size="lg" />
+            <a class="cover__sub" href="#compare">無償版と有償版のちがい</a>
+          </div>
+          <p class="cover__os">{tkclock.os}</p>
+          <div class="cover__cue" id="dayCue" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
+
+        <div class="reel__ui" id="dayCopy">
+          <p class="reel__label">A Day With TKclock</p>
+          <div class="reel__time" id="dayTime">06:00</div>
+          <p class="reel__cap" id="dayCap"></p>
+        </div>
+      </div>
+
+      <div class="reel__no" id="dayMeta"><span id="dayNo">01</span> / 19</div>
+      <div class="reel__strip" id="dayStrip" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+{/* ===== TKclock とは ===== */}
+<section class="flat" id="about">
+  <div class="wrap">
+    <div class="flat__head">
+      <p class="eyebrow">What Is TKclock</p>
+      <h2 class="display">机の上の、小さな時計</h2>
+      <p class="lead">TKclock は、Windows のデスクトップに置いておく時計です。色づかいと書体を選んで、その日の気分に合わせた見た目にできます。時計としての仕事はきちんとこなしつつ、眺めて楽しい時計を目指しています。</p>
+    </div>
+    <ul class="feat">
+      <li class="feat__item"><b>テーマと書体を選べる</b><span>時計の色づかい（テーマ）と、数字と文字のかたち（書体）を組み合わせて使えます。</span></li>
+      <li class="feat__item"><b>写真や動画を背景に</b><span>お気に入りの画像や動画を、時計の背景に敷けます。</span></li>
+      <li class="feat__item"><b>アラームとメモ</b><span>時刻を決めてアラームを鳴らせます。時計の下には、ちょっとしたメモを書いておけます。</span></li>
+      <li class="feat__item"><b>退勤どきのごほうび</b><span>花火や花吹雪などの演出で、一日の終わりを知らせます。</span></li>
+      <li class="feat__item"><b>海外の時刻・英語表示</b><span>タイムゾーンを選んで海外の時刻を出せます。表示は日本語と英語を切り替えられます。</span></li>
+      <li class="feat__item"><b>通信しない</b><span>TKclock 自体は通信を行わず、個人情報を収集しません。設定はお使いの PC の中に保存されます。</span></li>
+    </ul>
+  </div>
+</section>
+
+{/* ===== 05 81通り =====
+     ランダムボタンだけで切り替える（2026-09-15 に矢印・81マスを撤去）。
+     開いた時点でランダムな1つを出し、押すたびにテーマも書体も違う組み合わせへ変える。 */}
+<section class="flat flat--dark" id="reel-combo">
+  <div class="wrap">
+    <div class="flat__head">
+      <p class="eyebrow">All 81 Combinations</p>
+      <h2 class="display">9つの色と、9つの文字</h2>
+      <p class="combo__shuffle">
+        <button class="pill pill--ghost" id="comboRandom" type="button" aria-controls="comboWin">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+          <span>ランダムでひとつ見る</span>
+        </button>
+        <button class="pill pill--ghost combo__memo" id="comboMemo" type="button" aria-pressed="false" aria-controls="comboWin">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path class="combo__memo-ck" d="m8 12.4 2.9 2.9L16 9"/></svg>
+          <span>メモ欄を出す</span>
+        </button>
+      </p>
+    </div>
+
+    <div class="combo">
+      {/* 実物のプレビュー。時刻はいまの時間で、秒まで動く */}
+      <div class="combo__preview">
+        <div class="combo__stage">
+          {/* exe の .dq-window を写した共通部品。▼ とメモは静止した飾りなので HTML に直接置く */}
+          <div class="ck combo__win" id="comboWin" data-font="dot">
+            <div class="ck__area">
+              <div class="ck__content">
+                <div class="ck__date" id="comboDate"></div>
+                <div class="ck__time" id="comboT"></div>
+                <div class="ck__cur" aria-hidden="true">▼</div>
+              </div>
+            </div>
+            <div class="ck__memo" aria-hidden="true">17:30 うちあわせ<br>ぎゅうにゅう かう</div>
+          </div>
+        </div>
+        <p class="combo__meta" aria-live="polite">
+          <span>テーマ <b id="comboTheme">ドット調</b></span>
+          <span>書体 <b id="comboFont">ドット</b></span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{/* ===== 07 背景 ===== */}
+<section class="scene scene--wall" id="scene-wall">
+  <div class="sky" aria-hidden="true"></div>
+  <div class="scene__in wrap">
+    <div class="scene__head">
+      <p class="eyebrow">Your Own World</p>
+      <h2 class="display">背景は、あなたの世界</h2>
+      <p class="lead">お気に入りの写真や動画を時計の背景に。フォルダを選べば、その中身を順に映すこともできます。png／jpg／gif、mp4 などの形式に対応しています。</p>
+    </div>
+  <figure class="wall__stage" id="wallStage" aria-label="背景の見本。写真4枚と動画4本が交互に切り替わります">
+
+    {/* 写真4枚と動画4本を交互に（Pexels のフリー素材とのこと。出どころの一覧はデザイナーの assets-credits.md で、未受領）。
+         .ph-sea は #desk の画面の壁紙でも使い回している。
+         似た題材が隣り合わないように並べてある。
+           水＝夕暮れの海（枠1）・波（枠4）・雨の窓（枠8）を離す
+           街＝夜の街（枠3）・街の交差点（枠6）・雨の窓（枠8）を離す
+         動画は autoplay を付けず、番が来たときに JS が頭から play() する。
+         src は書かず data-src に置いてあるので、開いた直後は動画データを読まない（poster だけ出る）。
+         JS が #wallStage を一度画面に入れてから、1枠前に src を入れて load() する */}
+    <div class="wall__layer ph-sea on" aria-hidden="true"></div>
+    <div class="wall__layer is-motion" aria-hidden="true">
+      <video class="wall__video" muted loop playsinline preload="none"
+             poster="/tkclock/media/wall-video-1-poster.webp" data-src="/tkclock/media/wall-video-1.mp4"
+             disablepictureinpicture aria-hidden="true"></video>
+    </div>
+    <div class="wall__layer ph-night" aria-hidden="true"></div>
+    <div class="wall__layer is-motion" aria-hidden="true">
+      <video class="wall__video" muted loop playsinline preload="none"
+             poster="/tkclock/media/wall-video-2-poster.webp" data-src="/tkclock/media/wall-video-2.mp4"
+             disablepictureinpicture aria-hidden="true"></video>
+    </div>
+    <div class="wall__layer ph-mount" aria-hidden="true"></div>
+    <div class="wall__layer is-motion" aria-hidden="true">
+      <video class="wall__video" muted loop playsinline preload="none"
+             poster="/tkclock/media/wall-video-3-poster.webp" data-src="/tkclock/media/wall-video-3.mp4"
+             disablepictureinpicture aria-hidden="true"></video>
+    </div>
+    <div class="wall__layer ph-fire" aria-hidden="true"></div>
+    <div class="wall__layer is-motion" aria-hidden="true">
+      <video class="wall__video" muted loop playsinline preload="none"
+             poster="/tkclock/media/wall-video-4-poster.webp" data-src="/tkclock/media/wall-video-4.mp4"
+             disablepictureinpicture aria-hidden="true"></video>
+    </div>
+
+    <div class="wall__scrim"></div>
+    <span class="wall__badge">MOVING / 動画</span>
+    {/* 81通りと同じ共通部品。exe の既定どおりメモは置かない */}
+    <div class="ck wall__clock" id="wallClock" data-font="dot">
+      <div class="ck__area">
+        <div class="ck__content">
+          <div class="ck__date" id="wallDate"></div>
+          <div class="ck__time" id="wallT"></div>
+          <div class="ck__cur" aria-hidden="true">▼</div>
+        </div>
+      </div>
+    </div>
+  </figure>
+  </div>
+</section>
+
+{/* ===== 09 デスクトップに置いたときの見え方 =====
+     実写の机の写真に、画面の中身をはめ込んでいる。4隅は data-quad。
+     時計は本物で、いまの時刻を秒まで刻む。 */}
+<section class="flat flat--dark" id="desk">
+  <div class="wrap">
+    <div class="flat__head">
+      <p class="eyebrow">On Your Desktop</p>
+      <h2 class="display">いつもの画面に、スッと馴染みます</h2>
+    </div>
+
+    <div class="desk">
+      {/* 実写の机の写真（Pexels のフリー素材とのこと）の画面に、中身をはめ込んでいる。
+           data-quad: 写真の画面の4隅（desk.webp の画素座標。左上→右上→右下→左下）。
+             画面の黒い部分の縁から 1.5px 内側。下の太いベゼル（あご）は写真のまま残す。
+           data-cut: 画面の手前にある物（ボトルのキャップ）の輪郭。そこだけはめ込みを切り欠いて写真を見せる。
+           写真を差し替えたら、両方とも出力画像で測り直すこと。 */}
+      <figure class="deskshot" id="deskShot"
+              data-quad="187.5,201 1047.5,201 1041,677 195,674"
+              data-cut="998,618.5 1024,618.5 1027,619.5 1030,620.5 1032.5,621.5 1034.5,622.5 1036.5,623.5 1038.5,625.5 1040,627.5 1041.5,629.5 1042.5,631.5 1049,633 1049,700 980,700 980,630 981,627.5 983,625.5 986,623.5 989,621.5 994,619.5">
+        <img class="deskshot__img" src="/tkclock/media/desk.webp" alt="" loading="lazy" decoding="async" width="1160" height="981">
+        <div class="screen">
+          <div class="screen__wall ph-sea" aria-hidden="true"></div>
+
+          <div class="screen__icons" aria-hidden="true">
+            <span class="screen__icon"><i class="f"></i><span>しごと</span></span>
+            <span class="screen__icon"><i class="b"></i><span>しりょう</span></span>
+            <span class="screen__icon"><i class="tk"></i><span>TKclock</span></span>
+          </div>
+
+          <div class="screen__bgwin" aria-hidden="true">
+            <div class="screen__bgbar"><em></em><u><b>&#9472;</b><b>&#9633;</b><b>&#10005;</b></u></div>
+            <div class="screen__bgbody"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+
+          <div class="screen__app">
+            <div class="screen__appIn" id="deskWin">
+              <div class="screen__appWall ph-night" aria-hidden="true"></div>
+              <div class="screen__date" id="deskDate">2026ねん 09がつ 03にち</div>
+              <div class="screen__time" id="deskTime"></div>
+              <div class="screen__memo" id="deskMemo">17:30 うちあわせ<br>ぎゅうにゅう かう</div>
+            </div>
+          </div>
+
+          <div class="screen__bar" aria-hidden="true">
+            <div class="screen__pins">
+              <i></i><i></i><i></i><i class="tk"></i>
+            </div>
+            <div class="screen__tray">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5.5 5.5 0 0 1 7 0M12 19.5h.01"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><rect x="2" y="8" width="17" height="8" rx="2"/><path d="M21 11v2"/></svg>
+              <div class="screen__clock"><div id="deskBarTime">--:--</div><div id="deskBarDate">2026/09/03</div></div>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+      <div>
+        <h3 class="desk__t">置きっぱなしでも、じゃまになりません</h3>
+        <div class="desk__list">
+          <div class="desk__row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>
+            <div><b>ほかの画面に隠れない</b><span>最前面に固定できます。資料を開いても時計は見えたままです。</span></div>
+          </div>
+          <div class="desk__row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>
+            <div><b>タスクバーを占有しない</b><span>通知領域に常駐します。右クリックから かべがみの変更や しゅうりょう ができます。</span></div>
+          </div>
+        </div>
+        <p class="desk__note">※ 画像はイメージです。</p>
+      </div>
+    </div>
+  </div>
+</section>
+{/* ===== 無償版と有償版のちがい =====
+     広い画面では3列の表、720px 未満では1項目=1カードに積む。
+     tk-* 書体はここでは使わない（サブセットに字形が無いため。UI のゴシックで組む） */}
+<section class="flat" id="compare">
+  <div class="wrap">
+    <div class="flat__head">
+      <p class="eyebrow">Free &amp; Paid</p>
+      <h2 class="display">まずは無料で</h2>
+    </div>
+
+    <div class="cmp">
+      <table class="cmp__table">
+        <caption class="cmp__cap">無償版と有償版でできることのちがい</caption>
+        <thead>
+          <tr>
+            <th class="cmp__h cmp__h--item" scope="col">できること</th>
+            <th class="cmp__h cmp__h--free" scope="col">無償版<span class="cmp__tag">無料</span></th>
+            <th class="cmp__h cmp__h--paid" scope="col">有償版<span class="cmp__tag">アプリ内で購入</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th class="cmp__k" scope="row">テーマ（時計の色づかい）</th>
+            <td class="cmp__v" data-label="無償版">
+              <span class="cmp__n">4種類</span>
+              <span class="cmp__note">ドット調／ペーパーホワイト／ミルクティー／ミント</span>
+            </td>
+            <td class="cmp__v cmp__v--paid" data-label="有償版">
+              <span class="cmp__n">9種類ぜんぶ</span>
+              <span class="cmp__note">左の4つ＋くすみピンク／ネイビー＆ゴールド／レトロ液晶／8bit調／ターミナル</span>
+            </td>
+          </tr>
+          <tr>
+            <th class="cmp__k" scope="row">書体（数字と文字のかたち）</th>
+            <td class="cmp__v" data-label="無償版">
+              <span class="cmp__n">4種類</span>
+              <span class="cmp__note">ドット／BIZ UDPゴシック／丸ゴシック／レトロ明朝</span>
+            </td>
+            <td class="cmp__v cmp__v--paid" data-label="有償版">
+              <span class="cmp__n">9種類ぜんぶ</span>
+              <span class="cmp__note">左の4つ＋手書き3種（万年筆・マーカー・かわいい）／極太インパクト／筆・ホラー</span>
+            </td>
+          </tr>
+          <tr>
+            <th class="cmp__k" scope="row">好きな画像・動画を背景にする</th>
+            <td class="cmp__v" data-label="無償版"><span class="cmp__mk cmp__mk--y" aria-hidden="true">○</span>使えます</td>
+            <td class="cmp__v cmp__v--paid" data-label="有償版"><span class="cmp__mk cmp__mk--y" aria-hidden="true">○</span>使えます</td>
+          </tr>
+          <tr>
+            <th class="cmp__k" scope="row">フォルダを選んで映す（スライドショー）</th>
+            <td class="cmp__v" data-label="無償版"><span class="cmp__mk cmp__mk--n" aria-hidden="true">×</span>使えません</td>
+            <td class="cmp__v cmp__v--paid" data-label="有償版"><span class="cmp__mk cmp__mk--y" aria-hidden="true">○</span>使えます</td>
+          </tr>
+          <tr>
+            <th class="cmp__k" scope="row">動画をくりかえし再生する</th>
+            <td class="cmp__v" data-label="無償版">
+              <span class="cmp__mk cmp__mk--n" aria-hidden="true">×</span>1回で止まります
+              <span class="cmp__note">最後まで再生すると、そこで止まります</span>
+            </td>
+            <td class="cmp__v cmp__v--paid" data-label="有償版"><span class="cmp__mk cmp__mk--y" aria-hidden="true">○</span>くりかえし再生します</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="cmp__foot">
+        <div class="cmp__ctas">
+          <StoreButton size="lg" />
+        </div>
+        <p class="cmp__fine">無償版と有償版は同じアプリです。Microsoft Store から無料で入手でき、アプリ内で有償版の機能を購入すると、入れ直さずにそのまま使えるようになります。価格は Microsoft Store の掲載ページに表示します。<br />表に出していない機能（アラーム、メモ、退勤どきのごほうび、海外の時刻、英語表示、最前面、枠なし表示）は、どちらの版でも使えます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* ===== 動作環境と入手方法 ===== */}
+<section class="flat flat--dark" id="spec">
+  <div class="wrap">
+    <div class="flat__head">
+      <p class="eyebrow">Specs</p>
+      <h2 class="display">動作環境と入手方法</h2>
+    </div>
+    <dl class="spec">
+      <div class="spec__row"><dt>対応 OS</dt><dd>{tkclock.osDetail}</dd></div>
+      <div class="spec__row"><dt>必要なもの</dt><dd>Microsoft Edge WebView2 ランタイム（画面の表示に使います）</dd></div>
+      <div class="spec__row"><dt>入手方法</dt><dd>Microsoft Store で配布します（{tkclock.storeUrl ? <a href={tkclock.storeUrl}>掲載ページ</a> : '近日公開'}）</dd></div>
+      <div class="spec__row"><dt>料金</dt><dd>無償版は無料。有償版の機能はアプリ内で購入できます（価格は Microsoft Store の掲載ページに表示します）</dd></div>
+      <div class="spec__row"><dt>表示言語</dt><dd>日本語・英語</dd></div>
+      <div class="spec__row"><dt>通信</dt><dd>アプリ自体は通信を行いません。購入とライセンスの確認は Microsoft Store が行います</dd></div>
+      <div class="spec__row"><dt>販売</dt><dd>{company.nameJa}（iObY）　<a href={paths.tokushoho}>特定商取引法に基づく表記</a></dd></div>
+    </dl>
+  </div>
+</section>
+
+{/* ===== よくある質問 ===== */}
+<section class="flat" id="faq">
+  <div class="wrap">
+    <div class="flat__head">
+      <p class="eyebrow">FAQ</p>
+      <h2 class="display">よくある質問</h2>
+    </div>
+    <div class="faq">
+      <details class="faq__q">
+        <summary>いつから使えますか？</summary>
+        <p class="faq__a">Microsoft Store での公開に向けて準備しています。公開したら、このページからストアへ進めるようにします。</p>
+      </details>
+      <details class="faq__q">
+        <summary>無償版と有償版は、どう違いますか？</summary>
+        <p class="faq__a">選べるテーマと書体の数、フォルダのスライドショー、動画のくりかえし再生が違います。くわしくは<a href="#compare">比較表</a>をご覧ください。アラームやメモなど、それ以外の機能はどちらでも使えます。</p>
+      </details>
+      <details class="faq__q">
+        <summary>有償版にするとき、アプリを入れ直す必要はありますか？</summary>
+        <p class="faq__a">ありません。無償版と有償版は同じアプリで、アプリ内で購入すると有償版の機能が使えるようになります。</p>
+      </details>
+      <details class="faq__q">
+        <summary>個人情報は送られますか？</summary>
+        <p class="faq__a">TKclock 自体は通信を行わず、個人情報を収集・送信しません。設定はお使いの PC の中に保存されます。くわしくは<a href={paths.tkclockPrivacy}>プライバシーポリシー</a>をご覧ください。</p>
+      </details>
+      <details class="faq__q">
+        <summary>返金はできますか？</summary>
+        <p class="faq__a">デジタル商品の性質上、購入後の返品はお受けしていません。返金は Microsoft Store の返金手続き・規定に従います。くわしくは<a href={paths.tokushoho}>特定商取引法に基づく表記</a>をご覧ください。</p>
+      </details>
+      <details class="faq__q">
+        <summary>Mac やスマートフォンでも使えますか？</summary>
+        <p class="faq__a">いまは Windows 版だけです。</p>
+      </details>
+      <details class="faq__q">
+        <summary>問い合わせ先を教えてください</summary>
+        <p class="faq__a"><a href={`mailto:${contact.supportEmail}`}>{contact.supportEmail}</a> までメールでお送りください。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+{/* ===== 入手 ===== */}
+<section class="scene scene--get" id="get">
+  <div class="sky" aria-hidden="true"></div>
+  <Skyline />
+  <div class="scene__in wrap">
+    <div class="scene__head">
+      <p class="eyebrow">Microsoft Store</p>
+      <h2 class="display">机の上の、夕暮れ</h2>
+      <p class="lead">{tkclock.storeUrl ? 'TKclock は Microsoft Store で配布しています。' : 'TKclock は Microsoft Store で公開準備中です。'}まずは無償版から、気軽にためしてみてください。</p>
+      <div class="get__ctas">
+        <StoreButton size="lg" />
+        <a class="pill pill--lg pill--ghost" href="#compare">ちがいを見る</a>
+      </div>
+      <p class="get__legal"><a href={paths.tkclockPrivacy}>プライバシーポリシー</a>　／　<a href={paths.tokushoho}>特定商取引法に基づく表記</a></p>
+    </div>
+  </div>
+</section>
+
+  <p slot="footer-note" class="foot__note">
+    ページ内の時計に使っている書体は、TKclock に同梱している SIL Open Font License 1.1 の書体です（<a href={paths.tkclockFontLicense}>ライセンス全文</a>）。<br />
+    画像・動画はイメージです。Windows は Microsoft Corporation の登録商標です。
+  </p>
 </BaseLayout>
+
+<script>
+  import '../../scripts/tkclock-lp.js';
+</script>
