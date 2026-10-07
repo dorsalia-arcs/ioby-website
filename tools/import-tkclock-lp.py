@@ -3,7 +3,7 @@
 Reads _design/tkclock-lp/index-vi.html (not in git), writes every embedded base64 asset to
 public/tkclock/ and writes the HTML with only those data: URLs replaced by file URLs to
 src/tkclock-lp/index.html, which src/pages/tkclock/index.astro outputs as is.
-The only other change is the page title (see TITLE). Asset names follow the order of appearance in the HTML.
+The only other changes are the owner's edits below (TITLE, REMOVE). Asset names follow the order of appearance in the HTML.
 
     python tools/import-tkclock-lp.py
 """
@@ -25,6 +25,12 @@ MP4 = ["wall-video-1", "wall-video-2", "wall-video-3", "wall-video-4"]
 
 # Browser tab title: product name only (owner's request, 2026-10-08)
 TITLE = "TKclock"
+
+# Parts of the designer's HTML the owner asked to drop (regex, each must match exactly once)
+REMOVE = [
+    # Note under the comparison table (2026-10-08)
+    r'\n[ \t]*<p class="cmp__fine">.*?</p>',
+]
 
 
 def main() -> None:
@@ -49,6 +55,10 @@ def main() -> None:
     out, n = re.subn(r"<title>.*?</title>", f"<title>{TITLE}</title>", out, count=1)
     if n != 1:
         raise SystemExit("<title> not found")
+    for pattern in REMOVE:
+        out, n = re.subn(pattern, "", out, count=1, flags=re.S)
+        if n != 1:
+            raise SystemExit(f"not found: {pattern}")
     if count != {"image/webp": len(WEBP), "font/woff2": len(WOFF2), "video/mp4": len(MP4)}:
         raise SystemExit(f"unexpected asset count {count}; update the name lists")
     OUT_HTML.parent.mkdir(parents=True, exist_ok=True)
