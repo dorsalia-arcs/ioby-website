@@ -1,0 +1,91 @@
+
+<!-- ===== 追加：動作環境（岩渕さんの指示。tools/import-tkclock-lp.py が </main> の前に差し込む） =====
+     置き換えの目印（パーセント記号2つで囲んだ名前）と近日公開の囲みは src/pages/tkclock/index.astro が site.ts の値で処理する -->
+<section class="flat flat--dark" id="spec">
+  <div class="wrap">
+    <div class="flat__head">
+      <p class="eyebrow">Specs</p>
+      <h2 class="display">動作環境</h2>
+    </div>
+
+    <div class="cmp spec">
+      <table class="cmp__table">
+        <caption class="cmp__cap">動作環境と入手方法</caption>
+        <colgroup><col class="spec__k"><col></colgroup>
+        <tbody>
+          <tr>
+            <th class="cmp__k" scope="row">対応 OS</th>
+            <td class="cmp__v">Windows 11（64bit）</td>
+          </tr>
+          <tr>
+            <th class="cmp__k" scope="row">必要なもの</th>
+            <td class="cmp__v">Microsoft Edge WebView2 ランタイム
+              <span class="cmp__note">Windows 11 には標準で入っています</span>
+            </td>
+          </tr>
+          <tr>
+            <th class="cmp__k" scope="row">入手方法</th>
+            <td class="cmp__v"><a class="lnk" href="%%STORE_URL%%">Microsoft Store</a><!--soon-->（近日公開）<!--/soon--></td>
+          </tr>
+          <tr>
+            <th class="cmp__k" scope="row">価格</th>
+            <td class="cmp__v">
+              <span class="cmp__n">無償版 0円／有償版 ￥320</span>
+              <span class="cmp__note">有償版はアプリ内で購入します</span>
+            </td>
+          </tr>
+          <tr>
+            <th class="cmp__k" scope="row">通信</th>
+            <td class="cmp__v">通信しません。個人情報を集めません。
+              <span class="cmp__note"><a class="lnk" href="%%PRIVACY%%">プライバシーポリシー</a></span>
+            </td>
+          </tr>
+          <tr>
+            <th class="cmp__k" scope="row">販売者</th>
+            <td class="cmp__v">%%COMPANY%%
+              <span class="cmp__note"><a class="lnk" href="%%TOKUSHOHO%%">特定商取引法に基づく表記</a></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 追加：よくある質問 ===== -->
+<section class="flat" id="faq">
+  <div class="wrap">
+    <div class="flat__head">
+      <p class="eyebrow">FAQ</p>
+      <h2 class="display">よくある質問</h2>
+    </div>
+
+    <div class="faq">
+      <details class="faq__q">
+        <summary>無償版と有償版は、どう違いますか？</summary>
+        <p class="faq__a">選べるテーマと書体の数、フォルダを選んで映すスライドショー、動画のくりかえし再生が違います。くわしくは<a class="lnk" href="#compare">比較表</a>をご覧ください。アラームやメモなど、表にない機能はどちらの版でも使えます。</p>
+      </details>
+      <details class="faq__q">
+        <summary>有償版にするとき、アプリを入れ直す必要はありますか？</summary>
+        <p class="faq__a">ありません。無償版と有償版は同じアプリです。アプリの中で有償版を購入すると、そのまま有償版の機能が使えるようになります。</p>
+      </details>
+      <details class="faq__q">
+        <summary>個人情報は集めていますか？</summary>
+        <p class="faq__a">TKclock は通信を行わず、個人情報を収集・送信しません。購入とライセンスの確認は Microsoft Store が行います。くわしくは<a class="lnk" href="%%PRIVACY%%">プライバシーポリシー</a>をご覧ください。</p>
+      </details>
+      <details class="faq__q">
+        <summary>返金はできますか？</summary>
+        <p class="faq__a">デジタル商品の性質上、購入後の返品はお受けしていません。返金は Microsoft Store の返金手続き・規定に従います。くわしくは<a class="lnk" href="%%TOKUSHOHO%%">特定商取引法に基づく表記</a>をご覧ください。</p>
+      </details>
+      <details class="faq__q">
+        <summary>Mac やスマートフォンでも使えますか？</summary>
+        <p class="faq__a">現在は Windows 版のみです。</p>
+      </details>
+      <details class="faq__q">
+        <summary>問い合わせ先を教えてください</summary>
+        <p class="faq__a"><a class="lnk" href="mailto:%%SUPPORT_EMAIL%%">%%SUPPORT_EMAIL%%</a> までメールでお送りください。</p>
+      </details>
+    </div>
+  </div>
+</section>
+

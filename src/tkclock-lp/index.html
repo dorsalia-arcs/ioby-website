@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="TKclock — Windows用のデスクトップ時計。無償版は4テーマ4書体、有償版は9テーマ9書体の81通り。インストール不要、オフラインで動きます。">
+<meta name="description" content="TKclock — Windows用のデスクトップ時計。無償版は4テーマ4書体、有償版は9テーマ9書体の81通り。オフラインで動きます。">
 <title>TKclock</title>
 <style>
 /* =========================================================
@@ -807,6 +807,63 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 @font-face{font-family:"tk-impact";src:url(/tkclock/fonts/tk-impact.woff2) format("woff2");font-display:swap;}
 @font-face{font-family:"tk-retro";src:url(/tkclock/fonts/tk-retro.woff2) format("woff2");font-display:swap;}
 @font-face{font-family:"tk-brush";src:url(/tkclock/fonts/tk-brush.woff2) format("woff2");font-display:swap;}
+/* =========================================================
+   追加分（岩渕さんの指示。tools/import-tkclock-lp.py がスタイルシートの末尾に差し込む）
+   LP の既存の値・クラスだけで組む
+========================================================= */
+
+/* ストアの掲載前は href の無い <a>。押せないので、ホバーで色を変えない */
+.pill:not([href]){ cursor:default; }
+.pill:not([href]):hover{ background:var(--pink); border-color:var(--pink); }
+.pill--ghost:not([href]):hover{ background:transparent; border-color:var(--line2); }
+/* 掲載前の注記。ヒーローでは対応 OS の行（.cover__os）の上に載る */
+.soon{ display:block; }
+
+/* 本文中のリンク。.cover__sub と同じ下線の付け方 */
+.lnk{ color:var(--fg); border-bottom:1px solid var(--line2); transition:color .2s var(--ease), border-color .2s var(--ease); }
+a.lnk[href]:hover{ color:var(--pink); border-color:var(--pink); }
+a.lnk:not([href]){ border-bottom:0; }
+
+/* 表題1行ぶんの幅（em） */
+#spec .eyebrow{ --em:5.20; }          /* Specs */
+#spec .display{ --em:4.90; }          /* 動作環境 */
+#faq .eyebrow{ --em:3.40; }           /* FAQ */
+#faq .display{ --em:7.00; }           /* よくある質問 */
+
+/* 動作環境。比較表（.cmp）と同じ罫線の表で、列は2つ */
+.spec__k{ width:38%; }
+.spec tr:first-child .cmp__k, .spec tr:first-child .cmp__v{ border-top:1px solid var(--line2); }
+@media(max-width:719px){
+  .spec .cmp__v::before{ content:none; }
+  .spec tr:first-child .cmp__k, .spec tr:first-child .cmp__v{ border-top:0; }
+}
+
+/* よくある質問。罫線だけで区切る（比較表と同じ線） */
+.faq{ max-width:58rem; margin:0 auto; border-top:1px solid var(--line2); }
+.faq__q{ border-bottom:1px solid var(--line); }
+.faq__q summary{
+  list-style:none; cursor:pointer; position:relative;
+  padding:1.05rem 2.6rem 1.05rem 1rem;
+  font-size:var(--fs-base); font-weight:700; line-height:1.7; color:var(--fg);
+}
+.faq__q summary::-webkit-details-marker{ display:none; }
+.faq__q summary::after{
+  content:"+"; position:absolute; right:1rem; top:50%; transform:translateY(-50%);
+  font-size:1.25rem; font-weight:500; line-height:1; color:var(--pink);
+  transition:transform .2s var(--ease);
+}
+.faq__q[open] summary::after{ transform:translateY(-50%) rotate(45deg); }
+.faq__a{ padding:0 1rem 1.2rem; font-size:var(--fs-base); line-height:1.95; color:var(--dim); }
+@media(prefers-reduced-motion:reduce){
+  .faq__q summary::after{ transition:none; }
+}
+
+/* フッターの法務リンクと書体ライセンス。.foot__base の書式のまま */
+.foot__links{ margin-bottom:.9rem; }
+.foot__links a{ margin-inline:.6em; }
+.foot__base a{ text-decoration:underline; text-underline-offset:.2em; transition:color .2s var(--ease); }
+.foot__base a:hover{ color:var(--pink); }
+
 </style>
 <!-- =====================================================
      配布方法が決まったら差し替える箇所には data-todo を付けてある。
@@ -849,7 +906,7 @@ section[id], footer[id]{ scroll-margin-top:76px; }
   <span class="mast__now" id="stripNow">--:--:--</span>
   <span class="mast__sp"></span>
   <a class="mast__price" href="#compare">有償版 <b>￥320</b></a>
-  <a class="pill pill--sm" href="#" data-todo="free-dl">無償版をダウンロード</a>
+  <a class="pill pill--sm" href="%%STORE_URL%%">無償版をダウンロード</a>
 </header>
 
 <main>
@@ -908,10 +965,10 @@ section[id], footer[id]{ scroll-margin-top:76px; }
           <h1 class="cover__word">TKclock</h1>
           <p class="cover__tag">9つのテーマと9つの書体。<br>81とおりの見た目から、その日の気分で選ぶ。</p>
           <div class="cover__ctas">
-            <a class="pill pill--lg" href="#" data-todo="free-dl">無償版をダウンロード</a>
+            <a class="pill pill--lg" href="%%STORE_URL%%">無償版をダウンロード</a>
             <a class="cover__sub" href="#compare">有償版 <b>￥320</b></a>
           </div>
-          <p class="cover__os">Windows 11（64bit）</p>
+          <p class="cover__os"><!--soon--><span class="soon">Microsoft Store で近日公開</span><!--/soon-->Windows 11（64bit）</p>
           <div class="cover__cue" id="dayCue" aria-hidden="true">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </div>
@@ -1188,10 +1245,101 @@ section[id], footer[id]{ scroll-margin-top:76px; }
           <div class="cmp__pv"><b>￥320</b></div>
         </div>
         <div class="cmp__ctas">
-          <a class="pill pill--lg" href="#" data-todo="free-dl">無償版をダウンロード</a>
-          <a class="pill pill--lg pill--ghost" href="#" data-todo="buy">有償版を購入</a>
+          <a class="pill pill--lg" href="%%STORE_URL%%">無償版をダウンロード</a>
+          <a class="pill pill--lg pill--ghost" href="%%STORE_URL%%">有償版を購入</a>
         </div>
+        <!--soon--><p class="cmp__fine">Microsoft Store で近日公開</p><!--/soon-->
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 追加：動作環境（岩渕さんの指示。tools/import-tkclock-lp.py が </main> の前に差し込む） =====
+     置き換えの目印（パーセント記号2つで囲んだ名前）と近日公開の囲みは src/pages/tkclock/index.astro が site.ts の値で処理する -->
+<section class="flat flat--dark" id="spec">
+  <div class="wrap">
+    <div class="flat__head">
+      <p class="eyebrow">Specs</p>
+      <h2 class="display">動作環境</h2>
+    </div>
+
+    <div class="cmp spec">
+      <table class="cmp__table">
+        <caption class="cmp__cap">動作環境と入手方法</caption>
+        <colgroup><col class="spec__k"><col></colgroup>
+        <tbody>
+          <tr>
+            <th class="cmp__k" scope="row">対応 OS</th>
+            <td class="cmp__v">Windows 11（64bit）</td>
+          </tr>
+          <tr>
+            <th class="cmp__k" scope="row">必要なもの</th>
+            <td class="cmp__v">Microsoft Edge WebView2 ランタイム
+              <span class="cmp__note">Windows 11 には標準で入っています</span>
+            </td>
+          </tr>
+          <tr>
+            <th class="cmp__k" scope="row">入手方法</th>
+            <td class="cmp__v"><a class="lnk" href="%%STORE_URL%%">Microsoft Store</a><!--soon-->（近日公開）<!--/soon--></td>
+          </tr>
+          <tr>
+            <th class="cmp__k" scope="row">価格</th>
+            <td class="cmp__v">
+              <span class="cmp__n">無償版 0円／有償版 ￥320</span>
+              <span class="cmp__note">有償版はアプリ内で購入します</span>
+            </td>
+          </tr>
+          <tr>
+            <th class="cmp__k" scope="row">通信</th>
+            <td class="cmp__v">通信しません。個人情報を集めません。
+              <span class="cmp__note"><a class="lnk" href="%%PRIVACY%%">プライバシーポリシー</a></span>
+            </td>
+          </tr>
+          <tr>
+            <th class="cmp__k" scope="row">販売者</th>
+            <td class="cmp__v">%%COMPANY%%
+              <span class="cmp__note"><a class="lnk" href="%%TOKUSHOHO%%">特定商取引法に基づく表記</a></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 追加：よくある質問 ===== -->
+<section class="flat" id="faq">
+  <div class="wrap">
+    <div class="flat__head">
+      <p class="eyebrow">FAQ</p>
+      <h2 class="display">よくある質問</h2>
+    </div>
+
+    <div class="faq">
+      <details class="faq__q">
+        <summary>無償版と有償版は、どう違いますか？</summary>
+        <p class="faq__a">選べるテーマと書体の数、フォルダを選んで映すスライドショー、動画のくりかえし再生が違います。くわしくは<a class="lnk" href="#compare">比較表</a>をご覧ください。アラームやメモなど、表にない機能はどちらの版でも使えます。</p>
+      </details>
+      <details class="faq__q">
+        <summary>有償版にするとき、アプリを入れ直す必要はありますか？</summary>
+        <p class="faq__a">ありません。無償版と有償版は同じアプリです。アプリの中で有償版を購入すると、そのまま有償版の機能が使えるようになります。</p>
+      </details>
+      <details class="faq__q">
+        <summary>個人情報は集めていますか？</summary>
+        <p class="faq__a">TKclock は通信を行わず、個人情報を収集・送信しません。購入とライセンスの確認は Microsoft Store が行います。くわしくは<a class="lnk" href="%%PRIVACY%%">プライバシーポリシー</a>をご覧ください。</p>
+      </details>
+      <details class="faq__q">
+        <summary>返金はできますか？</summary>
+        <p class="faq__a">デジタル商品の性質上、購入後の返品はお受けしていません。返金は Microsoft Store の返金手続き・規定に従います。くわしくは<a class="lnk" href="%%TOKUSHOHO%%">特定商取引法に基づく表記</a>をご覧ください。</p>
+      </details>
+      <details class="faq__q">
+        <summary>Mac やスマートフォンでも使えますか？</summary>
+        <p class="faq__a">現在は Windows 版のみです。</p>
+      </details>
+      <details class="faq__q">
+        <summary>問い合わせ先を教えてください</summary>
+        <p class="faq__a"><a class="lnk" href="mailto:%%SUPPORT_EMAIL%%">%%SUPPORT_EMAIL%%</a> までメールでお送りください。</p>
+      </details>
     </div>
   </div>
 </section>
@@ -1201,8 +1349,9 @@ section[id], footer[id]{ scroll-margin-top:76px; }
 <!-- ===== フッター ===== -->
 <footer class="foot">
   <div class="wrap">
+    <p class="foot__base foot__links"><a href="%%PRIVACY%%">プライバシーポリシー</a><a href="%%TOKUSHOHO%%">特定商取引法に基づく表記</a><a href="mailto:%%SUPPORT_EMAIL%%">お問い合わせ</a></p>
     <p class="foot__base">
-      同梱の日本語書体は SIL Open Font License 1.1 のもとで配布されているものを使用しています。<br>
+      同梱の日本語書体は <a href="%%FONT_LICENSE%%">SIL Open Font License 1.1</a> のもとで配布されているものを使用しています。<br>
       Windows は Microsoft Corporation の登録商標です。
     </p>
   </div>

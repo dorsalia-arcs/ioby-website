@@ -1,0 +1,57 @@
+
+/* =========================================================
+   追加分（岩渕さんの指示。tools/import-tkclock-lp.py がスタイルシートの末尾に差し込む）
+   LP の既存の値・クラスだけで組む
+========================================================= */
+
+/* ストアの掲載前は href の無い <a>。押せないので、ホバーで色を変えない */
+.pill:not([href]){ cursor:default; }
+.pill:not([href]):hover{ background:var(--pink); border-color:var(--pink); }
+.pill--ghost:not([href]):hover{ background:transparent; border-color:var(--line2); }
+/* 掲載前の注記。ヒーローでは対応 OS の行（.cover__os）の上に載る */
+.soon{ display:block; }
+
+/* 本文中のリンク。.cover__sub と同じ下線の付け方 */
+.lnk{ color:var(--fg); border-bottom:1px solid var(--line2); transition:color .2s var(--ease), border-color .2s var(--ease); }
+a.lnk[href]:hover{ color:var(--pink); border-color:var(--pink); }
+a.lnk:not([href]){ border-bottom:0; }
+
+/* 表題1行ぶんの幅（em） */
+#spec .eyebrow{ --em:5.20; }          /* Specs */
+#spec .display{ --em:4.90; }          /* 動作環境 */
+#faq .eyebrow{ --em:3.40; }           /* FAQ */
+#faq .display{ --em:7.00; }           /* よくある質問 */
+
+/* 動作環境。比較表（.cmp）と同じ罫線の表で、列は2つ */
+.spec__k{ width:38%; }
+.spec tr:first-child .cmp__k, .spec tr:first-child .cmp__v{ border-top:1px solid var(--line2); }
+@media(max-width:719px){
+  .spec .cmp__v::before{ content:none; }
+  .spec tr:first-child .cmp__k, .spec tr:first-child .cmp__v{ border-top:0; }
+}
+
+/* よくある質問。罫線だけで区切る（比較表と同じ線） */
+.faq{ max-width:58rem; margin:0 auto; border-top:1px solid var(--line2); }
+.faq__q{ border-bottom:1px solid var(--line); }
+.faq__q summary{
+  list-style:none; cursor:pointer; position:relative;
+  padding:1.05rem 2.6rem 1.05rem 1rem;
+  font-size:var(--fs-base); font-weight:700; line-height:1.7; color:var(--fg);
+}
+.faq__q summary::-webkit-details-marker{ display:none; }
+.faq__q summary::after{
+  content:"+"; position:absolute; right:1rem; top:50%; transform:translateY(-50%);
+  font-size:1.25rem; font-weight:500; line-height:1; color:var(--pink);
+  transition:transform .2s var(--ease);
+}
+.faq__q[open] summary::after{ transform:translateY(-50%) rotate(45deg); }
+.faq__a{ padding:0 1rem 1.2rem; font-size:var(--fs-base); line-height:1.95; color:var(--dim); }
+@media(prefers-reduced-motion:reduce){
+  .faq__q summary::after{ transition:none; }
+}
+
+/* フッターの法務リンクと書体ライセンス。.foot__base の書式のまま */
+.foot__links{ margin-bottom:.9rem; }
+.foot__links a{ margin-inline:.6em; }
+.foot__base a{ text-decoration:underline; text-underline-offset:.2em; transition:color .2s var(--ease); }
+.foot__base a:hover{ color:var(--pink); }

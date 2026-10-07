@@ -3,7 +3,10 @@
 Reads _design/tkclock-lp/index-vi.html (not in git), writes every embedded base64 asset to
 public/tkclock/ and writes the HTML with only those data: URLs replaced by file URLs to
 src/tkclock-lp/index.html, which src/pages/tkclock/index.astro outputs as is.
-The only other changes are the owner's edits below (TITLE, REMOVE). Asset names follow the order of appearance in the HTML.
+The only other changes are the owner's edits below (TITLE, REMOVE, REPLACE, INSERT; the inserted
+blocks live in src/tkclock-lp/additions.css and sections.html). Every edit must find its anchor in
+the designer's HTML, otherwise the script stops. Asset names follow the order of appearance in the HTML.
+%%NAME%% markers and <!--soon--> blocks are resolved from src/data/site.ts by src/pages/tkclock/index.astro.
 
     python tools/import-tkclock-lp.py
 """
@@ -14,6 +17,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "_design" / "tkclock-lp" / "index-vi.html"
 OUT_HTML = ROOT / "src" / "tkclock-lp" / "index.html"
+ADD_CSS = ROOT / "src" / "tkclock-lp" / "additions.css"
+ADD_SECTIONS = ROOT / "src" / "tkclock-lp" / "sections.html"
 MEDIA = ROOT / "public" / "tkclock" / "media"
 FONTS = ROOT / "public" / "tkclock" / "fonts"
 
@@ -30,6 +35,35 @@ TITLE = "TKclock"
 REMOVE = [
     # Note under the comparison table (2026-10-08)
     r'\n[ \t]*<p class="cmp__fine">.*?</p>',
+]
+
+STORE = 'href="%%STORE_URL%%"'
+SOON = '<!--soon--><span class="soon">Microsoft Store で近日公開</span><!--/soon-->'
+
+
+# Owner's edits (2026-10-08): (regex, replacement, expected number of matches)
+REPLACE = [
+    # Description: drop "インストール不要、" only
+    (r'(<meta name="description" content="[^"]*?)インストール不要、', r'\1', 1),
+    # Store buttons: labels and look stay; the link target comes from site.ts
+    (r'href="#" data-todo="free-dl"', STORE, 3),
+    (r'href="#" data-todo="buy"', STORE, 1),
+    # "coming soon" notes near the buttons, in the LP's own caption styles
+    (r'<p class="cover__os">', '<p class="cover__os">' + SOON, 1),
+    (r'(<div class="cmp__ctas">.*?</div>)',
+     r'\1' + '\n        <!--soon--><p class="cmp__fine">Microsoft Store で近日公開</p><!--/soon-->', 1),
+    # Footer: link the font license, add legal links in the same .foot__base style
+    (r'SIL Open Font License 1\.1', '<a href="%%FONT_LICENSE%%">SIL Open Font License 1.1</a>', 1),
+    (r'(<footer class="foot">\s*<div class="wrap">\n)',
+     r'\1' + '    <p class="foot__base foot__links"><a href="%%PRIVACY%%">プライバシーポリシー</a>'
+     '<a href="%%TOKUSHOHO%%">特定商取引法に基づく表記</a>'
+     '<a href="mailto:%%SUPPORT_EMAIL%%">お問い合わせ</a></p>\n', 1),
+]
+
+# Added blocks: (anchor regex, file, expected matches). The file goes right before the anchor.
+INSERT = [
+    (r'\n</main>', ADD_SECTIONS, 1),
+    (r'\n</style>', ADD_CSS, 1),
 ]
 
 
@@ -59,6 +93,18 @@ def main() -> None:
         out, n = re.subn(pattern, "", out, count=1, flags=re.S)
         if n != 1:
             raise SystemExit(f"not found: {pattern}")
+    for pattern, replacement, expected in REPLACE:
+        out, n = re.subn(pattern, replacement, out, flags=re.S)
+        if n != expected:
+            raise SystemExit(f"{pattern}: matched {n}, expected {expected}")
+    for pattern, path, expected in INSERT:
+        block = path.read_bytes().decode("utf-8").replace("\r\n", "\n").strip("\n")
+        # "</style" anywhere in the CSS, even in a comment, ends the <style> element early
+        if path.suffix == ".css" and re.search(r"</style", block, re.I):
+            raise SystemExit(f"{path.name} must not contain '</style', even in comments")
+        out, n = re.subn(pattern, lambda m: "\n" + block + "\n" + m.group(0), out)
+        if n != expected:
+            raise SystemExit(f"{pattern}: matched {n}, expected {expected}")
     if count != {"image/webp": len(WEBP), "font/woff2": len(WOFF2), "video/mp4": len(MP4)}:
         raise SystemExit(f"unexpected asset count {count}; update the name lists")
     OUT_HTML.parent.mkdir(parents=True, exist_ok=True)

@@ -27,8 +27,7 @@ export const paths = {
 };
 
 // storeUrl stays null until the Microsoft Store listing is public. Every store button on the
-// site reads it: null shows "近日公開", a URL turns them into links.
-// Price is shown on the store listing only (not decided for the site).
+// site reads it, including the TKclock LP buttons: null shows "近日公開", a URL turns them into links.
 export const tkclock = {
   storeUrl: null as string | null,
   // From the MSIX manifest: MinVersion 10.0.19041.0 (= Windows 10 2004), x64 package
