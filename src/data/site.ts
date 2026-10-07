@@ -9,6 +9,7 @@ export const company = {
 
 export const contact = {
   supportEmail: 'support@ioby.net',
+  phone: '050-5586-3492',
 };
 
 export const brand = {
