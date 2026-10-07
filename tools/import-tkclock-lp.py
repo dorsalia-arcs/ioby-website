@@ -56,7 +56,8 @@ REPLACE = [
     (r'(<div class="cmp__ctas">.*?</div>)',
      r'\1' + '\n        <!--soon--><p class="cmp__fine">Microsoft Store で近日公開</p><!--/soon-->', 1),
     # Footer: link the font license, add legal links in the same .foot__base style
-    (r'SIL Open Font License 1\.1', '<a href="%%FONT_LICENSE%%">SIL Open Font License 1.1</a>', 1),
+    # Font license sentence in the footer: dropped (2026-10-08). The full text stays at /tkclock/fonts/LICENSE.txt
+    (r'\n[ \t]*同梱の日本語書体は SIL Open Font License 1\.1[^\n]*<br>', '', 1),
     (r'(<footer class="foot">\s*<div class="wrap">\n)',
      r'\1' + '    <p class="foot__base foot__links"><a href="%%PRIVACY%%">プライバシーポリシー</a>'
      '<a href="%%TOKUSHOHO%%">特定商取引法に基づく表記</a>'
