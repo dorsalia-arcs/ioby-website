@@ -191,6 +191,7 @@ const fullTitle = title ? `${title} | iObY` : 'iObY';
         font-size: 1.5rem; font-weight: 700; letter-spacing: .06em; line-height: 1;
         font-style: italic; color: #fff;
       }
+      .mono__logo { display: block; height: 36px; width: auto; }
       .mast__nav { display: flex; gap: 1.1rem; font-size: var(--fs-sm); letter-spacing: .1em; }
       .mast__nav a { color: rgba(255, 255, 255, .8); transition: color .2s var(--ease); }
       .mast__nav a:hover, .mast__nav a[aria-current="page"] { color: var(--pink); }
@@ -276,7 +277,7 @@ const fullTitle = title ? `${title} | iObY` : 'iObY';
     </svg>
 
     <header class="mast" id="mast">
-      <a class="mono" href={paths.home}>iObY</a>
+      <a class="mono" href={paths.home}><img class="mono__logo" src="/ioby-logo.svg" alt="iObY" width="40" height="44" /></a>
       <nav class="mast__nav" aria-label="製品">
         <a href={paths.iobyclock} aria-current={Astro.url.pathname === paths.iobyclock ? 'page' : undefined}>iObY Clock</a>
       </nav>
