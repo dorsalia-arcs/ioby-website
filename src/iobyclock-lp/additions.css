@@ -55,3 +55,6 @@ a.lnk:not([href]){ border-bottom:0; }
 .foot__links a{ margin-inline:.6em; }
 .foot__base a{ text-decoration:underline; text-underline-offset:.2em; transition:color .2s var(--ease); }
 .foot__base a:hover{ color:var(--pink); }
+
+/* iObY logo in the header (replaces the "TK" mark) */
+.mono__logo{ display:block; height:36px; width:auto; }

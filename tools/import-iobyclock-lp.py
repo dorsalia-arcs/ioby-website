@@ -49,6 +49,9 @@ SOON = '<!--soon--><span class="soon">Microsoft Store で近日公開</span><!--
 REPLACE = [
     # Product name in the designer's text (description, headline, reel label, desktop icon)
     (r'TKclock', NAME, 6),  # 4 visible + 2 in comments (comments are stripped later)
+    # Header mark: the iObY logo instead of "TK" (2026-10-10). Traced from the owner's PNG into public/ioby-logo.svg
+    (r'<a class="mono" href="#cover">TK</a>',
+     '<a class="mono" href="#cover"><img class="mono__logo" src="/ioby-logo.svg" alt="iObY" width="40" height="44"></a>', 1),
     # Description: drop "インストール不要、" only
     (r'(<meta name="description" content="[^"]*?)インストール不要、', r'\1', 1),
     # Store buttons: labels and look stay; the link target comes from site.ts
