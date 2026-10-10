@@ -26,7 +26,7 @@ const fullTitle = title ? `${title} | iObY` : 'iObY';
     <title>{fullTitle}</title>
     <slot name="head" />
     <style is:global>
-      /* Design language follows the TKclock LP from the designer (_design/tkclock-lp). Dark only. */
+      /* Design language follows the iObY Clock LP from the designer (_design/iobyclock-lp). Dark only. */
       :root {
         color-scheme: dark;
 
@@ -278,7 +278,7 @@ const fullTitle = title ? `${title} | iObY` : 'iObY';
     <header class="mast" id="mast">
       <a class="mono" href={paths.home}>iObY</a>
       <nav class="mast__nav" aria-label="製品">
-        <a href={paths.tkclock} aria-current={Astro.url.pathname === paths.tkclock ? 'page' : undefined}>iObY Clock</a>
+        <a href={paths.iobyclock} aria-current={Astro.url.pathname === paths.iobyclock ? 'page' : undefined}>iObY Clock</a>
       </nav>
       <span class="mast__sp"></span>
       <slot name="mast" />
@@ -309,9 +309,9 @@ const fullTitle = title ? `${title} | iObY` : 'iObY';
       <div class="wrap foot__in">
         <a class="mono" href={paths.home}>iObY</a>
         <ul class="foot__links">
-          <li><a href={paths.tkclock}>iObY Clock</a></li>
+          <li><a href={paths.iobyclock}>iObY Clock</a></li>
           <li><a href={paths.tokushoho}>特定商取引法に基づく表記</a></li>
-          <li><a href={paths.tkclockPrivacy}>プライバシーポリシー（iObY Clock）</a></li>
+          <li><a href={paths.iobyclockPrivacy}>プライバシーポリシー（iObY Clock）</a></li>
           <li><a href={`mailto:${contact.supportEmail}`}>お問い合わせ</a></li>
         </ul>
         <slot name="footer-note" />

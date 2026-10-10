@@ -15,7 +15,7 @@ import { brand, company, contact, paths } from '../data/site';
       <h1 class="hero__word">iObY</h1>
       <p class="hero__tag">{brand.summary}</p>
       <div class="hero__ctas">
-        <a class="pill pill--lg" href={paths.tkclock}>iObY Clock を見る</a>
+        <a class="pill pill--lg" href={paths.iobyclock}>iObY Clock を見る</a>
         <a class="hero__sub" href={`mailto:${contact.supportEmail}`}>お問い合わせ</a>
       </div>
     </div>
@@ -44,7 +44,7 @@ import { brand, company, contact, paths } from '../data/site';
         <p class="eyebrow" style="--em:9">Products</p>
         <h2 class="display" style="--em:7.5">TK シリーズ</h2>
       </div>
-      <a class="product" href={paths.tkclock}>
+      <a class="product" href={paths.iobyclock}>
         <span class="product__img" aria-hidden="true"></span>
         <span class="product__body">
           <span class="product__name">iObY Clock</span>
@@ -61,7 +61,7 @@ import { brand, company, contact, paths } from '../data/site';
       <h2 class="about__h">各種表記</h2>
       <ul class="about__links">
         <li><a href={paths.tokushoho}>特定商取引法に基づく表記</a></li>
-        <li><a href={paths.tkclockPrivacy}>プライバシーポリシー（iObY Clock）</a></li>
+        <li><a href={paths.iobyclockPrivacy}>プライバシーポリシー（iObY Clock）</a></li>
       </ul>
     </div>
   </section>
@@ -115,7 +115,7 @@ import { brand, company, contact, paths } from '../data/site';
   @media (min-width: 760px) { .product { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); } }
   .product__img {
     min-height: 220px; aspect-ratio: 16 / 10;
-    background: url(/tkclock/media/ph-sea.webp) center / cover;
+    background: url(/iobyclock/media/ph-sea.webp) center / cover;
   }
   .product__body { display: grid; align-content: center; gap: .7rem; padding: clamp(1.4rem, 3vw, 2.4rem); }
   .product__name { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.2rem); font-weight: 300; letter-spacing: .08em; line-height: 1.2; }

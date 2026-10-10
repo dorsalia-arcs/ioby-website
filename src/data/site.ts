@@ -21,14 +21,14 @@ export const brand = {
 
 export const paths = {
   home: '/',
-  tkclock: '/tkclock/',
-  tkclockPrivacy: '/tkclock/privacy/',
+  iobyclock: '/iobyclock/',
+  iobyclockPrivacy: '/iobyclock/privacy/',
   tokushoho: '/tokushoho/',
-  tkclockFontLicense: '/tkclock/fonts/LICENSE.txt',
+  iobyclockFontLicense: '/iobyclock/fonts/LICENSE.txt',
 };
 
-// storeUrl stays null until the Microsoft Store listing is public. The TKclock LP buttons read it:
+// storeUrl stays null until the Microsoft Store listing is public. The iObY Clock LP buttons read it:
 // null shows "近日公開", a URL turns them into links.
-export const tkclock = {
+export const iobyclock = {
   storeUrl: null as string | null,
 };

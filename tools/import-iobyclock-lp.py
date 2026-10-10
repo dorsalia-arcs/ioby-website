@@ -1,15 +1,15 @@
-"""Import the designer's TKclock LP into the site.
+"""Import the designer's iObY Clock LP into the site.
 
-Reads _design/tkclock-lp/index-vi.html (not in git), writes every embedded base64 asset to
-public/tkclock/ and writes the HTML with only those data: URLs replaced by file URLs to
-src/tkclock-lp/index.html, which src/pages/tkclock/index.astro outputs as is.
+Reads _design/iobyclock-lp/index-vi.html (not in git), writes every embedded base64 asset to
+public/iobyclock/ and writes the HTML with only those data: URLs replaced by file URLs to
+src/iobyclock-lp/index.html, which src/pages/iobyclock/index.astro outputs as is.
 The only other changes are the owner's edits below (TITLE, REMOVE, REPLACE, INSERT; the inserted
-blocks live in src/tkclock-lp/additions.css and sections.html). Every edit must find its anchor in
+blocks live in src/iobyclock-lp/additions.css and sections.html). Every edit must find its anchor in
 the designer's HTML, otherwise the script stops. Asset names follow the order of appearance in the HTML.
-%%NAME%% markers and <!--soon--> blocks are resolved from src/data/site.ts by src/pages/tkclock/index.astro.
+%%NAME%% markers and <!--soon--> blocks are resolved from src/data/site.ts by src/pages/iobyclock/index.astro.
 Finally every comment (HTML, CSS, JS) is removed, since the page is public (tools/strip_comments.py).
 
-    python tools/import-tkclock-lp.py
+    python tools/import-iobyclock-lp.py
 """
 import base64
 import re
@@ -18,12 +18,12 @@ from pathlib import Path
 from strip_comments import check_removed, strip_html
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "_design" / "tkclock-lp" / "index-vi.html"
-OUT_HTML = ROOT / "src" / "tkclock-lp" / "index.html"
-ADD_CSS = ROOT / "src" / "tkclock-lp" / "additions.css"
-ADD_SECTIONS = ROOT / "src" / "tkclock-lp" / "sections.html"
-MEDIA = ROOT / "public" / "tkclock" / "media"
-FONTS = ROOT / "public" / "tkclock" / "fonts"
+SRC = ROOT / "_design" / "iobyclock-lp" / "index-vi.html"
+OUT_HTML = ROOT / "src" / "iobyclock-lp" / "index.html"
+ADD_CSS = ROOT / "src" / "iobyclock-lp" / "additions.css"
+ADD_SECTIONS = ROOT / "src" / "iobyclock-lp" / "sections.html"
+MEDIA = ROOT / "public" / "iobyclock" / "media"
+FONTS = ROOT / "public" / "iobyclock" / "fonts"
 
 WEBP = ["ph-sea", "ph-night", "ph-mount", "ph-fire",
         "wall-video-1-poster", "wall-video-2-poster", "wall-video-3-poster", "wall-video-4-poster",
@@ -84,11 +84,11 @@ def main() -> None:
         i = count[kind]
         count[kind] += 1
         if kind == "image/webp":
-            path, url = MEDIA / f"{WEBP[i]}.webp", f"/tkclock/media/{WEBP[i]}.webp"
+            path, url = MEDIA / f"{WEBP[i]}.webp", f"/iobyclock/media/{WEBP[i]}.webp"
         elif kind == "font/woff2":
-            path, url = FONTS / f"tk-{WOFF2[i]}.woff2", f"/tkclock/fonts/tk-{WOFF2[i]}.woff2"
+            path, url = FONTS / f"tk-{WOFF2[i]}.woff2", f"/iobyclock/fonts/tk-{WOFF2[i]}.woff2"
         else:
-            path, url = MEDIA / f"{MP4[i]}.mp4", f"/tkclock/media/{MP4[i]}.mp4"
+            path, url = MEDIA / f"{MP4[i]}.mp4", f"/iobyclock/media/{MP4[i]}.mp4"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(base64.b64decode(data))
         return url

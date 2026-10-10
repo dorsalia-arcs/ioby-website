@@ -1,0 +1,26 @@
+---
+// /iobyclock/ is the designer's LP plus the owner's edits, generated into src/iobyclock-lp/index.html
+// by tools/import-iobyclock-lp.py. Do not edit that file by hand; change the script or the files
+// it inserts (src/iobyclock-lp/additions.css, sections.html), or re-import a new designer version.
+// Here only the %%NAME%% markers and the <!--soon--> blocks are resolved from site.ts.
+import lp from '../../iobyclock-lp/index.html?raw';
+import { company, contact, paths, iobyclock } from '../../data/site';
+
+const storeUrl = iobyclock.storeUrl;
+const html = lp
+  .replaceAll(
+    'href="%%STORE_URL%%"',
+    // Before the listing is public the buttons have no href, so they cannot be followed
+    storeUrl ? `href="${storeUrl}"` : 'aria-disabled="true" title="Microsoft Store で近日公開"',
+  )
+  .replace(/<!--soon-->([\s\S]*?)<!--\/soon-->/g, storeUrl ? '' : '$1')
+  .replaceAll('%%PRIVACY%%', paths.iobyclockPrivacy)
+  .replaceAll('%%TOKUSHOHO%%', paths.tokushoho)
+  .replaceAll('%%FONT_LICENSE%%', paths.iobyclockFontLicense)
+  .replaceAll('%%SUPPORT_EMAIL%%', contact.supportEmail)
+  .replaceAll('%%COMPANY%%', company.nameJa);
+
+const left = html.match(/%%[A-Z_]+%%/);
+if (left) throw new Error(`Unresolved marker in iObY Clock LP: ${left[0]}`);
+---
+<Fragment set:html={html} />
