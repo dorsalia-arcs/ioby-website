@@ -1,6 +1,7 @@
 ---
-// This URL (https://ioby.net/iobyclock/privacy/) is embedded in the TKclock exe and
-// registered with Microsoft Store. Never move or rename this page.
+// This URL (https://ioby.net/iobyclock/privacy/) is embedded in the app and registered with
+// Microsoft Store and Google Play. Never move or rename this page.
+// Platform-specific items are written as "Windows 版 / Android 版" lists so an iOS line can be added later.
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { company, contact } from '../../../data/site';
 
@@ -11,59 +12,109 @@ const enactedEn = 'October 3, 2026';
   <h1>iObY Clock プライバシーポリシー</h1>
 
   <section>
-    <p>{company.nameJa}（以下「当社」）は、Windows 用アプリケーション「iObY Clock」（以下「本アプリ」）における利用者の情報の取り扱いについて、次のとおり定めます。</p>
+    <p>{company.nameJa}（以下「当社」）は、アプリケーション「iObY Clock」（以下「本アプリ」）における利用者の情報の取り扱いについて、次のとおり定めます。本ポリシーは、本アプリの次の版に適用されます。</p>
+    <ul>
+      <li>Windows 版（Microsoft Store で配布）</li>
+      <li>Android 版（Google Play で配布）</li>
+    </ul>
 
     <h2>1. 情報の収集・送信について</h2>
-    <p>本アプリ自体は通信を行いません。本アプリが利用者の個人情報を収集することや、外部へ送信することはありません。</p>
+    <p>本アプリ自体は、当社や第三者のサーバーと通信を行いません。本アプリが利用者の個人情報を収集することや、外部へ送信することはありません。</p>
+    <p>ただし、本アプリおよびアドオンの購入とライセンスの確認の際には、Microsoft Store または Google Play の仕組みを通じて、各ストアのサーバーとの通信が行われます（3 を参照）。</p>
 
     <h2>2. 設定の保存について</h2>
-    <p>本アプリの設定は、利用者のPC内にローカルのファイルとして保存されます。この情報が当社や第三者に送信されることはありません。</p>
+    <p>本アプリの設定は、利用者がお使いの端末（PC・スマートフォン）内に保存されます。この情報が当社や第三者に送信されることはありません。</p>
 
     <h2>3. 購入とライセンス確認について</h2>
-    <p>本アプリおよびアドオンの購入とライセンスの確認は、Microsoft Store が行います。これらに関する情報は、<a href="https://privacy.microsoft.com/ja-jp/privacystatement">Microsoft のプライバシーに関する声明</a>に従って取り扱われます。</p>
+    <p>本アプリおよびアドオンの購入とライセンスの確認は、次のストアが行います。これらに関する情報は、各社の方針に従って取り扱われます。</p>
+    <ul>
+      <li>Windows 版: Microsoft Store（<a href="https://privacy.microsoft.com/ja-jp/privacystatement">Microsoft のプライバシーに関する声明</a>）</li>
+      <li>Android 版: Google Play（<a href="https://policies.google.com/privacy">Google のプライバシーポリシー</a>）</li>
+    </ul>
 
-    <h2>4. Microsoft Edge WebView2 ランタイムについて</h2>
-    <p>本アプリは画面の表示に Microsoft Edge WebView2 ランタイムを使用します。WebView2 ランタイムは、Microsoft の方針に従って動作します（ランタイムの更新や、Windows の診断データの設定など）。</p>
+    <h2>4. 背景の画像・動画について</h2>
+    <p>本アプリでは、利用者が選んだ画像・動画を背景に使えます。</p>
+    <ul>
+      <li>Windows 版: ファイルを選んだ場合は、そのファイルをアプリの保存領域にコピーして使います。フォルダを選んだ場合（スライドショー）は、コピーせずに、そのフォルダ内の画像・動画を読み込んで表示します。</li>
+      <li>Android 版: OS の写真選択画面で利用者が選んだ画像・動画だけを、アプリの保存領域にコピーして使います。写真ライブラリ全体にはアクセスしません。</li>
+    </ul>
+    <p>いずれの版でも、利用者が選んだファイル・フォルダ以外を読み込むことはなく、これらのファイルを端末の外へ送ることはありません。</p>
 
-    <h2>5. 本ポリシーの改定</h2>
+    <h2>5. 画面の表示に使う部品について</h2>
+    <p>本アプリは、画面の表示に次の部品を使用します。これらの部品は、各社の方針に従って動作・更新されます。</p>
+    <ul>
+      <li>Windows 版: Microsoft Edge WebView2 ランタイム。Microsoft の方針に従って動作します（ランタイムの更新や、Windows の診断データの設定など）。</li>
+      <li>Android 版: Android System WebView。Google の方針に従って更新されます。</li>
+    </ul>
+
+    <h2>6. 本ポリシーの改定</h2>
     <p>本ポリシーを改定する場合は、このページでお知らせします。</p>
 
-    <h2>6. 運営者・お問い合わせ</h2>
+    <h2>7. 運営者・お問い合わせ</h2>
     <p>
       運営者: {company.nameJa}<br />
       お問い合わせ: <a href={`mailto:${contact.supportEmail}`}>{contact.supportEmail}</a>
     </p>
 
-    <p>制定日: {enactedJa}<br>改定日: 2026年10月10日（製品名を TKclock から iObY Clock に変更）</p>
+    <p>
+      制定日: {enactedJa}<br>
+      改定日: 2026年10月10日（製品名を TKclock から iObY Clock に変更）<br>
+      改定日: 2026年10月11日（Android 版の追加に伴う改定）
+    </p>
   </section>
 
   <hr />
 
   <section lang="en">
     <h1>iObY Clock Privacy Policy</h1>
-    <p>{company.nameEn} ("we", "us") describes below how the Windows application "iObY Clock" (the "App") handles user information.</p>
+    <p>{company.nameEn} ("we", "us") describes below how the application "iObY Clock" (the "App") handles user information. This policy applies to the following versions of the App:</p>
+    <ul>
+      <li>Windows version (distributed through Microsoft Store)</li>
+      <li>Android version (distributed through Google Play)</li>
+    </ul>
 
     <h2>1. Collection and Transmission of Information</h2>
-    <p>The App itself does not communicate over the network. The App does not collect any personal information from users, nor does it transmit any information externally.</p>
+    <p>The App itself does not communicate with our servers or any third-party servers. The App does not collect any personal information from users, nor does it transmit any information externally.</p>
+    <p>However, when you purchase the App or its add-ons and when licenses are verified, communication with the store's servers takes place through Microsoft Store or Google Play (see section 3).</p>
 
     <h2>2. Storage of Settings</h2>
-    <p>The App's settings are stored as local files on the user's PC. This information is never sent to us or to any third party.</p>
+    <p>The App's settings are stored on your device (PC or smartphone). This information is never sent to us or to any third party.</p>
 
     <h2>3. Purchases and License Verification</h2>
-    <p>Purchases of the App and its add-ons, and license verification, are handled by Microsoft Store. Related information is handled in accordance with the <a href="https://privacy.microsoft.com/en-us/privacystatement">Microsoft Privacy Statement</a>.</p>
+    <p>Purchases of the App and its add-ons, and license verification, are handled by the following stores. Related information is handled in accordance with each company's policy.</p>
+    <ul>
+      <li>Windows version: Microsoft Store (<a href="https://privacy.microsoft.com/en-us/privacystatement">Microsoft Privacy Statement</a>)</li>
+      <li>Android version: Google Play (<a href="https://policies.google.com/privacy">Google Privacy Policy</a>)</li>
+    </ul>
 
-    <h2>4. Microsoft Edge WebView2 Runtime</h2>
-    <p>The App uses the Microsoft Edge WebView2 Runtime to render its display. The WebView2 Runtime operates in accordance with Microsoft's policies (for example, runtime updates and Windows diagnostic data settings).</p>
+    <h2>4. Background Images and Videos</h2>
+    <p>The App lets you use images and videos you choose as its background.</p>
+    <ul>
+      <li>Windows version: If you choose a file, the App copies it into its own storage area and uses the copy. If you choose a folder (slideshow), the App reads and displays the images and videos in that folder without copying them.</li>
+      <li>Android version: The App copies only the images and videos you choose in the system photo picker into its own storage area and uses the copies. The App does not access your entire photo library.</li>
+    </ul>
+    <p>In every version, the App does not read any files or folders other than those you choose, and never sends these files off your device.</p>
 
-    <h2>5. Changes to This Policy</h2>
+    <h2>5. Components Used to Display the App</h2>
+    <p>The App uses the following components to render its display. These components operate and are updated in accordance with each company's policies.</p>
+    <ul>
+      <li>Windows version: Microsoft Edge WebView2 Runtime, which operates in accordance with Microsoft's policies (for example, runtime updates and Windows diagnostic data settings).</li>
+      <li>Android version: Android System WebView, which is updated in accordance with Google's policies.</li>
+    </ul>
+
+    <h2>6. Changes to This Policy</h2>
     <p>If we revise this policy, we will announce the changes on this page.</p>
 
-    <h2>6. Operator and Contact</h2>
+    <h2>7. Operator and Contact</h2>
     <p>
       Operator: {company.nameEn}<br />
       Contact: <a href={`mailto:${contact.supportEmail}`}>{contact.supportEmail}</a>
     </p>
 
-    <p>Effective date: {enactedEn}<br>Revised: October 10, 2026 (product renamed from TKclock to iObY Clock)</p>
+    <p>
+      Effective date: {enactedEn}<br>
+      Revised: October 10, 2026 (product renamed from TKclock to iObY Clock)<br>
+      Revised: October 11, 2026 (revised to add the Android version)
+    </p>
   </section>
 </BaseLayout>
