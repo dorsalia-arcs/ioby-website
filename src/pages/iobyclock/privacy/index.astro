@@ -5,8 +5,9 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { company, contact } from '../../../data/site';
 
-const enactedJa = '2026年10月3日';
-const enactedEn = 'October 3, 2026';
+// Only the last-updated date is shown (owner's decision, 2026-10-11). Update both when revising.
+const updatedJa = '2026年10月11日';
+const updatedEn = 'October 11, 2026';
 ---
 <BaseLayout eyebrow="Privacy Policy" title="iObY Clock プライバシーポリシー / Privacy Policy" description="iObY Clock のプライバシーポリシーです。iObY Clock は個人情報を収集・送信しません。 / Privacy policy for iObY Clock. iObY Clock does not collect or transmit personal information.">
   <h1>iObY Clock プライバシーポリシー</h1>
@@ -56,11 +57,7 @@ const enactedEn = 'October 3, 2026';
       お問い合わせ: <a href={`mailto:${contact.supportEmail}`}>{contact.supportEmail}</a>
     </p>
 
-    <p>
-      制定日: {enactedJa}<br>
-      改定日: 2026年10月10日（製品名を TKclock から iObY Clock に変更）<br>
-      改定日: 2026年10月11日（Android 版の追加に伴う改定）
-    </p>
+    <p>最終改定日: {updatedJa}</p>
   </section>
 
   <hr />
@@ -111,10 +108,6 @@ const enactedEn = 'October 3, 2026';
       Contact: <a href={`mailto:${contact.supportEmail}`}>{contact.supportEmail}</a>
     </p>
 
-    <p>
-      Effective date: {enactedEn}<br>
-      Revised: October 10, 2026 (product renamed from TKclock to iObY Clock)<br>
-      Revised: October 11, 2026 (revised to add the Android version)
-    </p>
+    <p>Last updated: {updatedEn}</p>
   </section>
 </BaseLayout>
