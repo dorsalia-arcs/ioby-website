@@ -278,7 +278,7 @@ const fullTitle = title ? `${title} | iObY` : 'iObY';
     <header class="mast" id="mast">
       <a class="mono" href={paths.home}>iObY</a>
       <nav class="mast__nav" aria-label="製品">
-        <a href={paths.tkclock} aria-current={Astro.url.pathname === paths.tkclock ? 'page' : undefined}>TKclock</a>
+        <a href={paths.tkclock} aria-current={Astro.url.pathname === paths.tkclock ? 'page' : undefined}>iObY Clock</a>
       </nav>
       <span class="mast__sp"></span>
       <slot name="mast" />
@@ -309,9 +309,9 @@ const fullTitle = title ? `${title} | iObY` : 'iObY';
       <div class="wrap foot__in">
         <a class="mono" href={paths.home}>iObY</a>
         <ul class="foot__links">
-          <li><a href={paths.tkclock}>TKclock</a></li>
+          <li><a href={paths.tkclock}>iObY Clock</a></li>
           <li><a href={paths.tokushoho}>特定商取引法に基づく表記</a></li>
-          <li><a href={paths.tkclockPrivacy}>プライバシーポリシー（TKclock）</a></li>
+          <li><a href={paths.tkclockPrivacy}>プライバシーポリシー（iObY Clock）</a></li>
           <li><a href={`mailto:${contact.supportEmail}`}>お問い合わせ</a></li>
         </ul>
         <slot name="footer-note" />

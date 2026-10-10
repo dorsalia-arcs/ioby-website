@@ -16,7 +16,7 @@ export const brand = {
   name: 'iObY',
   summary:
     'AIで作業を効率化し、そのぶん依頼者とのやり取りに時間を使うことを大切にしています。資料作成、AI活用のサポート、業務ツール「TKシリーズ」の開発を行っています。',
-  points: ['資料・スライドの作成', 'AI活用のサポート', '業務ツール TKシリーズ（TKtask・TKclock）'],
+  points: ['資料・スライドの作成', 'AI活用のサポート', '業務ツール TKシリーズ（TKtask・iObY Clock）'],
 };
 
 export const paths = {

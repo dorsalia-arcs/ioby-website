@@ -31,8 +31,9 @@ WEBP = ["ph-sea", "ph-night", "ph-mount", "ph-fire",
 WOFF2 = ["dot", "bizg", "maru", "klee", "yusei", "hachi", "impact", "retro", "brush"]
 MP4 = ["wall-video-1", "wall-video-2", "wall-video-3", "wall-video-4"]
 
-# Browser tab title: product name only (owner's request, 2026-10-08)
-TITLE = "TKclock"
+# Product name (renamed from TKclock, 2026-10-10). Browser tab title is the name alone (2026-10-08)
+NAME = "iObY Clock"
+TITLE = NAME
 
 # Parts of the designer's HTML the owner asked to drop (regex, each must match exactly once)
 REMOVE = [
@@ -46,6 +47,8 @@ SOON = '<!--soon--><span class="soon">Microsoft Store で近日公開</span><!--
 
 # Owner's edits (2026-10-08): (regex, replacement, expected number of matches)
 REPLACE = [
+    # Product name in the designer's text (description, headline, reel label, desktop icon)
+    (r'TKclock', NAME, 6),  # 4 visible + 2 in comments (comments are stripped later)
     # Description: drop "インストール不要、" only
     (r'(<meta name="description" content="[^"]*?)インストール不要、', r'\1', 1),
     # Store buttons: labels and look stay; the link target comes from site.ts
@@ -55,13 +58,14 @@ REPLACE = [
     (r'<p class="cover__os">', '<p class="cover__os">' + SOON, 1),
     (r'(<div class="cmp__ctas">.*?</div>)',
      r'\1' + '\n        <!--soon--><p class="cmp__fine">Microsoft Store で近日公開</p><!--/soon-->', 1),
-    # Footer: link the font license, add legal links in the same .foot__base style
-    # Font license sentence in the footer: dropped (2026-10-08). The full text stays at /tkclock/fonts/LICENSE.txt
+    # Footer: legal links and the font license link in the same .foot__base style
+    # Font license sentence in the footer: dropped (2026-10-08); linked from the footer links instead
     (r'\n[ \t]*同梱の日本語書体は SIL Open Font License 1\.1[^\n]*<br>', '', 1),
     (r'(<footer class="foot">\s*<div class="wrap">\n)',
      r'\1' + '    <p class="foot__base foot__links"><a href="%%PRIVACY%%">プライバシーポリシー</a>'
      '<a href="%%TOKUSHOHO%%">特定商取引法に基づく表記</a>'
-     '<a href="mailto:%%SUPPORT_EMAIL%%">お問い合わせ</a></p>\n', 1),
+     '<a href="mailto:%%SUPPORT_EMAIL%%">お問い合わせ</a>'
+     '<a href="%%FONT_LICENSE%%">書体のライセンス</a></p>\n', 1),
 ]
 
 # Added blocks: (anchor regex, file, expected matches). The file goes right before the anchor.

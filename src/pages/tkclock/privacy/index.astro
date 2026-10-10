@@ -7,11 +7,11 @@ import { company, contact } from '../../../data/site';
 const enactedJa = '2026年10月3日';
 const enactedEn = 'October 3, 2026';
 ---
-<BaseLayout eyebrow="Privacy Policy" title="TKclock プライバシーポリシー / Privacy Policy" description="TKclock のプライバシーポリシーです。TKclock は個人情報を収集・送信しません。 / Privacy policy for TKclock. TKclock does not collect or transmit personal information.">
-  <h1>TKclock プライバシーポリシー</h1>
+<BaseLayout eyebrow="Privacy Policy" title="iObY Clock プライバシーポリシー / Privacy Policy" description="iObY Clock のプライバシーポリシーです。iObY Clock は個人情報を収集・送信しません。 / Privacy policy for iObY Clock. iObY Clock does not collect or transmit personal information.">
+  <h1>iObY Clock プライバシーポリシー</h1>
 
   <section>
-    <p>{company.nameJa}（以下「当社」）は、Windows 用アプリケーション「TKclock」（以下「本アプリ」）における利用者の情報の取り扱いについて、次のとおり定めます。</p>
+    <p>{company.nameJa}（以下「当社」）は、Windows 用アプリケーション「iObY Clock」（以下「本アプリ」）における利用者の情報の取り扱いについて、次のとおり定めます。</p>
 
     <h2>1. 情報の収集・送信について</h2>
     <p>本アプリ自体は通信を行いません。本アプリが利用者の個人情報を収集することや、外部へ送信することはありません。</p>
@@ -34,14 +34,14 @@ const enactedEn = 'October 3, 2026';
       お問い合わせ: <a href={`mailto:${contact.supportEmail}`}>{contact.supportEmail}</a>
     </p>
 
-    <p>制定日: {enactedJa}</p>
+    <p>制定日: {enactedJa}<br>改定日: 2026年10月10日（製品名を TKclock から iObY Clock に変更）</p>
   </section>
 
   <hr />
 
   <section lang="en">
-    <h1>TKclock Privacy Policy</h1>
-    <p>{company.nameEn} ("we", "us") describes below how the Windows application "TKclock" (the "App") handles user information.</p>
+    <h1>iObY Clock Privacy Policy</h1>
+    <p>{company.nameEn} ("we", "us") describes below how the Windows application "iObY Clock" (the "App") handles user information.</p>
 
     <h2>1. Collection and Transmission of Information</h2>
     <p>The App itself does not communicate over the network. The App does not collect any personal information from users, nor does it transmit any information externally.</p>
@@ -64,6 +64,6 @@ const enactedEn = 'October 3, 2026';
       Contact: <a href={`mailto:${contact.supportEmail}`}>{contact.supportEmail}</a>
     </p>
 
-    <p>Effective date: {enactedEn}</p>
+    <p>Effective date: {enactedEn}<br>Revised: October 10, 2026 (product renamed from TKclock to iObY Clock)</p>
   </section>
 </BaseLayout>
