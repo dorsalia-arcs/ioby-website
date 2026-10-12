@@ -33,6 +33,7 @@ MP4 = ["wall-video-1", "wall-video-2", "wall-video-3", "wall-video-4"]
 
 # Product name (renamed from TKclock, 2026-10-10). Browser tab title is the name alone (2026-10-08)
 NAME = "iObY Clock"
+PRICE = "￥330"
 TITLE = NAME
 
 # Parts of the designer's HTML the owner asked to drop (regex, each must match exactly once)
@@ -47,6 +48,8 @@ SOON = '<!--soon--><span class="soon">Microsoft Store で近日公開</span><!--
 
 # Owner's edits (2026-10-08): (regex, replacement, expected number of matches)
 REPLACE = [
+    # Price: the designer's ￥320 became ￥330 (owner's decision, 2026-10-12)
+    (r'￥320', PRICE, 5),
     # Product name in the designer's text (description, headline, reel label, desktop icon)
     (r'TKclock', NAME, 6),  # 4 visible + 2 in comments (comments are stripped later)
     # Header mark: the iObY logo instead of "TK" (2026-10-10). Traced from the owner's PNG into public/ioby-logo.svg
