@@ -1,15 +1,15 @@
 ---
 // This URL (https://ioby.net/iobyclock/privacy/) is embedded in the app and registered with
-// Microsoft Store and Google Play. Never move or rename this page.
-// Platform-specific items are written as "Windows 版 / Android 版" lists so an iOS line can be added later.
+// Microsoft Store, Google Play and the App Store. Never move or rename this page.
+// Platform-specific items are written as "Windows 版 / Android 版 / iPhone・iPad 版" lists.
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { company, contact } from '../../../data/site';
 
 // Only the last-updated date is shown (owner's decision, 2026-10-11). Update both when revising.
-const updatedJa = '2026年10月14日';
-const updatedEn = 'October 14, 2026';
+const updatedJa = '2026年10月16日';
+const updatedEn = 'October 16, 2026';
 ---
-<BaseLayout eyebrow="Privacy Policy" title="iObY Clock プライバシーポリシー / Privacy Policy" description="iObY Clock のプライバシーポリシーです。iObY Clock は個人情報を収集・送信しません。 / Privacy policy for iObY Clock. iObY Clock does not collect or transmit personal information.">
+<BaseLayout eyebrow="Privacy Policy" title="iObY Clock プライバシーポリシー / Privacy Policy" description="iObY Clock のプライバシーポリシーです。当社は個人を特定する情報を収集しません。 / Privacy policy for iObY Clock. We do not collect information that identifies you personally.">
   <h1>iObY Clock プライバシーポリシー</h1>
 
   <section>
@@ -17,23 +17,30 @@ const updatedEn = 'October 14, 2026';
     <ul>
       <li>Windows 版（Microsoft Store で配布）</li>
       <li>Android 版（Google Play で配布）</li>
+      <li>iPhone・iPad 版（App Store で配布）</li>
     </ul>
 
     <h2>1. 情報の収集・送信について</h2>
-    <p>本アプリ自体は、当社や第三者のサーバーと通信を行いません。本アプリが利用者の個人情報を収集することや、外部へ送信することはありません。</p>
-    <p>ただし、本アプリおよびアドオンの購入とライセンスの確認の際には、Microsoft Store または Google Play の仕組みを通じて、各ストアのサーバーとの通信が行われます（3 を参照）。</p>
+    <p>本アプリ自体は、当社のサーバーと通信を行いません。当社は、個人を特定する情報を収集しません。本アプリには、広告や利用状況の解析のための SDK を組み込んでいません。</p>
+    <p>ただし、次の通信が行われます。</p>
+    <ul>
+      <li>購入とライセンスの確認のため、Microsoft Store（Windows 版）、Google Play（Android 版）、App Store（iPhone・iPad 版）との通信が行われます（3 を参照）。</li>
+      <li>Android 版では、本アプリに組み込まれた Google の課金ライブラリが、Google のサーバーへ動作状況（診断情報）を送ることがあります。この情報は Google の方針に従って取り扱われます。</li>
+    </ul>
 
     <h2>2. 設定の保存について</h2>
     <p>本アプリの設定とメモは、利用者がお使いの端末（PC・スマートフォン）内に保存されます。本アプリがこれらの情報を当社や第三者に送信することはありません。</p>
     <ul>
       <li>Android 版: 端末のバックアップ機能（Google アカウントへのバックアップ、機種変更時のデータ転送）が有効な場合、OS の機能として、本アプリの設定とメモがバックアップや転送に含まれます。ただし、画面ロックを設定していない端末（バックアップを端末側で暗号化できない端末）では、Google アカウントへのバックアップには含めません。背景に使う画像・動画は、バックアップにも機種変更時の転送にも含めません。当社がこれらの情報を受け取ることはありません。</li>
+      <li>iPhone・iPad 版: 端末の iCloud バックアップ（またはパソコンへのバックアップ）が有効な場合、OS の機能として、本アプリの設定とメモがバックアップに含まれることがあります。iCloud バックアップの暗号化は Apple の仕組みに従います（利用者が「高度なデータ保護」を有効にしていない場合、エンドツーエンドでは暗号化されません）。背景に使う画像・動画のコピーは、バックアップに含めません。当社がこれらの情報を受け取ることはありません。</li>
     </ul>
 
     <h2>3. 購入とライセンス確認について</h2>
-    <p>本アプリおよびアドオンの購入とライセンスの確認は、次のストアが行います。これらに関する情報は、各社の方針に従って取り扱われます。</p>
+    <p>本アプリおよびアドオンの購入・支払いとライセンスの確認は、次のストアが処理します。当社が支払い情報を受け取ることはありません。これらに関する情報は、各社の方針に従って取り扱われます。</p>
     <ul>
       <li>Windows 版: Microsoft Store（<a href="https://privacy.microsoft.com/ja-jp/privacystatement">Microsoft のプライバシーに関する声明</a>）</li>
       <li>Android 版: Google Play（<a href="https://policies.google.com/privacy">Google のプライバシーポリシー</a>）</li>
+      <li>iPhone・iPad 版: App Store（<a href="https://www.apple.com/jp/legal/privacy/">Apple のプライバシーポリシー</a>）</li>
     </ul>
 
     <h2>4. 背景の画像・動画について</h2>
@@ -41,14 +48,16 @@ const updatedEn = 'October 14, 2026';
     <ul>
       <li>Windows 版: ファイルを選んだ場合は、そのファイルをアプリの保存領域にコピーして使います。フォルダを選んだ場合（スライドショー）は、コピーせずに、そのフォルダ内の画像・動画を読み込んで表示します。</li>
       <li>Android 版: OS の写真選択画面で利用者が選んだ画像・動画だけを、アプリの保存領域にコピーして使います。写真ライブラリ全体にはアクセスしません。</li>
+      <li>iPhone・iPad 版: OS の写真選択画面で利用者が選んだ画像・動画だけを、アプリの保存領域にコピーして使います。写真ライブラリ全体へのアクセスは求めません。</li>
     </ul>
-    <p>いずれの版でも、利用者が選んだファイル・フォルダ以外を読み込むことはなく、これらのファイルを端末の外へ送ることはありません。Android 版では、端末のバックアップや機種変更時の転送にも含めません（2 を参照）。</p>
+    <p>いずれの版でも、利用者が選んだファイル・フォルダ以外を読み込むことはなく、これらのファイルを端末の外へ送ることはありません。Android 版と iPhone・iPad 版では、端末のバックアップ（Android 版では機種変更時の転送を含む）にも含めません（2 を参照）。</p>
 
     <h2>5. 画面の表示に使う部品について</h2>
     <p>本アプリは、画面の表示に次の部品を使用します。これらの部品は、各社の方針に従って動作・更新されます。</p>
     <ul>
       <li>Windows 版: Microsoft Edge WebView2 ランタイム。Microsoft の方針に従って動作します（ランタイムの更新や、Windows の診断データの設定など）。</li>
       <li>Android 版: Android System WebView。Google の方針に従って更新されます。</li>
+      <li>iPhone・iPad 版: iOS・iPadOS に組み込まれた WebKit。Apple の方針に従って、OS とともに更新されます。</li>
     </ul>
 
     <h2>6. 本ポリシーの改定</h2>
@@ -71,23 +80,30 @@ const updatedEn = 'October 14, 2026';
     <ul>
       <li>Windows version (distributed through Microsoft Store)</li>
       <li>Android version (distributed through Google Play)</li>
+      <li>iPhone and iPad version (distributed through the App Store)</li>
     </ul>
 
     <h2>1. Collection and Transmission of Information</h2>
-    <p>The App itself does not communicate with our servers or any third-party servers. The App does not collect any personal information from users, nor does it transmit any information externally.</p>
-    <p>However, when you purchase the App or its add-ons and when licenses are verified, communication with the store's servers takes place through Microsoft Store or Google Play (see section 3).</p>
+    <p>The App itself does not communicate with our servers. We do not collect any information that identifies you personally. The App contains no SDKs for advertising or usage analytics.</p>
+    <p>However, the following communication takes place:</p>
+    <ul>
+      <li>For purchases and license verification, the App communicates with Microsoft Store (Windows version), Google Play (Android version) or the App Store (iPhone and iPad version) (see section 3).</li>
+      <li>In the Android version, Google's billing library built into the App may send operational information (diagnostics) to Google's servers. This information is handled in accordance with Google's policies.</li>
+    </ul>
 
     <h2>2. Storage of Settings</h2>
     <p>The App's settings and memo are stored on your device (PC or smartphone). The App never sends this information to us or to any third party.</p>
     <ul>
       <li>Android version: If your device's backup features (backup to your Google Account, and data transfer when you switch devices) are turned on, the operating system includes the App's settings and memo in the backup or transfer. However, on devices without a screen lock (devices that cannot encrypt the backup on the device), they are not included in the backup to your Google Account. Images and videos used as the background are included in neither the backup nor the device transfer. We never receive this information.</li>
+      <li>iPhone and iPad version: If iCloud Backup (or backup to a computer) is turned on, the operating system may include the App's settings and memo in the backup. Encryption of iCloud backups follows Apple's system (unless you have turned on Advanced Data Protection, they are not end-to-end encrypted). The copies of images and videos used as the background are not included in the backup. We never receive this information.</li>
     </ul>
 
     <h2>3. Purchases and License Verification</h2>
-    <p>Purchases of the App and its add-ons, and license verification, are handled by the following stores. Related information is handled in accordance with each company's policy.</p>
+    <p>Purchases of and payments for the App and its add-ons, and license verification, are processed by the following stores. We never receive your payment information. Related information is handled in accordance with each company's policy.</p>
     <ul>
       <li>Windows version: Microsoft Store (<a href="https://privacy.microsoft.com/en-us/privacystatement">Microsoft Privacy Statement</a>)</li>
       <li>Android version: Google Play (<a href="https://policies.google.com/privacy">Google Privacy Policy</a>)</li>
+      <li>iPhone and iPad version: App Store (<a href="https://www.apple.com/legal/privacy/">Apple Privacy Policy</a>)</li>
     </ul>
 
     <h2>4. Background Images and Videos</h2>
@@ -95,14 +111,16 @@ const updatedEn = 'October 14, 2026';
     <ul>
       <li>Windows version: If you choose a file, the App copies it into its own storage area and uses the copy. If you choose a folder (slideshow), the App reads and displays the images and videos in that folder without copying them.</li>
       <li>Android version: The App copies only the images and videos you choose in the system photo picker into its own storage area and uses the copies. The App does not access your entire photo library.</li>
+      <li>iPhone and iPad version: The App copies only the images and videos you choose in the system photo picker into its own storage area and uses the copies. The App does not ask for access to your entire photo library.</li>
     </ul>
-    <p>In every version, the App does not read any files or folders other than those you choose, and never sends these files off your device. In the Android version, they are also excluded from device backups and device transfers (see section 2).</p>
+    <p>In every version, the App does not read any files or folders other than those you choose, and never sends these files off your device. In the Android and iPhone/iPad versions, they are also excluded from device backups (and, on Android, from device transfers) (see section 2).</p>
 
     <h2>5. Components Used to Display the App</h2>
     <p>The App uses the following components to render its display. These components operate and are updated in accordance with each company's policies.</p>
     <ul>
       <li>Windows version: Microsoft Edge WebView2 Runtime, which operates in accordance with Microsoft's policies (for example, runtime updates and Windows diagnostic data settings).</li>
       <li>Android version: Android System WebView, which is updated in accordance with Google's policies.</li>
+      <li>iPhone and iPad version: WebKit built into iOS and iPadOS, which is updated with the operating system in accordance with Apple's policies.</li>
     </ul>
 
     <h2>6. Changes to This Policy</h2>
