@@ -22,7 +22,7 @@ npm run preview   # dist/ の中身を確認する
 | URL | ソース | メモ |
 |---|---|---|
 | `/` | `src/pages/index.astro` | トップ |
-| `/iobyclock/` | `src/pages/iobyclock/index.astro` ＋ `src/iobyclock-lp/` | iObY Clock の LP（下の「LP の直し方」） |
+| `/iobyclock/` | `src/iobyclock-lp/index.html`（`src/pages/iobyclock/index.astro` が読み込む） | iObY Clock の LP（下の「LP の直し方」） |
 | `/iobyclock/privacy/` | `src/pages/iobyclock/privacy/index.astro` | プライバシーポリシー（日本語・英語） |
 | `/tokushoho/` | `src/pages/tokushoho/index.astro` | 特定商取引法に基づく表記 |
 | 404 | `src/pages/404.astro` | |
@@ -34,20 +34,19 @@ npm run preview   # dist/ の中身を確認する
 
 ## LP の直し方（/iobyclock/）
 
-LP は、デザイナー（大山滉大さん）から届いた HTML を**そのまま再現**して載せています。
-`src/iobyclock-lp/index.html` はスクリプトが作るファイルなので、**手で直さないでください**。
+LP は、デザイナー（大山滉大さん）の HTML をもとに、岩渕さんの指示した修正（製品名・価格・ロゴ・フッターのリンク・動作環境と FAQ の節など）を加えたものです。
 
-- 届いた HTML は `_design/iobyclock-lp/index-vi.html` に置きます（公開しないため git の管理外。必要なら岩渕さんからもらう）
-- `python tools/import-iobyclock-lp.py` を実行すると、埋め込まれた画像・動画・書体を `public/iobyclock/` に書き出し、HTML を `src/iobyclock-lp/index.html` に作ります。HTML・CSS・JS のコメントは、このとき自動で取り除かれます
-- 届いた HTML に加える修正（製品名・価格・ロゴ・フッターのリンクなど）は、スクリプトの `TITLE`・`NAME`・`PRICE`・`REMOVE`・`REPLACE`・`INSERT` に書きます。差し込む節と CSS は `src/iobyclock-lp/sections.html`・`additions.css` です
-- デザイン（見た目・構成・文言）は、岩渕さんの指示がある箇所以外は変えません
+- 中身は `src/iobyclock-lp/index.html` を**直接直します**。見た目・構成・文言は、岩渕さんの指示がある箇所以外は変えないでください
+- その中の `%%STORE_URL%%`・`%%PRIVACY%%` などの目印と `<!--soon-->…<!--/soon-->` の囲みは、ビルドのときに `src/data/site.ts` の値に置き換わります（`src/pages/iobyclock/index.astro`）。目印は消さないでください
+- Microsoft Store の URL が決まったら `src/data/site.ts` の `iobyclock.storeUrl` に入れると、ボタンがリンクになり「近日公開」の表示が消えます
+- 画像・動画・書体は `public/iobyclock/` にあります
 
 ## 守ってほしいこと
 
 - **`/iobyclock/privacy/` と `/tokushoho/` の URL は変えない。** アプリ本体と各ストア（Microsoft Store・Google Play・App Store）に登録しています。旧 URL `/tkclock/` の転送も消さないでください
 - **プライバシーポリシー・特商法の文面を変えるときは、先に岩渕さんに確認する。** 改定したら、ポリシー末尾の「最終改定日」（ファイル先頭の `updatedJa`・`updatedEn`）も直す
 - **製品や権利の帰属を言い切る文言は書かない**（扱いを協議中のため）。販売者の表記は「合同会社Dorsalia Arcs」のまま
-- 価格は ￥330（LP の原文は ￥320 で、スクリプトが置き換えている）
+- 価格は ￥330
 - 外部のスクリプト・アナリティクス・CDN は入れない。npm の依存を増やすときは先に相談する
 - リポジトリは公開されています。パスワードやキーなどの秘密情報はコミットしない
 - LP の背景の写真・動画は Pexels の素材、書体は SIL OFL 1.1（全文は `public/iobyclock/fonts/LICENSE.txt`）。素材を差し替えるときは出所を確かめる
