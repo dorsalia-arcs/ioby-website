@@ -27,8 +27,8 @@ export const paths = {
   iobyclockFontLicense: '/iobyclock/fonts/LICENSE.txt',
 };
 
-// storeUrl stays null until the Microsoft Store listing is public. The iObY Clock LP buttons read it:
+// Microsoft Store listing (released 2026-11). The iObY Clock LP buttons read it:
 // null shows "近日公開", a URL turns them into links.
 export const iobyclock = {
-  storeUrl: null as string | null,
+  storeUrl: 'https://apps.microsoft.com/detail/9P72DPB3Q5HK' as string | null,
 };
