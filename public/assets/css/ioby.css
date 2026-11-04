@@ -74,3 +74,10 @@ a.featured-news:hover strong{color:var(--blue)}
 @media(max-width:850px){.top-news .top-news-latest a{font-size:12px}
 .top-news-latest time{display:block;margin:0 0 2px}
 }
+
+/* Header: the iObY name next to the logo, larger than the mock's brand-copy */
+.site-header .brand-copy{font-size:24px;line-height:1.2;letter-spacing:.03em}
+@media(max-width:1150px){.site-header .brand-copy{font-size:21px}
+}
+@media(max-width:850px){.site-header .brand-copy{font-size:18px}
+}
