@@ -8,6 +8,7 @@ export interface NewsItem {
   body: string[]; // paragraphs
 }
 
+// Newest first: the top page's NEWS strip shows news[0].
 export const news: NewsItem[] = [
   {
     slug: 'site-renewal',
