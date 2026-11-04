@@ -30,7 +30,7 @@ npm run preview   # dist/ の中身を確認する
 | `/tkclock/`・`/tkclock/privacy/` | `astro.config.mjs` の `redirects` | 旧 URL。新しい URL へ転送している |
 
 - 特商法・ポリシー・404 の共通のヘッダー・フッター・見た目: `src/layouts/BaseLayout.astro`。トップと同じ CSS（`public/assets/css/`）を読み込みます。ヘッダー・フッターは `src/ioby-top/index.html` と同じ作りなので、片方を直したらもう片方も直してください
-- NEWS の記事は `src/ioby-top/index.html` の NEWS の節にあります（本文はボタンの `data-news-body`、日付は `data-news-date`）
+- NEWS の記事は `src/data/news.ts` に書き、記事ページ `/news/<slug>/` は `src/pages/news/[slug].astro` が作ります。トップの NEWS の節（`src/ioby-top/index.html`）のカードは手で書いているので、記事を足したらそちらも直してください
 - 会社名・連絡先・電話番号・Store の URL など: `src/data/site.ts`（ここを直せば全ページに反映される）
 - 画像などの素材: `public/`（ロゴは `public/ioby-logo.svg`）
 

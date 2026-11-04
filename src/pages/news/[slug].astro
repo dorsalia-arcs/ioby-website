@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { news, newsDate, type NewsItem } from '../../data/news';
+import { paths } from '../../data/site';
+
+export function getStaticPaths() {
+  return news.map((item) => ({ params: { slug: item.slug }, props: { item } }));
+}
+
+const { item } = Astro.props as { item: NewsItem };
+---
+<BaseLayout eyebrow="News" title={item.title} description={item.body.join('')}>
+  <p class="news-meta"><span class="tag">{item.tag}</span><small><time datetime={item.date}>{newsDate(item)}</time></small></p>
+  <h1>{item.title}</h1>
+  {item.body.map((paragraph) => <p>{paragraph}</p>)}
+  <p class="news-back"><a class="secondary-action" href={`${paths.home}#news`}>お知らせ一覧に戻る<span aria-hidden="true">↗</span></a></p>
+</BaseLayout>

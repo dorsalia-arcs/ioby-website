@@ -59,3 +59,10 @@
 
 /* CONTACT: fallback address shown after the mail app is opened */
 .form-feedback a,.form-note a{color:var(--blue);text-decoration:underline;text-underline-offset:.2em}
+
+/* NEWS: the featured card is a link to the article page */
+a.featured-news{display:block;text-decoration:none}
+a.featured-news:hover strong{color:var(--blue)}
+.prose .news-meta{margin:0}
+.prose .news-back{margin-top:40px}
+.prose a.secondary-action{text-decoration:none;border-bottom:1px solid #aacce0}

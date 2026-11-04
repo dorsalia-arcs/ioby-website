@@ -4,12 +4,14 @@
 // Here only the %%NAME%% markers are resolved from site.ts.
 import top from '../ioby-top/index.html?raw';
 import { company, contact, paths } from '../data/site';
+import { news, newsPath } from '../data/news';
 
 // Values go into text and attributes, so escape them; a function replacer keeps "$&" etc. literal.
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 const markers: [string, string][] = [
   ['%%IOBYCLOCK%%', paths.iobyclock],
+  ['%%NEWS_RENEWAL%%', newsPath(news[0])],
   ['%%SITE_PRIVACY%%', paths.privacy],
   ['%%PRIVACY%%', paths.iobyclockPrivacy],
   ['%%TOKUSHOHO%%', paths.tokushoho],
@@ -20,7 +22,7 @@ const markers: [string, string][] = [
   ['%%ADDRESS%%', company.address],
   ['%%REPRESENTATIVE%%', company.representative],
 ];
-for (const [, value] of markers.filter(([m]) => ['%%IOBYCLOCK%%', '%%SITE_PRIVACY%%', '%%PRIVACY%%', '%%TOKUSHOHO%%', '%%COMPANY_URL%%'].includes(m))) {
+for (const [, value] of markers.filter(([m]) => ['%%IOBYCLOCK%%', '%%NEWS_RENEWAL%%', '%%SITE_PRIVACY%%', '%%PRIVACY%%', '%%TOKUSHOHO%%', '%%COMPANY_URL%%'].includes(m))) {
   if (!/^(https:\/\/|\/)/.test(value)) throw new Error(`Link must start with https:// or /: ${value}`);
 }
 const html = markers.reduce((out, [marker, value]) => out.replaceAll(marker, () => esc(value)), top);
