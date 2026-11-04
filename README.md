@@ -21,14 +21,16 @@ npm run preview   # dist/ の中身を確認する
 
 | URL | ソース | メモ |
 |---|---|---|
-| `/` | `src/pages/index.astro` | トップ |
+| `/` | `src/ioby-top/index.html`（`src/pages/index.astro` が読み込む） | トップ。デザイナーのモック（デザイン03）に岩渕さんの指示した修正を加えたもの。CSS・JS・画像は `public/assets/`、追加したスタイルは `public/assets/css/ioby.css` |
 | `/iobyclock/` | `src/iobyclock-lp/index.html`（`src/pages/iobyclock/index.astro` が読み込む） | iObY Clock の LP（下の「LP の直し方」） |
 | `/iobyclock/privacy/` | `src/pages/iobyclock/privacy/index.astro` | プライバシーポリシー（日本語・英語） |
 | `/tokushoho/` | `src/pages/tokushoho/index.astro` | 特定商取引法に基づく表記 |
+| `/privacy/` | `src/pages/privacy/index.astro` | サイト全体（お問い合わせ）のプライバシーポリシー。会社のサイトのポリシー（dorsalia-website）をもとにしている |
 | 404 | `src/pages/404.astro` | |
 | `/tkclock/`・`/tkclock/privacy/` | `astro.config.mjs` の `redirects` | 旧 URL。新しい URL へ転送している |
 
-- 共通のヘッダー・フッター・見た目: `src/layouts/BaseLayout.astro`（LP 以外のページ）
+- 特商法・ポリシー・404 の共通のヘッダー・フッター・見た目: `src/layouts/BaseLayout.astro`。トップと同じ CSS（`public/assets/css/`）を読み込みます。ヘッダー・フッターは `src/ioby-top/index.html` と同じ作りなので、片方を直したらもう片方も直してください
+- NEWS の記事は `src/ioby-top/index.html` の NEWS の節にあります（本文はボタンの `data-news-body`、日付は `data-news-date`）
 - 会社名・連絡先・電話番号・Store の URL など: `src/data/site.ts`（ここを直せば全ページに反映される）
 - 画像などの素材: `public/`（ロゴは `public/ioby-logo.svg`）
 

@@ -1,0 +1,61 @@
+/* Additions to the designer's styles.css (kept separate so a new styles.css can be dropped in as is).
+   Only existing tokens and type sizes from styles.css are used. */
+
+/* PRODUCTS: link to the iObY Clock LP next to the Store button */
+.product-lp-link{display:inline-block;margin:20px 0 0 26px;vertical-align:middle}
+@media(max-width:850px){.product-lp-link{display:table;margin:18px 0 0}}
+
+/* COMPANY: links inside the profile */
+.profile-note a,.company-profile dd a{color:var(--blue);text-decoration:underline;text-underline-offset:.2em}
+
+/* Footer: legal links and the operator line carried over from the previous site */
+.footer-base{margin:10px 0 0;font-size:9px;line-height:1.8}
+.footer-base a{font-size:inherit;letter-spacing:0;text-decoration:underline;text-underline-offset:.2em}
+.footer-links{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.site-footer .footer-legal{gap:18px}
+.site-footer .footer-legal a{letter-spacing:.02em;color:#8296a6}
+.site-footer .footer-legal a:hover{color:var(--blue)}
+@media(max-width:850px){.footer-links{align-items:flex-start}
+.site-footer .footer-legal{flex-wrap:wrap;gap:8px 16px}
+}
+
+/* Text pages (legal pages, 404) in src/layouts/BaseLayout.astro. Their header uses links instead of
+   the top page's tab buttons, so the nav button styles are repeated for a. */
+.site-nav a{display:flex;align-items:center;height:100%;color:#405269;font-size:12px;font-weight:800;letter-spacing:.1em;position:relative;padding:0 1px;text-decoration:none}
+.site-nav a:hover{color:var(--blue)}
+.site-header a.brand{text-decoration:none}
+.doc-title{padding:46px 28px 40px}
+.doc-title .en{margin:0;text-transform:uppercase}
+.doc-page .page-wrap{max-width:880px}
+.prose{color:var(--ink);font-size:14px;line-height:2.05}
+.prose h1{font-size:30px;line-height:1.55;margin:0 0 22px;color:var(--navy);letter-spacing:.02em}
+.prose h2{font-size:18px;line-height:1.7;margin:44px 0 0;padding-top:20px;border-top:1px solid var(--line);color:var(--navy)}
+.prose h3{font-size:15px;margin:28px 0 0;color:var(--navy)}
+.prose p,.prose ul,.prose ol,.prose table{margin:16px 0 0}
+.prose ul,.prose ol{padding-left:1.3em}
+.prose li::marker{color:var(--blue)}
+.prose a{color:var(--blue);text-decoration:underline;text-underline-offset:.2em}
+.prose a.cta{color:#fff;text-decoration:none}
+.prose hr{margin:64px 0;border:0;border-top:1px solid #dce7ed}
+.prose section>:first-child{margin-top:0}
+.prose table{border-collapse:collapse;width:100%}
+.prose th,.prose td{border-bottom:1px solid var(--line);padding:16px 12px;text-align:left;vertical-align:top;font-size:13px}
+.prose th{width:30%;font-weight:800;color:var(--navy)}
+.prose tr:first-child th,.prose tr:first-child td{border-top:1px solid #dce7ed}
+@media(max-width:850px){.site-nav a{font-size:9px;letter-spacing:.09em;padding:0 3px}
+.doc-title{padding:32px 22px 28px}
+.prose{font-size:13px}
+.prose h1{font-size:23px}
+.prose h2{font-size:16px;margin-top:36px}
+}
+@media(max-width:480px){.prose th,.prose td{display:block;width:100%}
+.prose th{padding-bottom:2px;border-bottom:0;font-size:12px;color:var(--blue)}
+.prose td{padding-top:4px}
+.prose tr:first-child td{border-top:0}
+}
+
+/* NEWS: a single article, so no list column next to it */
+.news-layout.single{grid-template-columns:minmax(0,560px)}
+
+/* CONTACT: fallback address shown after the mail app is opened */
+.form-feedback a,.form-note a{color:var(--blue);text-decoration:underline;text-underline-offset:.2em}

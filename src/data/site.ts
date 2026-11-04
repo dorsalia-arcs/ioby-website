@@ -12,16 +12,10 @@ export const contact = {
   phone: '050-5586-3492',
 };
 
-export const brand = {
-  name: 'iObY',
-  summary:
-    'AIで作業を効率化し、そのぶん依頼者とのやり取りに時間を使うことを大切にしています。資料作成、AI活用のサポート、業務ツール「TKシリーズ」の開発を行っています。',
-  points: ['資料・スライドの作成', 'AI活用のサポート', '業務ツール TKシリーズ（TKtask・iObY Clock）'],
-};
-
 export const paths = {
   home: '/',
   iobyclock: '/iobyclock/',
+  privacy: '/privacy/',
   iobyclockPrivacy: '/iobyclock/privacy/',
   tokushoho: '/tokushoho/',
   iobyclockFontLicense: '/iobyclock/fonts/LICENSE.txt',
