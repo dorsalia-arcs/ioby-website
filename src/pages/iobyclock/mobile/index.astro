@@ -1,0 +1,43 @@
+---
+// /iobyclock/mobile/ is the designer's iPhone/Android LP (with the owner's edits) in src/iobyclock-mobile-lp/index.html. Edit that file directly.
+// Here only the %%NAME%% markers and the <!--soon…--> blocks are resolved from site.ts.
+import lp from '../../../iobyclock-mobile-lp/index.html?raw';
+import { company, contact, paths, iobyclock } from '../../../data/site';
+
+const iosUrl = iobyclock.iosUrl;
+const androidUrl = iobyclock.androidUrl;
+const anyUrl = iosUrl || androidUrl;
+// Before a listing is public its buttons have no href, so they cannot be followed
+const storeHref = (url: string | null, store: string) =>
+  url ? `href="${url}"` : `aria-disabled="true" title="${store} で近日公開"`;
+// <!--soon--> shows while neither store is public, <!--soon-ios--> while App Store is not,
+// <!--soon-ios-only--> while App Store is not but Google Play is (and the same for android)
+const soon = (tag: string, show: boolean) => (s: string) =>
+  s.replace(new RegExp(`<!--${tag}-->([\\s\\S]*?)<!--\\/${tag}-->`, 'g'), show ? '$1' : '');
+
+const blocks = [
+  soon('soon-ios-only', !iosUrl && !!androidUrl),
+  soon('soon-android-only', !androidUrl && !!iosUrl),
+  soon('soon-ios', !iosUrl),
+  soon('soon-android', !androidUrl),
+  soon('soon', !anyUrl),
+];
+const html = blocks
+  .reduce((s, f) => f(s), lp)
+  .replaceAll('href="%%IOS_URL%%"', storeHref(iosUrl, 'App Store'))
+  .replaceAll('href="%%ANDROID_URL%%"', storeHref(androidUrl, 'Google Play'))
+  .replaceAll(
+    'href="%%STORE_ANY%%"',
+    anyUrl ? 'href="#compare"' : 'aria-disabled="true" title="App Store・Google Play で近日公開"',
+  )
+  .replaceAll('%%IOBYCLOCK%%', paths.iobyclock)
+  .replaceAll('%%PRIVACY%%', paths.iobyclockPrivacy)
+  .replaceAll('%%TOKUSHOHO%%', paths.tokushoho)
+  .replaceAll('%%FONT_LICENSE%%', paths.iobyclockFontLicense)
+  .replaceAll('%%SUPPORT_EMAIL%%', contact.supportEmail)
+  .replaceAll('%%COMPANY%%', company.nameJa);
+
+const left = html.match(/%%[A-Z_]+%%|<!--\/?soon[a-z-]*-->/);
+if (left) throw new Error(`Unresolved marker in iObY Clock mobile LP: ${left[0]}`);
+---
+<Fragment set:html={html} />

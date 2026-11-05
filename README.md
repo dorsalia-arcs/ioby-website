@@ -23,6 +23,7 @@ npm run preview   # dist/ の中身を確認する
 |---|---|---|
 | `/` | `src/ioby-top/index.html`（`src/pages/index.astro` が読み込む） | トップ。デザイナーのモック（デザイン03）に岩渕さんの指示した修正を加えたもの。CSS・JS・画像は `public/assets/`、追加したスタイルは `public/assets/css/ioby.css` |
 | `/iobyclock/` | `src/iobyclock-lp/index.html`（`src/pages/iobyclock/index.astro` が読み込む） | iObY Clock の LP（下の「LP の直し方」） |
+| `/iobyclock/mobile/` | `src/iobyclock-mobile-lp/index.html`（`src/pages/iobyclock/mobile/index.astro` が読み込む） | iObY Clock の iPhone・Android 版の LP（下の「LP の直し方」） |
 | `/iobyclock/privacy/` | `src/pages/iobyclock/privacy/index.astro` | プライバシーポリシー（日本語・英語） |
 | `/tokushoho/` | `src/pages/tokushoho/index.astro` | 特定商取引法に基づく表記 |
 | `/privacy/` | `src/pages/privacy/index.astro` | サイト全体（お問い合わせ）のプライバシーポリシー。会社のサイトのポリシー（dorsalia-website）をもとにしている |
@@ -42,6 +43,12 @@ LP は、デザイナー（大山滉大さん）の HTML をもとに、岩渕�
 - その中の `%%STORE_URL%%`・`%%PRIVACY%%` などの目印と `<!--soon-->…<!--/soon-->` の囲みは、ビルドのときに `src/data/site.ts` の値に置き換わります（`src/pages/iobyclock/index.astro`）。目印は消さないでください
 - Microsoft Store の URL が決まったら `src/data/site.ts` の `iobyclock.storeUrl` に入れると、ボタンがリンクになり「近日公開」の表示が消えます
 - 画像・動画・書体は `public/iobyclock/` にあります
+
+スマホ版の LP（`/iobyclock/mobile/`）も同じ作りで、中身は `src/iobyclock-mobile-lp/index.html` を直接直します（置き換えは `src/pages/iobyclock/mobile/index.astro`）。画像・動画・書体は Windows 版と同じ `public/iobyclock/` のものを使います。
+
+- ストアのボタンは `%%IOS_URL%%`（App Store）・`%%ANDROID_URL%%`（Google Play）・`%%STORE_ANY%%`（ヘッダーと冒頭の「無償版をダウンロード」。どちらかが公開されたら比較表の下のボタンへ移る）
+- 「近日公開」の囲みは 5 種類: `<!--soon-->`（両方とも未公開のあいだ）、`<!--soon-ios-->`・`<!--soon-android-->`（そのストアが未公開のあいだ）、`<!--soon-ios-only-->`・`<!--soon-android-only-->`（そのストアだけが未公開のあいだ）
+- `src/data/site.ts` の `iobyclock.iosUrl`・`iobyclock.androidUrl` に掲載ページの URL を入れると、そのストアのボタンがリンクになり、そのストアの「近日公開」が消えます。どちらか 1 つでも入ると、ページの noindex と「App Store・Google Play で近日公開」の表示が消えます
 
 ## 守ってほしいこと
 

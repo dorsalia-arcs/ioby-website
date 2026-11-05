@@ -12,6 +12,7 @@ const html = lp
     storeUrl ? `href="${storeUrl}"` : 'aria-disabled="true" title="Microsoft Store で近日公開"',
   )
   .replace(/<!--soon-->([\s\S]*?)<!--\/soon-->/g, storeUrl ? '' : '$1')
+  .replaceAll('%%IOBYCLOCK_MOBILE%%', paths.iobyclockMobile)
   .replaceAll('%%PRIVACY%%', paths.iobyclockPrivacy)
   .replaceAll('%%TOKUSHOHO%%', paths.tokushoho)
   .replaceAll('%%FONT_LICENSE%%', paths.iobyclockFontLicense)

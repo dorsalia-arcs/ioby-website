@@ -15,6 +15,7 @@ export const contact = {
 export const paths = {
   home: '/',
   iobyclock: '/iobyclock/',
+  iobyclockMobile: '/iobyclock/mobile/',
   privacy: '/privacy/',
   iobyclockPrivacy: '/iobyclock/privacy/',
   tokushoho: '/tokushoho/',
@@ -23,6 +24,9 @@ export const paths = {
 
 // Microsoft Store listing (released 2026-11). The iObY Clock LP buttons read it:
 // null shows "近日公開", a URL turns them into links.
+// iosUrl / androidUrl: App Store / Google Play listings, read the same way by the mobile LP (/iobyclock/mobile/).
 export const iobyclock = {
   storeUrl: 'https://apps.microsoft.com/detail/9P72DPB3Q5HK' as string | null,
+  iosUrl: null as string | null,
+  androidUrl: null as string | null,
 };
