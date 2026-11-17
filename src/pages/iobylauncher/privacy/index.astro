@@ -1,0 +1,166 @@
+---
+// This URL (https://ioby.net/iobylauncher/privacy/) is embedded in the app (AppUrls.PrivacyUrl) and
+// registered with Microsoft Store (Partner Center). Never move or rename this page.
+// Source draft: projects/ioby-launcher/docs/プライバシーポリシー_草案.md. iObY Task integration is
+// intentionally not described (disabled in the Store build).
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { company, contact } from '../../../data/site';
+
+// Only the last-updated date is shown (same as iObY Clock). Update both when revising.
+const updatedJa = '2026年11月18日';
+const updatedEn = 'November 18, 2026';
+---
+<BaseLayout eyebrow="Privacy Policy" title="iObY Launcher プライバシーポリシー / Privacy Policy" description="iObY Launcher のプライバシーポリシーです。当社は個人を特定する情報を収集しません。 / Privacy policy for iObY Launcher. We do not collect information that identifies you personally.">
+  <h1>iObY Launcher プライバシーポリシー</h1>
+
+  <section>
+    <p>{company.nameJa}（以下「当社」）は、アプリケーション「iObY Launcher」（以下「本アプリ」）における利用者の情報の取り扱いについて、次のとおり定めます。本ポリシーは、Microsoft Store で配布する Windows 版の本アプリに適用されます。</p>
+
+    <h2>1. 情報の収集・送信について</h2>
+    <p>本アプリ自体は、当社のサーバーと通信を行いません。当社は、個人を特定する情報を収集しません。本アプリには、広告や利用状況の解析（テレメトリ）のための仕組みを組み込んでいません。</p>
+    <p>本アプリが通信を行うのは、次の場合だけです。いずれも利用者の操作をきっかけに行い、裏で自動的には通信しません。</p>
+    <ul>
+      <li>アイコンの取得: 項目の編集画面で「サイトから取得」を押したとき（4 を参照）</li>
+      <li>AI 機能: 翻訳・AI チャット・接続の確認を行ったとき（3 を参照）</li>
+      <li>購入とライセンスの確認: Microsoft Store の仕組みを通じて行われます（5 を参照）</li>
+    </ul>
+    <p>このほか、利用者が登録した URL や Web 検索を開くときは既定のブラウザに、「不適切な応答を報告」を押したときは既定のメールソフトに渡します。その先の通信は、それぞれのソフトが行います。利用者が登録した共有フォルダを開くときは、Windows のファイル共有の仕組みでそのサーバーにアクセスします。</p>
+
+    <h2>2. 設定とデータの保存について</h2>
+    <p>本アプリの設定と登録した項目は、利用者がお使いの PC 内に保存されます。本アプリがこれらの情報を当社に送信することはありません。</p>
+    <ul>
+      <li>パスワード: 利用者が決めたマスターパスワードから作った鍵で暗号化して保存します。マスターパスワードそのものは保存しません。一定時間使わないとき、または Windows をロックしたとき、自動でロックします。</li>
+      <li>パスワードのコピー: コピーしたパスワードは、Windows のクリップボードの履歴とクラウドへの同期に載せないようにし、一定時間で消去します。</li>
+      <li>AI の API キー: 設定のファイルとは別のファイルに、Windows の機能（DPAPI）で暗号化して保存します。設定の書き出しには含めません。</li>
+      <li>検索窓の背景画像（フル版）: 利用者が選んだ画像をもとにしたファイルを、本アプリの保存領域に保存します。</li>
+      <li>スクリーンショット: 利用者が撮影したときだけ、利用者が指定したフォルダ（既定は「ピクチャ」の中の Screenshots）に保存します。そのフォルダが OneDrive などで同期されている場合は、その同期サービスの設定に従います。</li>
+      <li>設定の書き出し: 利用者が書き出したファイルには、暗号化したパスワードが含まれます。保管場所にご注意ください。</li>
+    </ul>
+
+    <h2>3. AI 機能について</h2>
+    <p>本アプリの AI 機能（翻訳・AI チャット）は、利用者ご自身が AI 事業者と契約して取得した API キーを使います。送信先は、利用者が設定で選んだ 1 社だけです。</p>
+    <ul>
+      <li>Google（Gemini API）</li>
+      <li>OpenAI</li>
+      <li>Anthropic</li>
+    </ul>
+    <p>送信する内容は次のとおりです。いずれも利用者の API キーで、AI 事業者へ直接送ります。当社のサーバーは経由せず、当社が内容を受け取ることはありません。</p>
+    <ul>
+      <li>接続の確認: 確認用の短い文</li>
+      <li>翻訳: 利用者が入力した文（5,000 字まで）と、訳す先の言語を含む指示文</li>
+      <li>AI チャット: 直近の会話（5 往復まで）と新しい発言（合わせて 5,000 字まで）と、応答の仕方の指示文。フル版でキャラクター設定を使っている場合は、利用者が書いたキャラクター設定（300 字まで）を指示文として送ります。フル版でないときは、保存済みのキャラクター設定も送りません。</li>
+    </ul>
+    <p>初めて送信する前に、送信してよいかを確認します（既定は「いいえ」）。業務上の秘密や個人情報は入力しないでください。送信した内容と API キーの利用は、各社の規約・プライバシーポリシーと、利用者と各社との契約に従って取り扱われます（学習への利用の有無などは各社の定めによります）。利用料金は、各社から利用者に請求されます。</p>
+    <ul>
+      <li>Google: <a href="https://ai.google.dev/gemini-api/terms">Gemini API の利用規約</a>、<a href="https://policies.google.com/privacy">Google のプライバシーポリシー</a></li>
+      <li>OpenAI: <a href="https://openai.com/policies/privacy-policy">OpenAI のプライバシーポリシー</a></li>
+      <li>Anthropic: <a href="https://www.anthropic.com/legal/privacy">Anthropic のプライバシーポリシー</a></li>
+    </ul>
+    <p>AI の応答には、誤りや不適切な内容が含まれることがあります。不適切な応答は、応答の下の「不適切な応答を報告」から当社へお知らせください（メールソフトが開きます）。</p>
+
+    <h2>4. アイコンの取得について</h2>
+    <p>項目の編集画面で「サイトから取得」を押したときだけ、利用者が入力した Web サイト（http・https）からアイコンを取得します。取得したアイコンは、その項目の一部として PC 内に保存します。</p>
+    <ul>
+      <li>送るのは、ページとアイコンを読み込む要求だけです。Cookie・ログイン情報・参照元（Referer）は送りません。</li>
+      <li>通常の Web の閲覧と同じく、取得先のサイトには利用者の IP アドレスなどが伝わります。</li>
+    </ul>
+
+    <h2>5. 購入とライセンス確認について</h2>
+    <p>本アプリおよびアドオン「iObY Launcher フル版」の購入・支払いとライセンスの確認は、Microsoft Store が処理します。当社が支払い情報や購入の記録を受け取ることはありません。これらに関する情報は、Microsoft の方針に従って取り扱われます（<a href="https://privacy.microsoft.com/ja-jp/privacystatement">Microsoft のプライバシーに関する声明</a>）。</p>
+    <p>本アプリは、Microsoft Store から受け取った確認の結果を、フル版の機能を使えるかどうかの判断にだけ使います。結果はファイルや設定に保存せず、本アプリを起動するたびに確認します。</p>
+
+    <h2>6. 画面の表示に使う部品について</h2>
+    <p>本アプリは、画面の表示に Microsoft Edge WebView2 ランタイムを使用します。この部品は、Microsoft の方針に従って動作します（ランタイムの更新や、Windows の診断データの設定など）。本アプリでは、WebView2 による URL の評判の確認（SmartScreen）を無効にしています。</p>
+
+    <h2>7. お子さまの利用について</h2>
+    <p>当社は、利用者の年齢にかかわらず、個人を特定する情報を収集しません。AI 機能を使う場合は、各 AI 事業者の利用規約（利用できる年齢の条件を含む）に従ってください。</p>
+
+    <h2>8. 本ポリシーの改定</h2>
+    <p>本ポリシーを改定する場合は、このページでお知らせします。</p>
+
+    <h2>9. 運営者・お問い合わせ</h2>
+    <p>
+      運営者: {company.nameJa}<br />
+      お問い合わせ: <a href={`mailto:${contact.supportEmail}`}>{contact.supportEmail}</a>
+    </p>
+
+    <p>最終改定日: {updatedJa}</p>
+  </section>
+
+  <hr />
+
+  <section lang="en">
+    <h1>iObY Launcher Privacy Policy</h1>
+    <p>{company.nameEn} ("we", "us") describes below how the application "iObY Launcher" (the "App") handles user information. This policy applies to the Windows version of the App distributed through Microsoft Store.</p>
+
+    <h2>1. Collection and Transmission of Information</h2>
+    <p>The App itself does not communicate with our servers. We do not collect any information that identifies you personally. The App contains no mechanisms for advertising or usage analytics (telemetry).</p>
+    <p>The App communicates only in the following cases. Each is triggered by your action; the App does not communicate automatically in the background.</p>
+    <ul>
+      <li>Getting icons: when you press "Fetch from site" in the item editor (see section 4)</li>
+      <li>AI features: when you translate, use AI chat, or check the connection (see section 3)</li>
+      <li>Purchases and license verification: handled through Microsoft Store (see section 5)</li>
+    </ul>
+    <p>In addition, URLs you registered and web searches are passed to your default browser, and "Report inappropriate response" is passed to your default email app. Any communication after that is handled by those apps. When you open a shared folder you registered, Windows accesses that server through its file sharing system.</p>
+
+    <h2>2. Storage of Settings and Data</h2>
+    <p>The App's settings and the items you register are stored on your PC. The App never sends this information to us.</p>
+    <ul>
+      <li>Passwords: encrypted with a key derived from the master password you choose. The master password itself is not stored. The vault locks automatically after a period of inactivity or when you lock Windows.</li>
+      <li>Copying passwords: copied passwords are kept out of Windows clipboard history and cloud clipboard sync, and are cleared after a set time.</li>
+      <li>AI API keys: stored in a separate file from the settings, encrypted with a Windows feature (DPAPI). They are not included when you export your settings.</li>
+      <li>Search window background image (Full Version): a file based on the image you choose is saved in the App's storage area.</li>
+      <li>Screenshots: saved only when you take them, to the folder you specify (by default, Screenshots in your Pictures folder). If that folder is synced by a service such as OneDrive, that service's settings apply.</li>
+      <li>Exported settings: files you export include your encrypted passwords. Please keep them in a safe place.</li>
+    </ul>
+
+    <h2>3. AI Features</h2>
+    <p>The App's AI features (translation and AI chat) use an API key that you obtain under your own agreement with an AI provider. Data is sent only to the one provider you choose in Settings:</p>
+    <ul>
+      <li>Google (Gemini API)</li>
+      <li>OpenAI</li>
+      <li>Anthropic</li>
+    </ul>
+    <p>The App sends the following, always with your API key and directly to the AI provider. Nothing passes through our servers, and we never receive the content.</p>
+    <ul>
+      <li>Connection check: a short test message</li>
+      <li>Translation: the text you enter (up to 5,000 characters) and an instruction that includes the target language</li>
+      <li>AI chat: the recent conversation (up to 5 exchanges) and your new message (up to 5,000 characters in total), plus an instruction on how to respond. If you use the Full Version's chat persona, the persona you wrote (up to 300 characters) is sent as that instruction. Without the Full Version, a saved persona is not sent.</li>
+    </ul>
+    <p>Before anything is sent for the first time, the App asks for your confirmation (default: No). Please do not enter confidential business information or personal information. What you send and your use of the API key are handled under each provider's terms and privacy policy and your agreement with that provider (including whether the data is used for training). Usage fees are billed to you by the provider.</p>
+    <ul>
+      <li>Google: <a href="https://ai.google.dev/gemini-api/terms">Gemini API Terms of Service</a> and <a href="https://policies.google.com/privacy">Google Privacy Policy</a></li>
+      <li>OpenAI: <a href="https://openai.com/policies/privacy-policy">OpenAI Privacy Policy</a></li>
+      <li>Anthropic: <a href="https://www.anthropic.com/legal/privacy">Anthropic Privacy Policy</a></li>
+    </ul>
+    <p>AI responses may contain errors or inappropriate content. Please tell us about an inappropriate response with "Report inappropriate response" below the response (your email app opens).</p>
+
+    <h2>4. Getting Icons</h2>
+    <p>Only when you press "Fetch from site" in the item editor does the App get an icon from the website (http or https) you entered. The icon is saved on your PC as part of that item.</p>
+    <ul>
+      <li>The App sends only requests to load the page and the icon. It does not send cookies, login credentials, or the referrer.</li>
+      <li>As with ordinary web browsing, the website receives information such as your IP address.</li>
+    </ul>
+
+    <h2>5. Purchases and License Verification</h2>
+    <p>Purchases of and payments for the App and the add-on "iObY Launcher Full Version", and license verification, are processed by Microsoft Store. We never receive your payment information or purchase records. Related information is handled in accordance with Microsoft's policies (<a href="https://privacy.microsoft.com/en-us/privacystatement">Microsoft Privacy Statement</a>).</p>
+    <p>The App uses the result received from Microsoft Store only to decide whether the Full Version features are available. The result is not saved to any file or setting; the App checks again each time it starts.</p>
+
+    <h2>6. Components Used to Display the App</h2>
+    <p>The App uses the Microsoft Edge WebView2 Runtime to render its display. This component operates in accordance with Microsoft's policies (for example, runtime updates and Windows diagnostic data settings). The App turns off WebView2's URL reputation checks (SmartScreen).</p>
+
+    <h2>7. Children</h2>
+    <p>We do not collect information that identifies you personally, regardless of your age. If you use the AI features, please follow each AI provider's terms of use (including any age requirements).</p>
+
+    <h2>8. Changes to This Policy</h2>
+    <p>If we revise this policy, we will announce the changes on this page.</p>
+
+    <h2>9. Operator and Contact</h2>
+    <p>
+      Operator: {company.nameEn}<br />
+      Contact: <a href={`mailto:${contact.supportEmail}`}>{contact.supportEmail}</a>
+    </p>
+
+    <p>Last updated: {updatedEn}</p>
+  </section>
+</BaseLayout>
